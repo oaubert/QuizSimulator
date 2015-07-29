@@ -10,12 +10,14 @@
     <title>Coco - Choix de l'étudiant</title>
     <!-- Custom Fonts -->
     <link href="../libs/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="../libs/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <link href="../libs/css/main.css" rel="stylesheet" type="text/css">
 
     <script src="../libs/js/Others/jquery.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/lodash.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/d3.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/nv.d3.min.js" type="text/javascript"></script>
+    <script src="../libs/js/Others/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="../libs/js/Plateforme/test_plateforme.js"></script>
     <script src="../libs/js/Plateforme/datavis.js" type="text/javascript"></script>
 </head>
@@ -46,70 +48,45 @@
                 <h1 class="page-header">Choix de l'étudiant - COCo</h1>
             </div>
         </div>
-        <div id='user_select'>
-            <select id='student_name' name='student_name'>
-            </select>
-        </div>
-        <input type="button" value="Dashboard d'étudiant - COCo" id="send"></input>
+        <div id='user_select'></div>
     </div>
 
     <script type="text/javascript">
         var visualizer = new TestsCoco.DataVis("#page-wrapper");
-
-        function sendData(name,session_id){
-            console.log(name,session_id);
-        }
-
+        
         function getData(){
-            $.when($.get("../Donnees_tests/analytics_data/questions_3files.json"),
+             $.when($.get("../Donnees_tests/analytics_data/questions_3files.json"),
                     $.get("../Donnees_tests/analytics_data/answers_3files.json"))
                 .done(function(data1,data2){
-                        var users = visualizer.getUsers(data2[0]);
-                        var users_sessions = visualizer.getSessionByUser(data2[0]);
-
-                        for(var i = 0; i < users.length; i++){
-                            $('#student_name').append("<option value='"+users[i]+"'>"+users[i]+"</option>");
-                        }
-                        
-                        var str1 = "<select id='student_session'>";
-                        $("#student_name").change(function(){
-                            var user = "";
-                            $('#student_name option:selected').each(function(){
-                                user = $(this).text();
-                            });
-                            $('#student_session').empty();
-                            var str2="";
-                            var sessions = users_sessions[user];
-                            for(var j = 0; j < sessions.length; j++){
-                                str2+="<option value='"+sessions[j]+"'>"+(j+1)+"</option>";
-                            }
-                            $('#student_session').append(str2);
-
-                            
-                        }).trigger('change');
-
-                        str1+="</select>";
-                        $('#user_select').append(str1);
-
-                        
-                    }
-                );
+                    var dataSet = [];
+                    
+                    var users = visualizer.getUsers(data2[0]);
+                    var users_sessions = visualizer.getSessionByUser(data2[0]);
+                    var dates = visualizer.getSessionDate(data2[0]);
+                    
+                    users.forEach(function(user){
+                        var sessions = users_sessions[user];
+                        sessions.forEach(function(session){
+                            var session_date = dates[session];
+                            var url = '<a href="dashboardEtudiant.html?session='+session+'&username='+user+'">'+session_date+'</a>';
+                            dataSet.push([user,url]);
+                        });
+                    });
+                    
+                    
+                    $('#user_select').html( '<table cellpadding="0" cellspacing="0" border="0" class="display" id="user_table"></table>' );
+        
+                    $('#user_table').dataTable( {
+                        "data": dataSet,
+                        "columns": [
+                            { "title": "Nom" },
+                            { "title": "Date session" }
+                        ]
+                    } );   
+                });
         }
-
+        
         getData();
-
-        $("#send").click(function(){
-            var userToSend = "",
-                sessionToSend = "";
-            $('#student_name option:selected').each(function(){
-                userToSend = $(this).val();
-            });
-            $('#student_session option:selected').each(function(){
-                sessionToSend = $(this).val();
-            });
-            sendData(userToSend,sessionToSend);
-        });
-
     </script>
 </body>
 </html>
