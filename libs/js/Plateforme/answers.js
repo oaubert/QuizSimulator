@@ -23,7 +23,6 @@ TestsCoco.Simulator.Answers.prototype.dates = function (session_start,question,p
 }
 
 TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user_name,user_profile,session_start,session_id){
-    var tool = new TestsCoco.Tools();
     var ret = {};
     ret.username = user_name;
     ret.subject = q.id;
@@ -34,7 +33,7 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user_name,use
         ret.property = "skipped_answer";
         ret.value = 0;
     }else{
-        var ansNumber = tool.pickRandomNumber(0,Object.keys(q.content.answers).length);
+        var ansNumber = _.random(_.size(q.content.answers)-1);
         ret.value = ansNumber;
         if(q.content.answers[ansNumber].correct){
             ret.property = "right_answer";
@@ -45,19 +44,18 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user_name,use
     return ret;
 }
 
-TestsCoco.Simulator.Answers.prototype.generateVote = function (q,user_name,user_profile,session_start,session_id){
+TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user_name,user_profile,session_start,session_id){
     var retour;
-    var tool = new TestsCoco.Tools();
     var vote = {};
     vote.username = user_name;
-    vote.subject = q.id;
-    vote.date = this.dates(session_start,q,user_profile);
+    vote.subject = question.id;
+    vote.date = this.dates(session_start,question,user_profile);
     vote.sessionId = session_id;
     
-    var ans = this.generateAnswer(q,user_name,user_profile,session_start,session_id);
+    var ans = this.generateAnswer(question,user_name,user_profile,session_start,session_id);
     //Ajouter propriété pondération vote usefull
     if(ans.property != "skipped_answer"){
-        var pickVote = tool.pickRandomNumber(-1,2);
+        var pickVote = _.random(-1,2);
         vote.value = pickVote;
         switch (pickVote) {
             case -1:
@@ -79,9 +77,9 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (q,user_name,user_
 }
 
 TestsCoco.Simulator.Answers.prototype.generate = function (questions,numberOfQuestions,user_name,user_profile,session_start,session_id){
-    var reponses = [];
     var _this = this;
-    
+    var reponses = [];
+
     $.each(questions,function(index,value){
         reponses = reponses.concat(_this.generateVote(value,user_name,user_profile,session_start,session_id));
     });
