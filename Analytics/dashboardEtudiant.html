@@ -130,8 +130,6 @@
         </div>
     </div>
     <script type="text/javascript">
-        var quest_sim = new TestsCoco.Simulator.Questions();
-        var ans_sim = new TestsCoco.Simulator.Answers();
         var tool = new TestsCoco.Tools();
         var visualizer = new TestsCoco.DataVis("#page-wrapper");
 
@@ -139,7 +137,10 @@
             $.when($.get("../Donnees_tests/analytics_data/questions_3files.json"),
                     $.get("../Donnees_tests/analytics_data/answers_3files.json"))
                 .done(function(data1,data2){
-                        visualizer.main(data1[0],data2[0],'student');
+                        var user = tool.getQueryVariable('username');
+                        var session = tool.getQueryVariable('session');
+                        visualizer.getAllData(data1[0],data2[0]);
+                        visualizer.generateGraphStudent(user,session);
                     }
                 );
         }
