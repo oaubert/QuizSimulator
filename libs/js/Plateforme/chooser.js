@@ -130,7 +130,6 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
     })
     
     var t2 = tool.transpose(t1);
-    console.log(t2);
     return tool.cosine(t2[0],t2[1]);
 }
 
@@ -267,5 +266,6 @@ TestsCoco.Simulator.Chooser.prototype.main = function (answers,questions,numberO
     var medias = _.groupBy(questions.annotations,'media');
 
     this.getData(answers,medias[media]);
+    
     return this.getChoosenQuestions(answers,medias[media],numberOfQuestions);
 }

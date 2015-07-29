@@ -26,11 +26,11 @@ function simulate(other_words,nb_tours,nb_question_by_tours,nb_questions){
                     answers = [],
                     selection;
 
-                $.each(users,function(index,value){
-                    value.setSessionDates(new Date(),nb_tours,documents);
-                    value.session_dates.forEach(function(session){
+                users.forEach(function(user){
+                    user.setSessionDates(new Date(),nb_tours,documents);
+                    user.session_dates.forEach(function(session){
                         selection = chooser.main(answers,questions,nb_question_by_tours,session.media);
-                        answers = answers.concat(ans_sim.main(selection,nb_question_by_tours,value,session));
+                        answers = answers.concat(ans_sim.main(selection,nb_question_by_tours,user,session));
                     });
                 });
                 
@@ -48,6 +48,7 @@ $("#go").on("click",function(){
         nb_tours = $("#nb_tours").val(),
         nb_questions_by_tours = $("#nb_questions_by_tour").val(),
         other = $("#other_words:checked").length;
+    $("#files").css("display","none");
     $("#loading").css("display","block");
     simulate(other,nb_tours,nb_questions_by_tours,nb_questions);
     

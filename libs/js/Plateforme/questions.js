@@ -89,7 +89,7 @@ TestsCoco.Simulator.Questions.prototype.generateQuestion = function (tab_mots,lo
     var enonce = _this.generateTxt(tab_mots,longMin,longMax,otherTab);
     var reponses = [];
     var nbRep = _.random(nbRepMin,nbRepMax);
-    var correctRep = _.random(nbRep);
+    var correctRep = _.random(nbRep-1);
     for(var i = 0; i < nbRep; i++){
         var ans = {};
         var rep = _this.generateTxt(tab_mots,longMin,longMax,otherTab);
@@ -109,7 +109,7 @@ TestsCoco.Simulator.Questions.prototype.generate = function (tab,media,nombre,lo
     var _this = this;
     var retour=[];
     for(var i = 0 ; i < nombre ; i++){
-       var idx = _.random(tab.length);
+       var idx = _.random(tab.length-1);
        var obj = tab[idx];
        var obj_av = tab[idx-1];
        var obj_ap = tab[idx+1];
@@ -148,7 +148,7 @@ TestsCoco.Simulator.Questions.prototype.main = function (stop_word1,stop_word2,d
 
         var media = elem.medias[0].id;
         var donnees = _this.getDonnees(elem);
-        
+
         _this.filtering(donnees,stopwords_fr);
         
         var all_words = other ? _this.getAllWords(donnees) : [];
