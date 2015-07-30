@@ -70,19 +70,24 @@ TestsCoco.Tools.prototype.transpose = function(a) {
 
 TestsCoco.Tools.prototype.dot = function (v1,v2){
     var res = 0;
-    for(var i = 0;i < v1.length;i++){
-        res+= (v1[i]*v2[i]);
+    if(v1 != undefined){
+      for(var i = 0;i < v1.length;i++){
+          res+= (v1[i]*v2[i]);
+      }
     }
     return res;
 }
 
 TestsCoco.Tools.prototype.norm = function (v){
-    var res = 0, temp=0;
-    v.forEach(function(elem){
-        temp+=elem*elem
-    });
-    res=Math.sqrt(temp);
-    return res;
+    /*var res = 0, temp=0;
+    if(v != undefined){
+      v.forEach(function(elem){
+          temp+=elem*elem
+      });
+      res=Math.sqrt(temp);
+    }
+    return res;*/
+    return Math.sqrt(this.dot(v,v));
 }
 
 TestsCoco.Tools.prototype.cosine = function (v1,v2){

@@ -58,15 +58,15 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     if(ans.property != "skipped_answer"){
         if(Math.random() < user.bias.vote_rate){
             if(Math.random() < user.bias.usefull_vote_rate){
-                ret.property = "usefull";
-                ret.value = 1;
+                vote.property = "usefull";
+                vote.value = 1;
             }else{
-                ret.property = "useless";
-                ret.value = -1
+                vote.property = "useless";
+                vote.value = -1
             }
         }else{
-            ret.property = "skipped_vote";
-            ret.value = 0;
+            vote.property = "skipped_vote";
+            vote.value = 0;
         }
         retour = [ans,vote];
     }else{
@@ -76,12 +76,12 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     return retour;
 }
 
-TestsCoco.Simulator.Answers.prototype.generate = function (questions,numberOfQuestions,user_name,user_profile,session_start,session_id){
+TestsCoco.Simulator.Answers.prototype.generate = function (questions,numberOfQuestions,user,session_start,session_id){
     var _this = this;
     var reponses = [];
 
     $.each(questions,function(index,value){
-        reponses = reponses.concat(_this.generateVote(value,user_name,user_profile,session_start,session_id));
+        reponses = reponses.concat(_this.generateVote(value,user,session_start,session_id));
     });
     return reponses;
 }
@@ -90,6 +90,6 @@ TestsCoco.Simulator.Answers.prototype.main = function (questions,numberOfQuestio
     var _this = this;
     var ret = [];
 
-    ret = ret.concat(_this.generate(questions.annotations,numberOfQuestions,user.name,user.profile,session.date,session.id));
+    ret = ret.concat(_this.generate(questions.annotations,numberOfQuestions,user,session.date,session.id));
     return ret;
 }
