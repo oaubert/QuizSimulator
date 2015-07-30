@@ -46,8 +46,8 @@ svg {
 
 #progEtu1, #histoStudentAllVideos, #histoAllStudents, #repUtile, #repUtileTps {
     height: 400px;
-    max-width: 200%;
-    width: 140%;
+    max-width: 100%;
+    width: 100%;
     margin: auto;
 }
 
