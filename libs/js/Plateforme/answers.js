@@ -22,51 +22,51 @@ TestsCoco.Simulator.Answers.prototype.dates = function (session_start,question,p
     return d2.toISOString();
 }
 
-TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user_name,user_profile,session_start,session_id){
+TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user,session_start,session_id){
     var ret = {};
-    ret.username = user_name;
+    ret.username = user.name;
     ret.subject = q.id;
-    ret.date = this.dates(session_start,q,user_profile);
+    ret.date = this.dates(session_start,q,user.profile);
     ret.sessionId = session_id;
-    var pickAns = Math.random() < this.answer_rate ? true : false;
-    if(!pickAns){
-        ret.property = "skipped_answer";
-        ret.value = 0;
-    }else{
-        var ansNumber = _.random(_.size(q.content.answers)-1);
-        ret.value = ansNumber;
-        if(q.content.answers[ansNumber].correct){
+    if(Math.random() < user.bias.answer_rate){
+        if(Math.random() < user.bias.right_answer_rate){
             ret.property = "right_answer";
+            ret.value = q.content.answers.indexOf(q.content.answers.filter(function(a){return a.correct})[0])+1;
         }else{
             ret.property = "wrong_answer";
+            ret.value = _.sample(q.content.answers.map(function(value,index){
+                                return (value.correct) ? -1 : index;
+                            }).filter(function(i){return i>-1}));
         }
+       
+    }else{
+        ret.property = "skipped_answer";
+        ret.value = 0;
     }
     return ret;
 }
 
-TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user_name,user_profile,session_start,session_id){
+TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,session_start,session_id){
     var retour;
     var vote = {};
-    vote.username = user_name;
+    vote.username = user.name;
     vote.subject = question.id;
-    vote.date = this.dates(session_start,question,user_profile);
+    vote.date = this.dates(session_start,question,user.profile);
     vote.sessionId = session_id;
     
-    var ans = this.generateAnswer(question,user_name,user_profile,session_start,session_id);
-    //Ajouter propriété pondération vote usefull
+    var ans = this.generateAnswer(question,user,session_start,session_id);
     if(ans.property != "skipped_answer"){
-        var pickVote = _.random(-1,2);
-        vote.value = pickVote;
-        switch (pickVote) {
-            case -1:
-                vote.property = "useless";
-                break;
-            case 0:
-                vote.property = "skipped_vote";
-                break;
-            case 1:
-                vote.property = "usefull";
-                break;
+        if(Math.random() < user.bias.vote_rate){
+            if(Math.random() < user.bias.usefull_vote_rate){
+                ret.property = "usefull";
+                ret.value = 1;
+            }else{
+                ret.property = "useless";
+                ret.value = -1
+            }
+        }else{
+            ret.property = "skipped_vote";
+            ret.value = 0;
         }
         retour = [ans,vote];
     }else{
