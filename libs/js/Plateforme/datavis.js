@@ -243,41 +243,36 @@ TestsCoco.DataVis.prototype.getMedia = function(medias,subject){
     })
 }
 
-TestsCoco.DataVis.prototype.getGeneralAverage = function(medias,answers){
+TestsCoco.DataVis.prototype.getUsersAverage = function(prop,sessions){
     var _this = this;
     var ret = {};
-    var answered_questions = _.groupBy(answers,'subject');
-    $.each(medias,function(index,value){
-        var q_vid = _.keys(_.groupBy(value,'id'));
-        var moyenne = {};
-        $.each(answered_questions,function(q_index,q_value){
-            if($.inArray(q_index,q_vid) != -1){
-                var prop = _.groupBy(q_value,'property');
-                var right = prop.right_answer ? prop.right_answer.length : 0;
-                var wrong = prop.wrong_answer ? prop.wrong_answer.length : 0; 
-                moyenne[q_index] = right * 100 / (right + wrong);
-            }
+    $.each(prop,function(index,value){
+        ret[index]={};
+        $.each(value,function(s_idx,s_val){
+            var med = _.findKey(sessions,function(s){return _.includes(s,s_idx);});
+            ret[index][med] = ret[index][med] ? ret[index][med] : [];
+            var right = s_val.right_answer ? s_val.right_answer : 0;
+            var wrong = s_val.wrong_answer ? s_val.wrong_answer : 0;
+            ret[index][med].push(right * 100 / (right + wrong));
         });
-        var moyenne_generale = _.sum(moyenne)/(_.keys(moyenne).length);
-        ret[index] = moyenne_generale;
     });
-    return ret;
+    return _.mapValues(ret,function(media){
+            return _.mapValues(media,function(notes){ return _.sum(notes) / notes.length});
+    });
 }
 
-TestsCoco.DataVis.prototype.getUsersAverage = function(medias,answers){
+TestsCoco.DataVis.prototype.getGeneralAverage = function(medias){
     var _this = this;
     var ret = {};
-    var us = _.groupBy(answers,'username');
-    $.each(us,function(index,value){
-        ret[index]={};
-        var sessions = _.groupBy(value,'sessionId');
-        $.each(sessions, function(s_index,s_value){
-            var med = _this.getMedia(medias,s_value[0].subject);
-            var prop = _.groupBy(s_value,'property');
-            var right = prop.right_answer ? prop.right_answer.length : 0;
-            var wrong = prop.wrong_answer ? prop.wrong_answer.length : 0; 
-            ret[index][med] = right * 100 / (right + wrong);
+    var averages = this.getUsersAverage(this.propertiesBySessionByUser,this.sessionByMedia);
+    var n = _.size(averages);
+    var videos = _.keys(medias);
+    videos.forEach(function(video){
+        ret[video]=0;
+        $.each(averages,function(index,value){
+            ret[video] += value[video];
         });
+        ret[video] = ret[video]/n;
     });
     return ret;
 }
@@ -362,25 +357,11 @@ TestsCoco.DataVis.prototype.getSessionByMedia = function(){
         return _.keys(_.groupBy(value,'id'));
     });
     
-    var sub_bySession = _.mapValues(this.sessions,function(value){
-        return value[0].subject;
-    });
-    var ret1 = _.mapValues(questionByMedia,function(value){
-        var ret=[];
-        value.forEach(function(q_val){
-            $.each(sub_bySession,function(idx,val){
-                if( q_val == val){
-                    ret.push(idx);
-                }
-            });
-        });
-        return ret;
-    });
-    
     var questionBySession = _.mapValues(this.sessions,function(val){
         return _.keys(_.groupBy(val,'subject'));
     });
-    var ret2 = _.mapValues(questionByMedia,function(value){
+    
+    return _.mapValues(questionByMedia,function(value){
         var ret=[];
         value.forEach(function(q_val){
             $.each(questionBySession,function(idx,val){
@@ -391,8 +372,7 @@ TestsCoco.DataVis.prototype.getSessionByMedia = function(){
         });
         return _.uniq(ret);
     });
-    
-    return ret1;
+
 }
 
 /* 
@@ -517,7 +497,6 @@ TestsCoco.DataVis.prototype.dataForHisto_AnswerDetail = function(tab,info_questi
 }
 
 TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,title){
-    console.log(data);
     if(document.getElementById(container) === null){
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
@@ -525,7 +504,9 @@ TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,tit
     
     nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
-                    .showControls(false);
+                    .yDomain([0,100])
+                    .showControls(false)
+                    .showLegend(false);
        
             chart.yAxis.axisLabel(title);
             chart.multibar.stacked(false);
@@ -689,6 +670,7 @@ TestsCoco.DataVis.prototype.makeScatterGraph_Student = function(data,container){
     
     nv.addGraph(function() {
         var chart = nv.models.scatterChart()
+            .yDomain([0,100])
             .showDistX(true)
             .showDistY(true)
             .useVoronoi(true)
@@ -1116,13 +1098,9 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.sessionByMedia = this.getSessionByMedia();
 
     /** Data For Student **/
-    this.data_Histo_answer = this.dataForHisto(['right_answer','wrong_answer','skipped_answer'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
-    this.data_Histo_vote = this.dataForHisto(['usefull','useless','skipped_vote'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
-    
-    this.data_Histo_answer2 = this.dataForHisto_AnsVote(['right_answer','wrong_answer','skipped_answer'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
-    this.data_Histo_vote2 = this.dataForHisto_AnsVote(['usefull','useless','skipped_vote'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
-    
-    this.data_Bullet = this.dataForBullet(this.getUsersAverage(this.medias,answers),this.getGeneralAverage(this.medias,answers));
+    this.data_Histo_answer = this.dataForHisto_AnsVote(['right_answer','wrong_answer','skipped_answer'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
+    this.data_Histo_vote = this.dataForHisto_AnsVote(['usefull','useless','skipped_vote'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
+    this.data_Bullet = this.dataForBullet(this.getUsersAverage(this.propertiesBySessionByUser,this.sessionByMedia),this.getGeneralAverage(this.medias));
     this.data_Scatter_HistoStudent = this.dataForScatter_HistoStudent(this.session_date,this.sessionByMedia,this.propertiesBySessionByUser);
     
     /** Data For Teacher **/
@@ -1140,12 +1118,9 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
 
 TestsCoco.DataVis.prototype.generateGraphStudent = function(username,session_number){
     
-    //this.makeHistogram(this.data_Histo_answer[username][session_number],'bonneMauvaiseSkip','Nombre de réponses');
+    this.makeHistogram_AnsVote(this.data_Histo_answer[username][session_number],'bonneMauvaiseSkip','Pourcentage de réponses');
     
-    //this.makeHistogram(this.data_Histo_vote[username][session_number],'utilePasUtile','Votes');
-    
-    this.makeHistogram_AnsVote(this.data_Histo_answer2[username][session_number],'bonneMauvaiseSkip','Pourcentage de réponses');
-    this.makeHistogram_AnsVote(this.data_Histo_vote2[username][session_number],'utilePasUtile','Pourcentage de votes');
+    this.makeHistogram_AnsVote(this.data_Histo_vote[username][session_number],'utilePasUtile','Pourcentage de votes');
 
     this.makeBulletChart(this.data_Bullet[username],'bulletChartAllStudents');
 
