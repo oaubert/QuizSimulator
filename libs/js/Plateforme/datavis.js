@@ -425,75 +425,58 @@ TestsCoco.DataVis.prototype.dataForHisto = function(wantedData,tab_total,tab_use
 
 TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total,tab_user,tab_media){
     var _this = this;
-    var ret = {};
     var sorted_total_data = _.mapValues(this.sortAndComplete(tab_total),function(val){
         return _this.getPercentages(val);
     });
-    $.each(tab_user,function(index,value){
-        ret[index]=[];
-        var sorted_session_data = _.mapValues(_this.sortAndComplete(value),function(val){
+    
+    function get_data(key,tab,category){
+        return {
+                'key' : key,
+                'values' : _.map(_.map(tab,function(prop_value,prop_index){
+                                        return{
+                                            'x' : prop_index,
+                                            'y' : prop_value,
+                                            'color' : _this.getColor(prop_index,category)
+                                        }
+                                    }).filter(function(s){return _.includes(wantedData,s.x)}), 
+                            function(obj){
+                                return {
+                                    'x' : _this.modifyLabel(obj.x),
+                                    'y' : obj.y,
+                                    'color' : obj.color
+                                }
+                            })
+            };
+    };
+
+    return _.mapValues(tab_user,function(user){
+        var sorted_session_data = _.mapValues(_this.sortAndComplete(user),function(val){
             return _this.getPercentages(val);
         });
-        $.each(sorted_session_data,function(s_index,s_value){
-            ret[index][s_index] = [];
-            var user_data = {};
-            user_data['key']='Sur la session (étudiant seul)';
-            user_data['color']='';
-            user_data['values']=[];
-            $.each(s_value,function(prop_index,prop_value){
-                if(prop_index.match(_this.makeRegExp(wantedData)) != null){
-                    var prop = {};
-                    var color;
-                    switch(prop_index){
-                    }
-                    prop['x']=_this.modifyLabel(prop_index);
-                    prop['y']=prop_value;
-                    prop['color']=_this.getColor(prop_index,'user');
-                    user_data['values'].push(prop);
-                }
-            });
-            ret[index][s_index].push(user_data);
-            
-            var t_data = {};
-            t_data['key']='Totale (tous les étudiants)';
-            t_data['color']='';
-            t_data['values']=[];
+        return _.mapValues(sorted_session_data,function(s_value,s_index){
             var total_data = sorted_total_data[tab_media[s_index]];
-            $.each(total_data,function(index2,value2){
-                if(index2.match(_this.makeRegExp(wantedData)) != null){
-                    var prop = {};
-                    prop['x']=_this.modifyLabel(index2);
-                    prop['y']=value2;
-                    prop['color']=_this.getColor(index2,'total');
-                    t_data['values'].push(prop);
-                }
-            });
-            ret[index][s_index].push(t_data);
+            return [get_data('Sur la session (étudiant seul)',s_value,'user'),get_data('Totale (tous les étudiants)',total_data,'total')];
         });
     });
-    return ret;
 }
 
 TestsCoco.DataVis.prototype.dataForHisto_AnswerDetail = function(tab,info_questions) {
-    var ret = {};
-    
-    $.each(tab,function(index,value){
-        ret[index]=[];
-        var obj = {};
-        obj['key'] = index;
-        obj['values'] = [];
-        var long = info_questions[index].answers.length;
-        var correct = info_questions[index].correct;
-        for(var i = 0 ; i < long ; i++){
-            var ans = {};
-            ans['label'] = (i+1);
-            ans['value'] = (value[i] != undefined) ? value[i] : 0;
-            ans['color'] = correct[i] ? 'green' : 'grey';
-            obj['values'].push(ans);
+    return _.mapValues(tab,function(q_val,q_idx){
+        var nb_ans = info_questions[q_idx].answers.length;
+        var correct = info_questions[q_idx].correct;
+        var values = [];
+        for(var i = 0 ; i < nb_ans ; i++){
+            values.push({
+                'label' : (i+1),
+                'value' : (q_val[i] != undefined) ? q_val[i] : 0,
+                'color' : correct[i] ? 'green' : 'grey'
+            });
         }
-        ret[index].push(obj);
+        return [{
+            'key' : q_idx,
+            'values' : values
+        }];
     });
-    return ret;
 }
 
 TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,title){
@@ -501,7 +484,7 @@ TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,tit
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
     var selector = '#'+container+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
                     .yDomain([0,100])
