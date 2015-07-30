@@ -893,15 +893,14 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
 TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date,tab_user){
     var _this = this;
     return _.mapValues(tab_user,function(user){
-        var d = {};
-        d['key']='Note';
-        d['values']=[];
-        $.each(_this.sortAndComplete(user),function(session_index,session_value){
-            var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
-            var date = new Date (tab_date[session_index]);
-            d['values'].push([date,moyenne]);
-        });
-        return [d];
+        return [{
+            'key' : 'Note',
+            'values' : _.map(_this.sortAndComplete(user),function(session_value,session_index){
+                var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
+                var date = new Date (tab_date[session_index]);
+                return [date,moyenne];
+            })
+        }];
     });
 }
 
@@ -992,32 +991,25 @@ TestsCoco.DataVis.prototype.makeSparkLine = function(data,container){
   
 TestsCoco.DataVis.prototype.dataForBullet = function (userAverage, generalAverage){
 
-    var title = "Moyenne",
-        ranges = [0,50,100],
-        markerLabels = ['Moyenne générale'],
-        measureLabels = ['Moyenne étudiant'];
-
     return _.mapValues(userAverage,function(user){
-        var temp = [];
-        $.each(user,function(media_index,media_value){
-            var obj = {};
-            obj.title = title;
-            obj.subtitle = media_index;
-            obj.ranges =  ranges;
-            obj.measures = [media_value];
-            obj.markers = [generalAverage[media_index]];
-            obj.markerLabels = markerLabels;
-            obj.measureLabels = measureLabels;
-            temp.push(obj)
+        return _.map(user,function(media_value,media_index){
+            return {
+                'title' : "Moyenne",
+                'subtitle' : media_index,
+                'ranges' :  [0,50,100],
+                'measures' : [media_value],
+                'markers' : [generalAverage[media_index]],
+                'markerLabels' : ['Moyenne générale'],
+                'measureLabels' : ['Moyenne étudiant']
+            };
         });
-        return temp;
     });
 }
 
 TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
     var width = 760,
         height = 80,
-        margin = {top: 5, right: 40, bottom: 20, left: 120};
+        margin = {top: 5, right: 40, bottom: 25, left: 120};
 
     var chart = nv.models.bulletChart()
             .width(width - margin.right - margin.left)
