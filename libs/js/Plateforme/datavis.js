@@ -557,13 +557,11 @@ TestsCoco.DataVis.prototype.makeHistogram = function(data,container,title){
   
 TestsCoco.DataVis.prototype.dataForScatter_UtileJuste = function(tab_medias){
     var _this = this;
-    var ret = {};
-    $.each(tab_medias,function(med_id,med_val){
-        ret[med_id]=[];
+    return _.mapValues(tab_medias,function(val,key){
         var temp = {};
-        temp['key'] = med_id
+        temp['key'] = key
         temp['values'] = [];
-        var sorted_question_tab = _this.sortAndComplete(med_val);
+        var sorted_question_tab = _this.sortAndComplete(val);
         $.each(sorted_question_tab,function(q_idx,q_val){
             var point = {};
             point['x'] = (q_val.usefull + q_val.useless)==0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
@@ -572,9 +570,8 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJuste = function(tab_medias){
             point['question_id'] = q_idx;
             temp['values'].push(point);
         });
-        ret[med_id].push(temp);
+        return [temp];
     });
-    return ret;
 };
 
 TestsCoco.DataVis.prototype.dataForScatter_UtileJusteByTps = function(tab_medias,infos,keys){
@@ -911,20 +908,17 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
   
 TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date,tab_user){
     var _this = this;
-    var ret = {}
-    $.each(tab_user,function(index,value){
-        ret[index]=[];
+    return _.mapValues(tab_user,function(user){
         var d = {};
         d['key']='Note';
         d['values']=[];
-        $.each(_this.sortAndComplete(value),function(session_index,session_value){
+        $.each(_this.sortAndComplete(user),function(session_index,session_value){
             var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
             var date = new Date (tab_date[session_index]);
             d['values'].push([date,moyenne]);
         });
-        ret[index].push(d);
+        return [d];
     });
-    return ret;
 }
 
 TestsCoco.DataVis.prototype.makeLineGraph = function(data,container){
@@ -1014,15 +1008,14 @@ TestsCoco.DataVis.prototype.makeSparkLine = function(data,container){
   
 TestsCoco.DataVis.prototype.dataForBullet = function (userAverage, generalAverage){
 
-    var ret = {},
-        title = "Moyenne",
+    var title = "Moyenne",
         ranges = [0,50,100],
         markerLabels = ['Moyenne générale'],
         measureLabels = ['Moyenne étudiant'];
 
-    $.each(userAverage,function(index,value){
-        ret[index]=[];
-        $.each(value,function(media_index,media_value){
+    return _.mapValues(userAverage,function(user){
+        var temp = [];
+        $.each(user,function(media_index,media_value){
             var obj = {};
             obj.title = title;
             obj.subtitle = media_index;
@@ -1031,12 +1024,10 @@ TestsCoco.DataVis.prototype.dataForBullet = function (userAverage, generalAverag
             obj.markers = [generalAverage[media_index]];
             obj.markerLabels = markerLabels;
             obj.measureLabels = measureLabels;
-            ret[index].push(obj)
+            temp.push(obj)
         });
+        return temp;
     });
-    
-    return ret;
-    
 }
 
 TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
