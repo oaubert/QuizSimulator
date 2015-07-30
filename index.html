@@ -10,6 +10,7 @@
     <title>Test Coco Plateforme</title>
     <!-- Custom Fonts -->
     <link href="libs/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="../libs/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="libs/css/main.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -43,52 +44,55 @@
             La page Simulator est une page de simulation de questions réponses. Elle fonctionne en 2 étapes:<br><br>
             <ol>
                 <li>On génère des questions aléatoirement  
-                                                            <ul><br>
-                                                                <li>Tout d'abord on choisit si onsouhaite des mots supplémentaires.
-                                                                    <ul>
-                                                                        <li><b>Sans</b> mots supplémentaires, le simulateur récupère des mots pour former la questions et les réponses sur <b>une seule</b> diapo.</li>
-                                                                        <li><b>Avec</b> mots supplémentaires, le simulateur récupère des mots pour former la questions et les réponses sur <b>plusieurs</b> diapos qui se suivent.</li>
-                                                                    </ul>
-                                                                </li>
-                                                                <li>On choisit le nombre de questions à générer</li>
-                                                            </ul><br><br>
+                    <ul><br>
+                        <li>Tout d'abord on choisit si on souhaite des mots supplémentaires.
+                            <ul>
+                                <li><b>Sans</b> mots supplémentaires, le simulateur récupère des mots pour former la questions et les réponses sur <b>une seule</b> diapo.</li>
+                                <li><b>Avec</b> mots supplémentaires, le simulateur récupère des mots pour former la questions et les réponses sur <b>plusieurs</b> diapos qui se suivent.</li>
+                            </ul>
+                        </li>
+                        <li>On choisit le nombre de questions à générer</li>
+                    </ul><br><br>
                 </li>
                 <li>On simule la réponse aux questions générées 
-                                                            <ul><br>
-                                                                <li>On choisit le nombre de réponse auxquelles l'utilisateur va répondre par tour.</li>
-                                                                <li>On choisit le nombre de tours que l'on souhaite. Si l'utilisateur répond à 10 questions par tour et qu'il y a 4 tours, l'utilisateurs répondra à 40 questions.</li>
-                                                            </ul>
+                    <ul><br>
+                        <li>On choisit le nombre de réponse auxquelles l'utilisateur va répondre par tour.</li>
+                        <li>On choisit le nombre de tours que l'on souhaite. Si l'utilisateur répond à 10 questions par tour et qu'il y a 4 tours, l'utilisateurs répondra à 40 questions.</li>
+                    </ul><br><br>
                 </li>
+                <li>
+                    Une fois la simulation terminée, on peut télécharger les données générées au format JSON.
+                </li>   
                 
             </ol><br>
             Cliquez sur le bouton suivant pour accéder au simulateur:<br>
-            <input type="button" value="Simulator - COCo" onclick="window.open('Simulator/simulator_index.html');"></fieldset> 
+            <input type="button" value="Simulator - COCo" onclick="location.href='Simulator/simulator_index.html'"></fieldset> 
         <br>
           
         <fieldset ><legend>Dashboards</legend>  
         Les dashboards correspondent à la représentations des données que l'on récupère suite aux questions générées et répondues. On dispose de 3 types de dashboards:
         <ol><br>
             <li>Dashboard d'étudiant, ce dashboard indique à l'étudiant en fonction des différentes leçons suivies:
-                                                                        <ul>
-                                                                            <li>Ses pourcentages de réponses</li>
-                                                                            <li>Ses moyennes générales</li>
-                                                                            <li>Ses progressions sur le temps</li>
-                                                                        </ul>
+                <ul>
+                    <li>Ses pourcentages de réponses</li>
+                    <li>Ses moyennes générales</li>
+                    <li>Ses progressions sur le temps</li>
+                </ul>
             </li><br>
             <li>Dashboard de l'enseignat, ce dashboard indique à l'enseignant en fonction des différentes leçons:
-                                                                        <ul>
-                                                                            <li>Le nombre de vues</li>
-                                                                            <li>La progression des différents étudiants ayant suivi la leçon</li>
-                                                                            <li>L'utilité des questions en fonctions de la justesse des réponses</li>
-                                                                            <li>L'utilité et la justesse des réponses sur le temps de la leçon</li>
-                                                                            <li>Un tableau récapitulatif sur la progression générale de chaques étudiants</li>
-                                                                        </ul>
+                <ul>
+                    <li>Le nombre de vues</li>
+                    <li>La progression des différents étudiants ayant suivi la leçon</li>
+                    <li>L'utilité des questions en fonctions de la justesse des réponses</li>
+                    <li>L'utilité et la justesse des réponses sur le temps de la leçon</li>
+                    <li>Un tableau récapitulatif sur la progression générale de chaques étudiants</li>
+                </ul>
             </li><br>
             <li>Dashboard de visualitation de l'algorithme (du simulateur), pour chaques leçons, ce dashboard indique l'utilité des questions tirées en fonction du temps de la leçon</li>
         
         </ol><br>
             Cliquez sur le bouton suivant pour accéder au menu des différents dashboards:<br>
-        <input type="button" value="Dashboards - COCo" onclick="window.open('Analytics/dashboard_index.html');"></fieldset> <br>
+        <input type="button" value="Dashboards - COCo" onclick="location.href='Analytics/dashboard_index.html';"></fieldset> <br>
     </div>
      <footer>
         <div class="container">
