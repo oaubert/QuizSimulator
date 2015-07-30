@@ -841,6 +841,10 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
         temp_inutile['color'] = 'red',
         temp_inutile['key'] = 'pas utile';
         temp_inutile['values'] = [];
+        var temp_neutre = {};
+        temp_neutre['color'] = 'grey',
+        temp_neutre['key'] = 'neutre';
+        temp_neutre['values'] = [];
         var n = _.size(med_val);
         $.each(med_val,function(s_idx,s_val){
             var sorted_question_tab = _this.sortAndComplete(properties[s_val]);
@@ -850,12 +854,19 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
                 point['x'] = infos[q_idx].time;
                 point['y'] = n;
                 point['shape'] = 'circle';
-                (utility > 0) ? temp_utile['values'].push(point) : temp_inutile['values'].push(point);
+                if(utility == 0){
+                    temp_neutre['values'].push(point);
+                }else if(utility > 0){
+                    temp_utile['values'].push(point);
+                }else{
+                    temp_inutile['values'].push(point);
+                }
             });
             n--;
         });
         ret[med_id].push(temp_utile);
         ret[med_id].push(temp_inutile);
+        ret[med_id].push(temp_neutre);
     });
     return ret;
  } 

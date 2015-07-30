@@ -2,7 +2,12 @@ TestsCoco.User = function(name,profile,session_dates){
     this.name = name;
     this.profile = profile;
     this.session_dates = session_dates;
-    
+    this.bias = {
+        answer_rate : 0.7,
+        vote_rate : 0.9,
+        right_answer_rate : 0.8,
+        usefull_vote_rate : 0.7
+    };
     this.date_property = {};
     this.date_property.dayInMillisecond = 86400000;
     this.date_property.hourInMillisecond = 3600000;
