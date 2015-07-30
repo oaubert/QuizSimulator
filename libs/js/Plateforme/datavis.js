@@ -558,80 +558,70 @@ TestsCoco.DataVis.prototype.makeHistogram = function(data,container,title){
 TestsCoco.DataVis.prototype.dataForScatter_UtileJuste = function(tab_medias){
     var _this = this;
     return _.mapValues(tab_medias,function(val,key){
-        var temp = {};
-        temp['key'] = key
-        temp['values'] = [];
-        var sorted_question_tab = _this.sortAndComplete(val);
-        $.each(sorted_question_tab,function(q_idx,q_val){
-            var point = {};
-            point['x'] = (q_val.usefull + q_val.useless)==0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
-            point['y'] = (q_val.right_answer + q_val.wrong_answer)==0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer);
-            point['shape'] = 'circle';
-            point['question_id'] = q_idx;
-            temp['values'].push(point);
-        });
-        return [temp];
+        var sorted_question_obj = _this.sortAndComplete(val);
+        return [{
+            'key' : key,
+            'values' : _.map(sorted_question_obj,function(q_val,q_idx){
+                return {
+                    'x' : (q_val.usefull + q_val.useless)==0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless),
+                    'y' : (q_val.right_answer + q_val.wrong_answer)==0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer),
+                    'shape' : 'circle',
+                    'question_id' : q_idx
+                }
+            })
+        }];
     });
 };
 
 TestsCoco.DataVis.prototype.dataForScatter_UtileJusteByTps = function(tab_medias,infos,keys){
     var _this = this;
-    var ret = {};
-    $.each(tab_medias,function(med_id,med_val){
-        ret[med_id]=[];
-        keys.forEach(function(key){
-            var temp = {};
-            temp['key'] = key;
-            temp['values'] = [];
-            var sorted_question_tab = _this.sortAndComplete(med_val);
-            $.each(sorted_question_tab,function(q_idx,q_val){
-                var ordonnee;
-                if(key == 'Justesse'){
-                    ordonnee = (q_val.right_answer + q_val.wrong_answer) == 0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer);
-                }else{
-                    ordonnee = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
-                }
-                var point = {};
-                point['x'] = infos[q_idx].time;
-                point['y'] = ordonnee;
-                point['shape'] = 'circle';
-                temp['values'].push(point);
-            });
-            ret[med_id].push(temp);
+    return _.mapValues(tab_medias,function(med_val,med_id){
+        var sorted_question_obj = _this.sortAndComplete(med_val);
+        return keys.map(function(key){
+            return {
+                'key' : key,
+                'values' : _.map(sorted_question_obj,function(q_val,q_idx){
+                                var ordonnee;
+                                if(key == 'Justesse'){
+                                    ordonnee = (q_val.right_answer + q_val.wrong_answer) == 0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer);
+                                }else{
+                                    ordonnee = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                                }
+                                return {
+                                    'x':  infos[q_idx].time,
+                                    'y':  ordonnee,
+                                    'shape': 'circle'
+                                }
+                            })
+            }
         });
     });
-    return ret;
-};
+}
 
 TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates,sessionbymedia,properties){
-    
     var _this = this;
-    var ret = {};
-    $.each(sessionbymedia,function(media_id,media_val){
-        ret[media_id]=[];
-        $.each(properties,function(user_id,user_value){
-            var temp = {};
-            temp['key'] = user_id;
-            temp['values'] = [];
+    return _.mapValues(sessionbymedia,function(media_val,media_id){
+        return _.map(properties,function(user_value,user_id){
             var sorted_tab = _this.sortAndComplete(user_value);
-            $.each(sorted_tab,function(session_id,session_val){
-                if($.inArray(session_id,media_val) != -1){
-                    var point = {};
-                    point['x'] = new Date(dates[session_id]);
-                    point['y'] = (session_val.right_answer *100) / (session_val.right_answer + session_val.wrong_answer);
-                    point['shape'] = 'circle';
-                    temp['values'].push(point);
-                }
-            });
-            var xSerie = _.values(_.mapValues(_.pluck(temp['values'], 'x'),function(val){return val.getTime();}));
-            var ySerie = _.pluck(temp['values'], 'y');
+            var values = _.map(sorted_tab,function(session_val,session_id){
+                    if (media_val.indexOf(session_id) > -1) 
+                        return {
+                            'x' : new Date(dates[session_id]),
+                            'y' : (session_val.right_answer *100) / (session_val.right_answer + session_val.wrong_answer),
+                            'shape' : 'circle'
+                        };
+                }).filter(function (v) { return v !== undefined; });
+            var xSerie = _.map(values,function(val){return val.x.getTime();});
+            var ySerie = _.pluck(values, 'y');
             var leastData = _this.leastSquares(xSerie,ySerie);
-            temp['slope'] = leastData[0];
-            temp['intercept'] = leastData[1];
-            ret[media_id].push(temp);
+            return {
+                'key' : user_id,
+                'values' : values,
+                'slope' : leastData[0],
+                'intercept' : leastData[1]
+            }
         });
     });
-    return ret
 }
 
 TestsCoco.DataVis.prototype.dataForScatter_HistoStudent = function(dates,sessionbymedia,properties){
@@ -888,7 +878,7 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
     nv.addGraph(function() {
         var chart = nv.models.scatterChart()
             .xDomain([0,mediaInfo.max_time])
-            .yDomain([0,(size+2)])
+            .yDomain([(size+2),0])
             .showDistX(true)
             .showDistY(true)
             .useVoronoi(true)
