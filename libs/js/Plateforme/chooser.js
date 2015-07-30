@@ -130,6 +130,7 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
     })
     
     var t2 = tool.transpose(t1);
+
     return tool.cosine(t2[0],t2[1]);
 }
 
