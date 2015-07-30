@@ -17,7 +17,11 @@ svg {
 .dashed {
     stroke-dasharray: 5,5;
 }
-
+.indic{
+    font-size: x-small;
+    margin: 0;
+    display: inline-block;
+}
 #smallColumn {
     width: 2em;
     text-align: center;
