@@ -845,6 +845,84 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
 }
 
 /*
+ * Scatter Visu Algo
+ * 
+ */
+ 
+ TestsCoco.DataVis.prototype.dataForScatter_VisuAlgo = function(sessionByMedia,properties,infos,sessionDates){
+    var _this = this;
+    var ret = {};
+    $.each(sessionByMedia,function(med_id,med_val){
+        ret[med_id]=[];
+        var temp_utile = {};
+        temp_utile['key'] = 'utile';
+        temp_utile['color'] = 'green'
+        temp_utile['values'] = [];
+        var temp_inutile = {};
+        temp_inutile['color'] = 'red',
+        temp_inutile['key'] = 'pas utile';
+        temp_inutile['values'] = [];
+        var n = _.size(med_val);
+        $.each(med_val,function(s_idx,s_val){
+            var sorted_question_tab = _this.sortAndComplete(properties[s_val]);
+            $.each(sorted_question_tab,function(q_idx,q_val){
+                var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                var point = {};
+                point['x'] = infos[q_idx].time;
+                point['y'] = n;
+                point['shape'] = 'circle';
+                (utility > 0) ? temp_utile['values'].push(point) : temp_inutile['values'].push(point);
+            });
+            n--;
+        });
+        ret[med_id].push(temp_utile);
+        ret[med_id].push(temp_inutile);
+    });
+    return ret;
+ } 
+
+TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,mediaInfo,media){
+    if(document.getElementById(media) === null){
+        var str = '<div class="panel panel-default">'
+                        +'<div class="panel-heading">'
+                            +'<i class="fa fa-bar-chart-o fa-fw"></i> Visualisation de l\'algorithme sur la video '+media
+                        +'</div>'
+                        +'<div class="panel-body">'
+                            +'<div id="graph_'+media+'" align="center"><svg></svg></div>'
+                        +'</div>'
+                    +'</div>';
+        $('.analytics').append(str);
+    }
+    var selector = '#graph_'+media+' svg';
+    
+    nv.addGraph(function() {
+        var chart = nv.models.scatterChart()
+            .xDomain([0,mediaInfo.max_time])
+            .yDomain([0,(size+2)])
+            .showDistX(true)
+            .showDistY(true)
+            .useVoronoi(true)
+            .color(d3.scale.category10().range())
+            .duration(300);
+
+        chart.xAxis.axisLabel('Temps Video');
+        chart.yAxis.axisLabel('Tirage');
+        chart.xAxis.tickFormat(function(d) {
+            return d3.time.format('%X')(new Date(d+ new Date(2015,7,22,0,0).getTime()))
+        });
+        
+        
+        
+        d3.select(selector)
+            .datum(data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+        return chart;
+    });
+}
+
+/*
  * LineGraphs
  * 
  */
@@ -1023,6 +1101,8 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.propertiesByQuestionByUser = this.aggregate(answers,'username','subject','property');
     this.propertiesBySessionByUser = this.aggregate(answers,'username','sessionId','property');
     
+    this.propertiesByQuestionBySession = this.aggregate(answers,'sessionId','subject','property');
+    
     this.NbAnswerByQuestion = this.getNbAnswerByQuestion(answers);
     
     this.session_date = this.getSessionDate(answers);
@@ -1053,6 +1133,9 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
 
     /** Data For Questions **/
     this.data_Histo_answer_detail = this.dataForHisto_AnswerDetail(this.NbAnswerByQuestion,this.info_questions);
+    
+    /** Data For VisuAlgo **/
+    this.data_Scatter_VisuAlgo = this.dataForScatter_VisuAlgo(this.sessionByMedia,this.propertiesByQuestionBySession,this.info_questions,this.session_date);
 }
 
 TestsCoco.DataVis.prototype.generateGraphStudent = function(username,session_number){
@@ -1098,6 +1181,14 @@ TestsCoco.DataVis.prototype.generateAnswerDetails = function (container,question
     $('#'+container).append(str_detail);
     
     this.makeHistogram(this.data_Histo_answer_detail[question_id],'voteParRep','Nombre de réponses');
+}
+
+TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function(){
+    var _this = this;
+    $.each(this.medias,function(med_id,med_val){
+        var size = _.size(_this.sessionByMedia[med_id]);
+        _this.makeScatterGraph_VisuAlgo(_this.data_Scatter_VisuAlgo[med_id],size,_this.getMediaInfo(med_id),med_id);
+    });
 }
 
 TestsCoco.DataVis.prototype.main = function(questions,answers,type){
