@@ -436,7 +436,7 @@ TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total
                                         return{
                                             'x' : _this.modifyLabel(prop_index),
                                             'y' : prop_value,
-                                            'index' : prop_index
+                                            'index' : prop_index,
                                             'color' : _this.getColor(prop_index,category)
                                         }
                                     }).filter(function(s){return _.includes(wantedData,s.index)})
