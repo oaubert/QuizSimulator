@@ -108,16 +108,17 @@ TestsCoco.Simulator.Chooser.prototype.positive = function (tab){
 TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phrase2){
     var tool =  new TestsCoco.Tools();
     natural.PorterStemmerFr.attach();
-    p1=phrase1.tokenizeAndStem();
-    p2=phrase2.tokenizeAndStem();
-
-    var words=tool.arrayUnique(p1.concat(p2));
+    var p1=phrase1.tokenizeAndStem(),
+        p2=phrase2.tokenizeAndStem();
+    if(!p1 || !p2)
+        return 0;
+    var words=_.uniq(p1.concat(p2));
 
 
     var TfIdf = natural.TfIdf, tfidf = new TfIdf();
     tfidf.addDocument(p1);
     tfidf.addDocument(p2);
-    var t1 =[];
+    var row =[];
     
     var j = 0;
     words.forEach(function(elem){
@@ -125,13 +126,13 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
         tfidf.tfidfs(elem, function(i, measure) {
             temp[i]=measure;
         });
-        t1[j]=temp;
+        row[j]=temp;
         ++j;
     })
     
-    var t2 = tool.transpose(t1);
+    var column = tool.transpose(row);
 
-    return tool.cosine(t2[0],t2[1]);
+    return tool.cosine(column[0],column[1]);
 }
 
 TestsCoco.Simulator.Chooser.prototype.time_similarity = function (t_q1,t_q2,max_time){
