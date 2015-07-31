@@ -432,20 +432,14 @@ TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total
     function get_data(key,tab,category){
         return {
                 'key' : key,
-                'values' : _.map(_.map(tab,function(prop_value,prop_index){
+                'values' : _.map(tab,function(prop_value,prop_index){
                                         return{
-                                            'x' : prop_index,
+                                            'x' : _this.modifyLabel(prop_index),
                                             'y' : prop_value,
+                                            'index' : prop_index
                                             'color' : _this.getColor(prop_index,category)
                                         }
-                                    }).filter(function(s){return _.includes(wantedData,s.x)}), 
-                            function(obj){
-                                return {
-                                    'x' : _this.modifyLabel(obj.x),
-                                    'y' : obj.y,
-                                    'color' : obj.color
-                                }
-                            })
+                                    }).filter(function(s){return _.includes(wantedData,s.index)})
             };
     };
 
