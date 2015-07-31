@@ -31,12 +31,11 @@ TestsCoco.Simulator.Questions.prototype.getDonnees = function (data){
 }
 
 TestsCoco.Simulator.Questions.prototype.getAllWords = function (data){
-    var tool = new TestsCoco.Tools();
     var words = [];
-    $.each(data,function(index,value){
+    data.forEach(function(value){
         words = words.concat(value.texte);
     });
-    return tool.arrayUnique(words);
+    return _.uniq(words);
 }
 
 TestsCoco.Simulator.Questions.prototype.filterStopWords = function (str){
@@ -54,14 +53,13 @@ TestsCoco.Simulator.Questions.prototype.filtering = function (d,stpw){
 
 TestsCoco.Simulator.Questions.prototype.getFrequencies = function (arr){
     var ret = {};
-    $.each(arr, function(index,value){
+    arr.forEach(function(value){
         ret[value] = ret[value] ? ret[value]+1 : 1;
     });
     return ret;
 }
 
 TestsCoco.Simulator.Questions.prototype.generateTime = function (obj){
-    var tool = new TestsCoco.Tools();
     return _.random(obj.deb,obj.fin);
 }
 

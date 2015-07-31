@@ -10,17 +10,24 @@
     <title>Test Coco Plateforme</title>
     <!-- Custom Fonts -->
     <link href="libs/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="libs/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="libs/css/main.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
+<<<<<<< HEAD
     <div id="wrapper">
 		<a class="navbar-brand" href="index.html">Quiz Simulator COCo</a>
+=======
+    <div id="wrapper">
+        <a class="navbar-brand" href="index.html">Quiz Simulator & Dashboard</a>
+>>>>>>> master
     </div>
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
+<<<<<<< HEAD
                 <li>
                    <a href="Simulator/simulator_index.html"><i class="fa fa-dashboard fa-fw"></i>Simulator</a>
                 </li>
@@ -29,6 +36,13 @@
                 </li>
                 <li>
                     <a href="javascript:window.close()"><i class="fa fa-arrow-circle-left fa-fw"></i> Retour</a>
+=======
+                <li>
+                   <a href="Simulator/simulator_index.html"><i class="fa fa-refresh fa-fw"></i>&nbsp;Simulator</a>
+                </li>
+                <li>
+                   <a href="Analytics/dashboard_index.html"><i class="fa fa-dashboard fa-fw"></i>&nbsp;Dashboard</a>
+>>>>>>> master
                 </li>
             </ul>
         </div>
@@ -36,13 +50,86 @@
 
     <div id="page-wrapper">
         <div class="row">
+<<<<<<< HEAD
             <div class="col-lg-12">
                 <h1 class="page-header">Quiz Simulator - COCo</h1>
+=======
+            <div class="col-lg-12">
+                <h1 >Quiz Simulator & Dashboard - COCo</h2>
+>>>>>>> master
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <input type="button" value="Simulator - COCo" onclick="window.open('Simulator/simulator_index.html');"><br>
-        <input type="button" value="Dashboards - COCo" onclick="window.open('Analytics/dashboard_index.html');">
+        
+        <fieldset ><legend>Simulator</legend>  
+            La page Simulator est une page de simulation de questions réponses. Elle fonctionne en 4 étapes:<br><br>
+            <ol>
+                <li>On génère des questions aléatoirement  
+                    <ul><br>
+                        <li>Tout d'abord on choisit si on souhaite des mots supplémentaires.
+                            <ul>
+                                <li><b>Sans</b> mots supplémentaires, le simulateur récupère des mots pour former la questions et les réponses sur <b>une seule</b> diapo.</li>
+                                <li><b>Avec</b> mots supplémentaires, le simulateur récupère des mots pour former la questions et les réponses sur <b>plusieurs</b> diapos qui se suivent.</li>
+                            </ul>
+                        </li>
+                        <li>On choisit le nombre de questions à générer</li>
+                    </ul><br><br>
+                </li>
+                <li>On simule la réponse aux questions générées 
+                    <ul><br>
+                        <li>On choisit le nombre de réponse auxquelles l'utilisateur va répondre par tour.</li>
+                        <li>On choisit le nombre de tours que l'on souhaite. Si l'utilisateur répond à 10 questions par tour et qu'il y a 4 tours, l'utilisateurs répondra à 40 questions.</li>
+                    </ul><br><br>
+                </li>
+                <li>
+                    Une fois les différents champs remplis, cliquez sur <b><i>Lancer la simulation</i></b> pour lancer lancer la simulation et ainsi générer les questions et les réponses.
+                </li><br><br>
+                </li>
+                <li>
+                    Une fois la simulation terminée, on peut télécharger les données générées au format JSON.
+                </li>   
+                
+            </ol><br>
+            Cliquez sur le bouton suivant pour accéder au simulateur:<br>
+            <input type="button" value="Simulator - COCo" onclick="location.href='Simulator/simulator_index.html'"></fieldset> 
+        <br>
+          
+        <fieldset ><legend>Dashboards</legend>  
+        Les dashboards correspondent à la représentations des données que l'on récupère suite aux questions générées et répondues. On dispose de 3 types de dashboards:
+        <ol><br>            
+            <li>Dashboard de l'enseignant, ce dashboard indique à l'enseignant les différentes données tirée des réponses aux questions en fonction des différentes leçons:
+                <ul>
+                    <li>Le nombre de vues</li>
+                    <li>La progression des différents étudiants ayant suivi la leçon</li>
+                    <li>L'utilité des questions en fonctions de la justesse des réponses</li>
+                    <li>L'utilité et la justesse des réponses sur le temps de la leçon</li>
+                    <li>Un tableau récapitulatif sur la progression générale de chaques étudiants</li>
+                </ul>
+            </li><br>
+            <li>Dashboard d'étudiant, ce dashboard indique à l'étudiant les différentes données tirée des réponses aux questions en fonction des différentes leçons suivies:
+                <ul>
+                    <li>Ses pourcentages de réponses</li>
+                    <li>Ses pourcentages de votes utiles ou non sur les différentes questions</li>
+                    <li>Ses moyennes générales</li>
+                    <li>Ses progressions sur le temps</li>
+                </ul>
+            </li><br>
+            <li>Dashboard de visualitation de l'algorithme (du simulateur), pour chaques leçons, ce dashboard indique l'utilité des questions tirées en fonction du temps de la leçon</li>
+        
+        </ol><br>
+            Cliquez sur le bouton suivant pour accéder au menu des différents dashboards:<br>
+        <input type="button" value="Dashboards - COCo" onclick="location.href='Analytics/dashboard_index.html';"></fieldset> <br>
     </div>
+     <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-5">
+                   <span class="copyright">Made with Bootstrap - Julien OUVRARD & Tristan JARRY</span>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -425,75 +425,58 @@ TestsCoco.DataVis.prototype.dataForHisto = function(wantedData,tab_total,tab_use
 
 TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total,tab_user,tab_media){
     var _this = this;
-    var ret = {};
     var sorted_total_data = _.mapValues(this.sortAndComplete(tab_total),function(val){
         return _this.getPercentages(val);
     });
-    $.each(tab_user,function(index,value){
-        ret[index]=[];
-        var sorted_session_data = _.mapValues(_this.sortAndComplete(value),function(val){
+    
+    function get_data(key,tab,category){
+        return {
+                'key' : key,
+                'values' : _.map(_.map(tab,function(prop_value,prop_index){
+                                        return{
+                                            'x' : prop_index,
+                                            'y' : prop_value,
+                                            'color' : _this.getColor(prop_index,category)
+                                        }
+                                    }).filter(function(s){return _.includes(wantedData,s.x)}), 
+                            function(obj){
+                                return {
+                                    'x' : _this.modifyLabel(obj.x),
+                                    'y' : obj.y,
+                                    'color' : obj.color
+                                }
+                            })
+            };
+    };
+
+    return _.mapValues(tab_user,function(user){
+        var sorted_session_data = _.mapValues(_this.sortAndComplete(user),function(val){
             return _this.getPercentages(val);
         });
-        $.each(sorted_session_data,function(s_index,s_value){
-            ret[index][s_index] = [];
-            var user_data = {};
-            user_data['key']='Sur la session (étudiant seul)';
-            user_data['color']='';
-            user_data['values']=[];
-            $.each(s_value,function(prop_index,prop_value){
-                if(prop_index.match(_this.makeRegExp(wantedData)) != null){
-                    var prop = {};
-                    var color;
-                    switch(prop_index){
-                    }
-                    prop['x']=_this.modifyLabel(prop_index);
-                    prop['y']=prop_value;
-                    prop['color']=_this.getColor(prop_index,'user');
-                    user_data['values'].push(prop);
-                }
-            });
-            ret[index][s_index].push(user_data);
-            
-            var t_data = {};
-            t_data['key']='Totale (tous les étudiants)';
-            t_data['color']='';
-            t_data['values']=[];
+        return _.mapValues(sorted_session_data,function(s_value,s_index){
             var total_data = sorted_total_data[tab_media[s_index]];
-            $.each(total_data,function(index2,value2){
-                if(index2.match(_this.makeRegExp(wantedData)) != null){
-                    var prop = {};
-                    prop['x']=_this.modifyLabel(index2);
-                    prop['y']=value2;
-                    prop['color']=_this.getColor(index2,'total');
-                    t_data['values'].push(prop);
-                }
-            });
-            ret[index][s_index].push(t_data);
+            return [get_data('Sur la session (étudiant seul)',s_value,'user'),get_data('Totale (tous les étudiants)',total_data,'total')];
         });
     });
-    return ret;
 }
 
 TestsCoco.DataVis.prototype.dataForHisto_AnswerDetail = function(tab,info_questions) {
-    var ret = {};
-    
-    $.each(tab,function(index,value){
-        ret[index]=[];
-        var obj = {};
-        obj['key'] = index;
-        obj['values'] = [];
-        var long = info_questions[index].answers.length;
-        var correct = info_questions[index].correct;
-        for(var i = 0 ; i < long ; i++){
-            var ans = {};
-            ans['label'] = (i+1);
-            ans['value'] = (value[i] != undefined) ? value[i] : 0;
-            ans['color'] = correct[i] ? 'green' : 'grey';
-            obj['values'].push(ans);
+    return _.mapValues(tab,function(q_val,q_idx){
+        var nb_ans = info_questions[q_idx].answers.length;
+        var correct = info_questions[q_idx].correct;
+        var values = [];
+        for(var i = 0 ; i < nb_ans ; i++){
+            values.push({
+                'label' : (i+1),
+                'value' : (q_val[i] != undefined) ? q_val[i] : 0,
+                'color' : correct[i] ? 'green' : 'grey'
+            });
         }
-        ret[index].push(obj);
+        return [{
+            'key' : q_idx,
+            'values' : values
+        }];
     });
-    return ret;
 }
 
 TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,title){
@@ -501,7 +484,7 @@ TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,tit
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
     var selector = '#'+container+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
                     .yDomain([0,100])
@@ -819,46 +802,59 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
  */
  
  TestsCoco.DataVis.prototype.dataForScatter_VisuAlgo = function(sessionByMedia,properties,infos,sessionDates){
-    var _this = this;
-    var ret = {};
-    $.each(sessionByMedia,function(med_id,med_val){
-        ret[med_id]=[];
-        var temp_utile = {};
-        temp_utile['key'] = 'utile';
-        temp_utile['color'] = 'green'
-        temp_utile['values'] = [];
-        var temp_inutile = {};
-        temp_inutile['color'] = 'red',
-        temp_inutile['key'] = 'pas utile';
-        temp_inutile['values'] = [];
-        var temp_neutre = {};
-        temp_neutre['color'] = 'grey',
-        temp_neutre['key'] = 'neutre';
-        temp_neutre['values'] = [];
-        var n = _.size(med_val);
-        $.each(med_val,function(s_idx,s_val){
-            var sorted_question_tab = _this.sortAndComplete(properties[s_val]);
-            $.each(sorted_question_tab,function(q_idx,q_val){
-                var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
-                var point = {};
-                point['x'] = infos[q_idx].time;
-                point['y'] = n;
-                point['shape'] = 'circle';
-                if(utility == 0){
-                    temp_neutre['values'].push(point);
-                }else if(utility > 0){
-                    temp_utile['values'].push(point);
-                }else{
-                    temp_inutile['values'].push(point);
-                }
+    var _this = this,
+        colors = {  'utile': 'green',
+                    'inutile': 'red',
+                    'neutre': 'grey',
+                    'pas voté': 'black'
+                };
+
+    return _.mapValues(sessionByMedia,function(med_val,med_id){
+        return _.map(colors,  function (category,cle) {
+            var temp=[];
+            var n = _.size(med_val);
+            med_val.forEach(function(s_val){
+                var sorted_question_obj = _this.sortAndComplete(properties[s_val]);
+                $.each(sorted_question_obj,function(q_idx,q_val){
+                    var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                    if(q_val.skipped_vote){
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'pas voté',
+                                        'shape' : 'circle'
+                                    });
+                    }else if(utility == 0){
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'neutre',
+                                        'shape' : 'circle'
+                                    });
+                    }else if(utility > 0){
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'utile',
+                                        'shape' : 'circle'
+                                    });
+                    }else{
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'inutile',
+                                        'shape' : 'circle'
+                                    });
+                    }
+                });
+                n--;
             });
-            n--;
+            return {key: cle,
+                    color: category, 
+                    values: temp.filter( function (p) { return p.key == cle }) 
+                    };
         });
-        ret[med_id].push(temp_utile);
-        ret[med_id].push(temp_inutile);
-        ret[med_id].push(temp_neutre);
     });
-    return ret;
  } 
 
 TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,mediaInfo,media){
@@ -910,15 +906,14 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
 TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date,tab_user){
     var _this = this;
     return _.mapValues(tab_user,function(user){
-        var d = {};
-        d['key']='Note';
-        d['values']=[];
-        $.each(_this.sortAndComplete(user),function(session_index,session_value){
-            var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
-            var date = new Date (tab_date[session_index]);
-            d['values'].push([date,moyenne]);
-        });
-        return [d];
+        return [{
+            'key' : 'Note',
+            'values' : _.map(_this.sortAndComplete(user),function(session_value,session_index){
+                var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
+                var date = new Date (tab_date[session_index]);
+                return [date,moyenne];
+            })
+        }];
     });
 }
 
@@ -1009,32 +1004,25 @@ TestsCoco.DataVis.prototype.makeSparkLine = function(data,container){
   
 TestsCoco.DataVis.prototype.dataForBullet = function (userAverage, generalAverage){
 
-    var title = "Moyenne",
-        ranges = [0,50,100],
-        markerLabels = ['Moyenne générale'],
-        measureLabels = ['Moyenne étudiant'];
-
     return _.mapValues(userAverage,function(user){
-        var temp = [];
-        $.each(user,function(media_index,media_value){
-            var obj = {};
-            obj.title = title;
-            obj.subtitle = media_index;
-            obj.ranges =  ranges;
-            obj.measures = [media_value];
-            obj.markers = [generalAverage[media_index]];
-            obj.markerLabels = markerLabels;
-            obj.measureLabels = measureLabels;
-            temp.push(obj)
+        return _.map(user,function(media_value,media_index){
+            return {
+                'title' : "Moyenne",
+                'subtitle' : media_index,
+                'ranges' :  [0,50,100],
+                'measures' : [media_value],
+                'markers' : [generalAverage[media_index]],
+                'markerLabels' : ['Moyenne générale'],
+                'measureLabels' : ['Moyenne étudiant']
+            };
         });
-        return temp;
     });
 }
 
 TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
     var width = 760,
         height = 80,
-        margin = {top: 5, right: 40, bottom: 20, left: 120};
+        margin = {top: 5, right: 40, bottom: 25, left: 120};
 
     var chart = nv.models.bulletChart()
             .width(width - margin.right - margin.left)
