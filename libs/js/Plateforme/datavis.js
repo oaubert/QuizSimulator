@@ -802,46 +802,59 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
  */
  
  TestsCoco.DataVis.prototype.dataForScatter_VisuAlgo = function(sessionByMedia,properties,infos,sessionDates){
-    var _this = this;
-    var ret = {};
-    $.each(sessionByMedia,function(med_id,med_val){
-        ret[med_id]=[];
-        var temp_utile = {};
-        temp_utile['key'] = 'utile';
-        temp_utile['color'] = 'green'
-        temp_utile['values'] = [];
-        var temp_inutile = {};
-        temp_inutile['color'] = 'red',
-        temp_inutile['key'] = 'pas utile';
-        temp_inutile['values'] = [];
-        var temp_neutre = {};
-        temp_neutre['color'] = 'grey',
-        temp_neutre['key'] = 'neutre';
-        temp_neutre['values'] = [];
-        var n = _.size(med_val);
-        $.each(med_val,function(s_idx,s_val){
-            var sorted_question_tab = _this.sortAndComplete(properties[s_val]);
-            $.each(sorted_question_tab,function(q_idx,q_val){
-                var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
-                var point = {};
-                point['x'] = infos[q_idx].time;
-                point['y'] = n;
-                point['shape'] = 'circle';
-                if(utility == 0){
-                    temp_neutre['values'].push(point);
-                }else if(utility > 0){
-                    temp_utile['values'].push(point);
-                }else{
-                    temp_inutile['values'].push(point);
-                }
+    var _this = this,
+        colors = {  'utile': 'green',
+                    'inutile': 'red',
+                    'neutre': 'grey',
+                    'pas voté': 'black'
+                };
+
+    return _.mapValues(sessionByMedia,function(med_val,med_id){
+        return _.map(colors,  function (category,cle) {
+            var temp=[];
+            var n = _.size(med_val);
+            med_val.forEach(function(s_val){
+                var sorted_question_obj = _this.sortAndComplete(properties[s_val]);
+                $.each(sorted_question_obj,function(q_idx,q_val){
+                    var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                    if(q_val.skipped_vote){
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'pas voté',
+                                        'shape' : 'circle'
+                                    });
+                    }else if(utility == 0){
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'neutre',
+                                        'shape' : 'circle'
+                                    });
+                    }else if(utility > 0){
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'utile',
+                                        'shape' : 'circle'
+                                    });
+                    }else{
+                        temp.push({
+                                        'x' : infos[q_idx].time,
+                                        'y' : n,
+                                        'key' : 'inutile',
+                                        'shape' : 'circle'
+                                    });
+                    }
+                });
+                n--;
             });
-            n--;
+            return {key: cle,
+                    color: category, 
+                    values: temp.filter( function (p) { return p.key == cle }) 
+                    };
         });
-        ret[med_id].push(temp_utile);
-        ret[med_id].push(temp_inutile);
-        ret[med_id].push(temp_neutre);
     });
-    return ret;
  } 
 
 TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,mediaInfo,media){
