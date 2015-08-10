@@ -6,7 +6,7 @@ TestsCoco.Simulator.Answers = function(){
     this.answer_rate = 0.7;
 };
 
-TestsCoco.Simulator.Answers.prototype.dates = function (session_start,question,profile){
+TestsCoco.Simulator.Answers.prototype.generateTime = function (session_start,question,profile){
     var d = session_start.getTime(), d2;
     switch(profile) {
         case "regular":
@@ -26,7 +26,7 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user,session_
     var ret = {};
     ret.username = user.name;
     ret.subject = q.id;
-    ret.date = this.dates(session_start,q,user.profile);
+    ret.date = this.generateTime(session_start,q,user.profile);
     ret.sessionId = session_id;
     if(Math.random() < user.bias.answer_rate){
         if(Math.random() < user.bias.right_answer_rate){
@@ -51,7 +51,7 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     var vote = {};
     vote.username = user.name;
     vote.subject = question.id;
-    vote.date = this.dates(session_start,question,user.profile);
+    vote.date = this.generateTime(session_start,question,user.profile);
     vote.sessionId = session_id;
     
     var ans = this.generateAnswer(question,user,session_start,session_id);
