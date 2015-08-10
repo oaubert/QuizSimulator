@@ -110,8 +110,11 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
     natural.PorterStemmerFr.attach();
     var p1=phrase1.tokenizeAndStem(),
         p2=phrase2.tokenizeAndStem();
-    if(!p1 || !p2)
+
+    
+    if(p1.length == 0 || p2.length == 0)
         return 0;
+
     var words=_.uniq(p1.concat(p2));
 
 
