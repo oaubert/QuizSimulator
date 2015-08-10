@@ -1,3 +1,8 @@
+/**
+ * Constructor of the Tools class
+ *
+ * @class     <type> (Tools)
+ */
 TestsCoco.Tools = function(){};
 
 TestsCoco.Tools.prototype.generateUid = function () {

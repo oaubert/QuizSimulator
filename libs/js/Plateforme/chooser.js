@@ -1,7 +1,24 @@
+/**
+ * Constructor of the Chooser class
+ *
+ * @class     <type> (Chooser)
+ *
+ * @param      {number}  sim_threshold  { The threshold of the similarity between two questions }
+ */
 TestsCoco.Simulator.Chooser = function(sim_threshold){
     this.similarity_threshold = sim_threshold;
 };
 
+/**
+ * Count the occurences of many properties
+ *
+ * @class     <type> (Chooser)
+ *
+ * @param      {Object[]}  tab_ans    { The array of answer to analyse }
+ * @param      {Object[]}  tab_quest  { The array of questions to analyse }
+ *
+ * @return     {Object}  { The properties }
+ */
 TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_quest){
  
     var ann = tab_quest.annotations;
@@ -55,6 +72,16 @@ TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_qu
     return {"shown":shown,"votted":votted,"positive_vote":positive_vote};
 }
 
+/**
+ * Get the percentage of value of <tt>tab1</tt> by the value of <tt>tab2</tt>
+ *
+ * @class     <type> (Chooser)
+ *
+ * @param      {Object}                tab1    { The first Object }
+ * @param      {Object}                tab2    { The second Object }
+ *
+ * @return     {Object}  { The object of percentages}
+ */
 TestsCoco.Simulator.Chooser.prototype.percentage = function (tab1,tab2){
     var result = {};
     $.each(tab2, function(index, value) {

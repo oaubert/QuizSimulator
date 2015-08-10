@@ -1,3 +1,12 @@
+/**
+ * Constructor of the User class
+ *
+ * @class     <type> (User)
+ *
+ * @param      {String}  name           { description }
+ * @param      {String}  profile        { description }
+ * @param      {Date[]}  session_dates  { description }
+ */
 TestsCoco.User = function(name,profile,session_dates){
     this.name = name;
     this.profile = profile;
@@ -14,6 +23,17 @@ TestsCoco.User = function(name,profile,session_dates){
     this.date_property.minuteInMillisecond = 60000;
 }
 
+/**
+ * Setter for the session date of the user
+ *
+ * @class     <type> (User)
+ *
+ * @param      {Date}  start      { The date when all the sessions starts }
+ * @param      {number}  nb_tours   { The number of sessions to generate }
+ * @param      {Array}   documents  { The documents on which the sessions are made }
+ *
+ * @return     {Array}   { The sessions date of the user }
+ */
 TestsCoco.User.prototype.setSessionDates = function(start,nb_tours,documents) {
     var _this = this;
     var tool = new TestsCoco.Tools();
