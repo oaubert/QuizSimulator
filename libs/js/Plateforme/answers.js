@@ -1,11 +1,26 @@
+/**
+ * Constructor of the Answers module
+ *
+ * @class     <type> (Answers)
+ */
 TestsCoco.Simulator.Answers = function(){
-    var tool = new TestsCoco.Tools();
     this.dayInMillisecond = 86400000;
     this.hourInMillisecond = 3600000;
     this.minuteInMillisecond = 60000;
     this.answer_rate = 0.7;
 };
 
+/**
+ * Generate the timecode of the answer
+ *
+ * @class     <type> (Answers)
+ *
+ * @param      {Date}  session_start  { }
+ * @param      {Object}  question       { The question to answer }
+ * @param      {String}  profile        { The user profile }
+ *
+ * @return     {Date}    { The date of the answer }
+ */
 TestsCoco.Simulator.Answers.prototype.generateTime = function (session_start,question,profile){
     var d = session_start.getTime(), d2;
     switch(profile) {
@@ -22,19 +37,31 @@ TestsCoco.Simulator.Answers.prototype.generateTime = function (session_start,que
     return d2.toISOString();
 }
 
-TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user,session_start,session_id){
+/**
+ * Generate the answer of the user
+ *
+ * @class     <type> (Answers)
+ *
+ * @param      {Object}  question       { The question to answer }
+ * @param      {Object}  user           { The user who answer }
+ * @param      {Date}    session_start  {  }
+ * @param      {number}  session_id     {  }
+ *
+ * @return     {Object}  { The answer of the user }
+ */
+TestsCoco.Simulator.Answers.prototype.generateAnswer = function (question,user,session_start,session_id){
     var ret = {};
     ret.username = user.name;
-    ret.subject = q.id;
-    ret.date = this.generateTime(session_start,q,user.profile);
+    ret.subject = question.id;
+    ret.date = this.generateTime(session_start,question,user.profile);
     ret.sessionId = session_id;
     if(Math.random() < user.bias.answer_rate){
         if(Math.random() < user.bias.right_answer_rate){
             ret.property = "right_answer";
-            ret.value = q.content.answers.indexOf(q.content.answers.filter(function(a){return a.correct})[0])+1;
+            ret.value = question.content.answers.indexOf(question.content.answers.filter(function(a){return a.correct})[0])+1;
         }else{
             ret.property = "wrong_answer";
-            ret.value = _.sample(q.content.answers.map(function(value,index){
+            ret.value = _.sample(question.content.answers.map(function(value,index){
                                 return (value.correct) ? -1 : index;
                             }).filter(function(i){return i>-1}));
         }
@@ -46,6 +73,18 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (q,user,session_
     return ret;
 }
 
+/**
+ * Generate the vote of the user
+ *
+ * @class     <type> (Answers)
+ *
+ * @param      {Object}  question       { The question to answer }
+ * @param      {Object}  user           { The user who answer }
+ * @param      {Date}    session_start  {  }
+ * @param      {number}  session_id     {  }
+ *
+ * @return     {Array}   { The vote and the answer of the user }
+ */
 TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,session_start,session_id){
     var retour;
     var vote = {};
@@ -76,7 +115,19 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     return retour;
 }
 
-TestsCoco.Simulator.Answers.prototype.generate = function (questions,numberOfQuestions,user,session_start,session_id){
+/**
+ * Generate the answers for the set of questions
+ *
+ * @class     <type> (Answers)
+ *
+ * @param      {Object}  question       { The question to answer }
+ * @param      {Object}  user           { The user who answer }
+ * @param      {Date}    session_start  {  }
+ * @param      {number}  session_id     {  }
+ *
+ * @return     {Array}   { All the answers of the user }
+ */
+TestsCoco.Simulator.Answers.prototype.generate = function (questions,user,session_start,session_id){
     var _this = this;
     var reponses = [];
 
@@ -86,10 +137,21 @@ TestsCoco.Simulator.Answers.prototype.generate = function (questions,numberOfQue
     return reponses;
 }
 
-TestsCoco.Simulator.Answers.prototype.main = function (questions,numberOfQuestions,user,session){
+/**
+ * The main function of the answers module
+ *
+ * @class     <type> (Answers)
+ *
+ * @param      {Array}    questions          { The set of questions to answer }
+ * @param      {Object}   user               { The user who answers to the questions }
+ * @param      {Object}   session            { The session when the user answer to the questions }
+ *
+ * @return     {Array}   {The answers given to the set of questions passed in param}
+ */
+TestsCoco.Simulator.Answers.prototype.main = function (questions,user,session){
     var _this = this;
     var ret = [];
 
-    ret = ret.concat(_this.generate(questions.annotations,numberOfQuestions,user,session.date,session.id));
+    ret = ret.concat(_this.generate(questions.annotations,user,session.date,session.id));
     return ret;
 }

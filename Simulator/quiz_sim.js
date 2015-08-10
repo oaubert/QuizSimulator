@@ -60,7 +60,7 @@ function simulate(other_words,nb_tours,nb_question_by_tours,nb_questions){
 
                         var obj = simulator_data[count];
                         selection = chooser.main(answers,questions,nb_question_by_tours,obj.session.media);
-                        answers = answers.concat(ans_sim.main(selection,nb_question_by_tours,obj.user,obj.session));
+                        answers = answers.concat(ans_sim.main(selection,obj.user,obj.session));
                         
                         count++;
                         if(count < max) {
