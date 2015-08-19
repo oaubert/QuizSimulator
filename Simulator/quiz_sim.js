@@ -13,20 +13,6 @@ var francky = new TestsCoco.User("Francky","regular",[]);
 
 var users = [alfred,bernard,charlot,daniel,eric,francky];
 
-function progressing(al,max) {
-    console.log(al);
-    var bar = document.getElementById('progress_bar');
-    var status = document.getElementById('curr');
-    status.innerHTML = ((al/max)*100)+"%";
-    bar.value += al;
-
-    if(al == max){
-        status.innerHTML = "100%";
-        bar.value = max;
-    }
-}
-
-//TODO Add progress bar
 function simulate(other_words,nb_tours,nb_question_by_tours,nb_questions){
     $.when($.get("../Donnees_tests/simulator_data/stop-words_french_1_fr.txt"),
             $.get("../Donnees_tests/simulator_data/stop-words_french_2_fr.txt"),
@@ -35,48 +21,65 @@ function simulate(other_words,nb_tours,nb_question_by_tours,nb_questions){
             $.get("../Donnees_tests/simulator_data/data_struct.json"))
         .done(function(stop_word1,stop_word2,data_res,data_crypt,data_struct){
                 
-                var documents = [data_res[0],data_crypt[0],data_struct[0]];
-                
-                var max = _.reduce(_.map(users,function(user,id){
-                        user.setSessionDates(new Date(),nb_tours,documents);
-                        return user.session_dates.length;
-                    }),function(total,n){
-                        return total + n
-                    });
-                var p = document.getElementById('progress_bar');
-                p.setAttribute('max',max);
-                var completeMessage = document.getElementById('comMes');
-                completeMessage.innerHTML = "Traitement en cours ...";
-                
-                var questions = quest_sim.main(stop_word1,stop_word2,documents,other_words,nb_questions),
+                var documents = [data_res[0],data_crypt[0],data_struct[0]],
+                    questions,
                     answers = [],
-                    selection;
-                var now = 0;
-                progressing(now,max) ;
+                    selection,
+                    simulator_data = [];
+
                 users.forEach(function(user){
-                    //user.setSessionDates(new Date(),nb_tours,documents);
+                    user.setSessionDates(new Date(),nb_tours,documents);
                     user.session_dates.forEach(function(session){
-                        selection = chooser.main(answers,questions,nb_question_by_tours,session.media);
-                        answers = answers.concat(ans_sim.main(selection,nb_question_by_tours,user,session));
-                        (function(){
-                            now++;
-                            var update = setTimeout(progressing(now,max),0);
-                            if(now >= max){
-                                clearTimeout(update);
-                                completeMessage.innerHTML = "Traitement terminé";
-                            }
-                        })();
+                        simulator_data.push({
+                            'user':user,
+                            'session':session
+                        });
                     });
                 });
-                
-                
-                
-                tool.downloadJson(questions,'#quest',"questions",'questions');
-                tool.downloadJson(answers,'#ans',"answers",'answers');
-                
-                $("#loading").css("display","none");
-                $("#loading").empty();
-                $("#files").css("display","block");
+
+                (function(){
+
+                    $("#loading").append("<span id='comMes'> Traitement en cours ... </span><progress id='progress_bar' value='' max=''></progress><span id='stat'></span>");
+
+                    var max = simulator_data.length;
+
+                    var prog = document.getElementById('progress_bar');
+                    prog.setAttribute('max',max);
+
+                    var status = document.getElementById('stat');
+
+                    questions = quest_sim.main(stop_word1,stop_word2,documents,other_words,nb_questions);
+
+                    var count = 0;
+
+                    var timeout = setTimeout(doLoop, 0);
+
+                    function doLoop() {
+
+                        prog.value = count;
+
+                        var obj = simulator_data[count];
+                        selection = chooser.main(answers,questions,nb_question_by_tours,obj.session.media);
+                        answers = answers.concat(ans_sim.main(selection,obj.user,obj.session));
+                        
+                        count++;
+                        if(count < max) {
+                            status.innerHTML = (Math.floor((count/max)*100))+"%";
+                            var timeout = setTimeout(doLoop, 0);
+                        }
+                        else {
+                            status.innerHTML = "100%";
+                            clearTimeout(timeout);
+                            tool.downloadJson(questions,'#quest',"questions",'questions');
+                            tool.downloadJson(answers,'#ans',"answers",'answers');
+                            $("#loading").css("display","none");
+                            $("#loading").empty();
+                            $("#files").css("display","block");
+                        }
+                    }
+
+                })();
+
             }
         );
 }
@@ -86,9 +89,10 @@ $("#go").on("click",function(){
         nb_tours = $("#nb_tours").val(),
         nb_questions_by_tours = $("#nb_questions_by_tour").val(),
         other = $("#other_words:checked").length;
+
     $("#files").css("display","none");
     $("#loading").css("display","block");
-    $("#loading").append("<span id='comMes'></span><progress id='progress_bar' value='0' max=''></progress><span id='curr'></span>");
+    
     simulate(other,nb_tours,nb_questions_by_tours,nb_questions);
     
 });
