@@ -1,9 +1,10 @@
 /**
  * Constructor of the Chooser class
  *
- * @class     <type> (Chooser)
- *
- * @param      {number}  sim_threshold  { The threshold of the similarity between two questions }
+ * @classdesc This class is the base of the choosing algorithm behind the generation of questions of the simulator
+ * @class     Chooser
+ * 
+ * @param      {number}  sim_threshold  The threshold of the similarity between two questions
  */
 TestsCoco.Simulator.Chooser = function(sim_threshold){
     this.similarity_threshold = sim_threshold;
@@ -12,12 +13,11 @@ TestsCoco.Simulator.Chooser = function(sim_threshold){
 /**
  * Count the occurences of many properties
  *
- * @class     <type> (Chooser)
+ * @method    countOccurences
+ * @param      {Object[]}  tab_ans    The array of answer to analyse
+ * @param      {Object[]}  tab_quest  The array of questions to analyse
  *
- * @param      {Object[]}  tab_ans    { The array of answer to analyse }
- * @param      {Object[]}  tab_quest  { The array of questions to analyse }
- *
- * @return     {Object}  { The properties }
+ * @return     {Object}  The properties 
  */
 TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_quest){
  
@@ -75,12 +75,11 @@ TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_qu
 /**
  * Get the percentage of value of <tt>tab1</tt> by the value of <tt>tab2</tt>
  *
- * @class     <type> (Chooser)
+ * @method    percentage
+ * @param      {Object}                tab1    The first Object
+ * @param      {Object}                tab2    The second Object
  *
- * @param      {Object}                tab1    { The first Object }
- * @param      {Object}                tab2    { The second Object }
- *
- * @return     {Object}  { The object of percentages}
+ * @return     {Object}  The object of percentages
  */
 TestsCoco.Simulator.Chooser.prototype.percentage = function (tab1,tab2){
     var result = {};
@@ -94,6 +93,14 @@ TestsCoco.Simulator.Chooser.prototype.percentage = function (tab1,tab2){
     return result;
 }
 
+/**
+ * Get the time of each annotation in <tt>tab</tt>
+ *
+ * @method    getTime
+ * @param      {Object}  tab
+ * 
+ * @return     {Object}  The times
+ */
 TestsCoco.Simulator.Chooser.prototype.getTime = function (tab){
     var ret={};
     var ann = tab.annotations;
@@ -105,6 +112,13 @@ TestsCoco.Simulator.Chooser.prototype.getTime = function (tab){
     return ret;
 }
 
+/**
+ * Get the description of each annotation in <tt>tab</tt>
+ *
+ * @method     getEnonce
+ * @param      {Object}  tab
+ * @return     {Object}  The descriptions
+ */
 TestsCoco.Simulator.Chooser.prototype.getEnonce = function (tab){
     var ret={};
     var ann = tab.annotations;
@@ -116,6 +130,13 @@ TestsCoco.Simulator.Chooser.prototype.getEnonce = function (tab){
     return ret;
 }
 
+/**
+ * Get the sum of all vote of all the annotations in <tt>tab</tt>
+ *
+ * @method     positive
+ * @param      {Object}  tab
+ * @return     {Object}  The votes count
+ */
 TestsCoco.Simulator.Chooser.prototype.positive = function (tab){
     var votted_properties = ["usefull","useless","skipped_vote"];
     var res={};
@@ -131,7 +152,14 @@ TestsCoco.Simulator.Chooser.prototype.positive = function (tab){
     return res;
 }
 
-
+/**
+ * Compute the syntax simimarity between two sentences using the natural library
+ *
+ * @method     syntax_similarity
+ * @param      {String}              phrase1  The first sentence
+ * @param      {String}              phrase2  The second sentence
+ * @return     {number}  The syntax similarity score
+ */
 TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phrase2){
     var tool =  new TestsCoco.Tools();
     natural.PorterStemmerFr.attach();
@@ -165,10 +193,27 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
     return tool.cosine(column[0],column[1]);
 }
 
+/**
+ * Calculate the time similarity between two questions
+ *
+ * @method     time_similarity
+ * @param      {number}  t_q1      The time of the first question
+ * @param      {number}  t_q2      The time of the second question
+ * @param      {number}  max_time  The max time of all questions
+ * @return     {number}  The time similarity score
+ */
 TestsCoco.Simulator.Chooser.prototype.time_similarity = function (t_q1,t_q2,max_time){
     return 1 - (Math.abs((t_q1 - t_q2)) / max_time);
 }
 
+/**
+ * Compute the similarity between two questions
+ *
+ * @method     QuestionSimilarity
+ * @param      {Object}  q1      The first question
+ * @param      {Object}  q2      The second question
+ * @return     {number}  The similarity score
+ */
 TestsCoco.Simulator.Chooser.prototype.QuestionSimilarity = function (q1,q2){
     var tool = new TestsCoco.Tools();
     var max_time = tool.getMaxOfArray(tool.getValuesOfObject(this.time));
@@ -177,6 +222,13 @@ TestsCoco.Simulator.Chooser.prototype.QuestionSimilarity = function (q1,q2){
     return t_sim * s_sim;
 }
 
+/**
+ * Compute all the similarity of all questions
+ *
+ * @method     similarity
+ * @param      {Object}  tab     The questions
+ * @return     {Array}   The similarities
+ */
 TestsCoco.Simulator.Chooser.prototype.similarity = function (tab) {
     var _this = this,
         ret = [];
@@ -191,36 +243,78 @@ TestsCoco.Simulator.Chooser.prototype.similarity = function (tab) {
     return ret;
 }
 
-TestsCoco.Simulator.Chooser.prototype.getData = function (data1,data2){
+/**
+ * Get all the data needed for computing
+ *
+ * @method     getData
+ * @param      {Object}  answers   Set of answers
+ * @param      {Object}  questions   Set of questions
+ */
+TestsCoco.Simulator.Chooser.prototype.getData = function (answers,questions){
     
     //nombre de fois où la question à été vue
-    this.nb_shown = this.countOccurences(data1,data2).shown;
+    /**
+    * @prop      {Array} nb_show The number of times the questions were shown 
+    */
+    this.nb_shown = this.countOccurences(answers,questions).shown;
     
     //nombre total de vote que la question a reçue
-    this.nb_vote = this.countOccurences(data1,data2).votted;
+    /**
+    * @prop      {Array} nb_vote The total number of votes the questions received
+    */
+    this.nb_vote = this.countOccurences(answers,questions).votted;
     
     //nombre total de votes positif que la question a reçue
-    this.nb_positive_vote = this.countOccurences(data1,data2).positive_vote;
+    /**
+    * @prop      {Array} nb_positive_vote The total number of positive votes the questions received
+    */
+    this.nb_positive_vote = this.countOccurences(answers,questions).positive_vote;
 
     //somme de tous les votes
-    this.vote_sum = this.positive(data1);
+    /**
+    * @prop      {number} vote_sum The sum of all the votes
+    */
+    this.vote_sum = this.positive(answers);
 
     //pourcentage de votes positif par rapport au nombre total de votes
+    /**
+    * @prop      {Array} popularity The percentage of positif votes over the total of votes
+    */
     this.popularity = this.percentage(this.nb_positive_vote,this.nb_vote);
 
     //tableau contenant tous les timecode de début de question
-    this.time = this.getTime(data2);
+    /**
+    * @prop      {Array} time The time of all questions
+    */
+    this.time = this.getTime(questions);
 
     //tableau contenant tous les énoncés de questions
-    this.enonces = this.getEnonce(data2);
+    /**
+    * @prop      {Array} enonces The descriptions of all questions
+    */
+    this.enonces = this.getEnonce(questions);
     
 };
 
+/**
+ * Get the score of one question
+ *
+ * @method     getScore
+ * @param      {Object}  q       The question
+ * @return     {number}  The score
+ */
 TestsCoco.Simulator.Chooser.prototype.getScore = function (q){
     var score = (this.nb_shown[q.id] < 5) ? 1 : this.popularity[q.id];
     return score;
 }
 
+/**
+ * Get the score of all questions
+ *
+ * @method     getAllScores
+ * @param      {Array}  tab     The array of questions
+ * @return     {Object}  The scores
+ */
 TestsCoco.Simulator.Chooser.prototype.getAllScores = function (tab){
     var _this = this;
     var scores = {};
@@ -230,6 +324,14 @@ TestsCoco.Simulator.Chooser.prototype.getAllScores = function (tab){
     return scores;
 }
 
+/**
+ * Get the probability of one question
+ *
+ * @method     getProba
+ * @param      {Object}  q          The question
+ * @param      {Object}  tab_score  The scores of the questions
+ * @return     {number}  The probability of the question
+ */
 TestsCoco.Simulator.Chooser.prototype.getProba = function (q,tab_score){
     var tool = new TestsCoco.Tools();
     var array_score = tool.getValuesOfObject(tab_score);
@@ -239,6 +341,14 @@ TestsCoco.Simulator.Chooser.prototype.getProba = function (q,tab_score){
     return this.getScore(q) / score_sum ;
 }
 
+/**
+ * Get the probability of all questions
+ *
+ * @method     getAllProba
+ * @param      {Array}  tab_quest  The array of questions
+ * @param      {Object}  tab_score  The scores of the questions
+ * @return     {Object}  The probabilities
+ */
 TestsCoco.Simulator.Chooser.prototype.getAllProba = function (tab_quest,tab_score){
     var _this = this;
     var probas = {};
@@ -248,16 +358,25 @@ TestsCoco.Simulator.Chooser.prototype.getAllProba = function (tab_quest,tab_scor
     return probas;
 }
 
-TestsCoco.Simulator.Chooser.prototype.choose = function (d1,d2,numberOfQuestions) {
+/**
+ * Choose the "best" questions in the set of questions provided in param
+ *
+ * @method     choose
+ * @param      {Object}  answers            Set of answers
+ * @param      {Object}  questions          Set of questions
+ * @param      {number}  numberOfQuestions  The number of questions to choose
+ * @return     {Array}   The choosen questions
+ */
+TestsCoco.Simulator.Chooser.prototype.choose = function (answers,questions,numberOfQuestions) {
     var _this = this;
     var tool = new TestsCoco.Tools();
     var questionsToDisplay = [];
     
     var sim = this.similarity(this.time);
 
-    var scores = this.getAllScores(d2);
+    var scores = this.getAllScores(questions);
     
-    var probas = this.getAllProba(d2,scores);
+    var probas = this.getAllProba(questions,scores);
 
     var allQuestions = tool.arrayWithProbability(scores);
     
@@ -277,13 +396,22 @@ TestsCoco.Simulator.Chooser.prototype.choose = function (d1,d2,numberOfQuestions
     return questionsToDisplay;
 }
 
-TestsCoco.Simulator.Chooser.prototype.getChoosenQuestions = function (d1,d2,numberOfQuestions){
+/**
+ * Get the choosen questions by the algorithm
+ *
+ * @method     getChoosenQuestions
+ * @param      {Object}  answers                 Set of answers
+ * @param      {Object}  questions               Set of questions
+ * @param      {number}  numberOfQuestions  The number of questions to choose
+ * @return     {Object}  The set of choosen questions
+ */
+TestsCoco.Simulator.Chooser.prototype.getChoosenQuestions = function (answers,questions,numberOfQuestions){
 
-    var disp = this.choose(d1,d2,numberOfQuestions);
+    var disp = this.choose(answers,questions,numberOfQuestions);
 
     var choosenQuestions = [];
     
-    $.each(d2, function(index,value){
+    $.each(questions, function(index,value){
         if($.inArray(value.id,disp) != -1){
             choosenQuestions.push(value);
         }
@@ -292,6 +420,16 @@ TestsCoco.Simulator.Chooser.prototype.getChoosenQuestions = function (d1,d2,numb
     return {annotations : choosenQuestions};
 }
 
+/**
+ * The main function of the Chooser class
+ *
+ * @method     main
+ * @param      {Object}  answers            Set of answers
+ * @param      {Object}  questions          Set of questions
+ * @param      {number}  numberOfQuestions  The number of questions to choose
+ * @param      {string}  media              The medias on which we choose the questions
+ * @return     {Object}  The set of questions choosed
+ */
 TestsCoco.Simulator.Chooser.prototype.main = function (answers,questions,numberOfQuestions,media){
     var _this = this;
 

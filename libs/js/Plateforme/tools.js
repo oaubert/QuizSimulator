@@ -1,10 +1,17 @@
 /**
  * Constructor of the Tools class
  *
- * @class     <type> (Tools)
+ * @classdesc This class gathers a bunch of usefull tools
+ * @class     Tools
  */
 TestsCoco.Tools = function(){};
 
+/**
+ * Generate a unique Id
+ *
+ * @method     generateUid
+ * @return     {string}  Th uid generated
+ */
 TestsCoco.Tools.prototype.generateUid = function () {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
@@ -32,32 +39,56 @@ TestsCoco.Tools.prototype.randomDate = function (start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
 
-TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,texte,filename){
+TestsCoco.Tools.prototype.getMaxOfArray = function (numArray) {
+  return Math.max.apply(null, numArray);
+}
+
+TestsCoco.Tools.prototype.getValuesOfObject = function (obj) {
+    return Object.keys(obj).map(function (k) { return obj[k];});
+}
+
+/**
+ * Generate an HTML line that allow to download a json file
+ *
+ * @method     downloadJson
+ * @param      {string}  data_to_dl  The data to download
+ * @param      {string}  container   The HTML container
+ * @param      {string}  text       The description of the file
+ * @param      {string}  filename    The filename of the data
+ */
+TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,text,filename){
     $(container).empty();
     
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data_to_dl, null, 4));
 
-    $('<a href="data:' + data + '" download="'+filename+'.json">'+texte+'</a>').appendTo(container);
+    $('<a href="data:' + data + '" download="'+filename+'.json">'+text+'</a>').appendTo(container);
 }
 
+/**
+ * Make the transposition of an array
+ *
+ * @method     transpose
+ * @param      {Array}  a      
+ * @return     {Array}  The tansposed array
+ */
 TestsCoco.Tools.prototype.transpose = function(a) {
 
-      // Calculate the width and height of the Array
-      var w = a.length ? a.length : 0,
+    // Calculate the width and height of the Array
+    var w = a.length ? a.length : 0,
         h = a[0] instanceof Array ? a[0].length : 0;
 
-      // In case it is a zero matrix, no transpose routine needed.
-      if(h === 0 || w === 0) { return []; }
+    // In case it is a zero matrix, no transpose routine needed.
+    if(h === 0 || w === 0) { return []; }
 
-      /**
-       * @var {Number} i Counter
-       * @var {Number} j Counter
-       * @var {Array} t Transposed data is stored in this array.
-       */
-      var i, j, t = [];
+    /**
+    * @var {Number} i Counter
+    * @var {Number} j Counter
+    * @var {Array} t Transposed data is stored in this array.
+    */
+    var i, j, t = [];
 
-      // Loop through every item in the outer array (height)
-      for(i=0; i<h; i++) {
+    // Loop through every item in the outer array (height)
+    for(i=0; i<h; i++) {
 
         // Insert a new row (array)
         t[i] = [];
@@ -68,11 +99,19 @@ TestsCoco.Tools.prototype.transpose = function(a) {
           // Save transposed data.
           t[i][j] = a[j][i];
         }
-      }
+    }
 
-      return t;
+    return t;
 };
 
+/**
+ * Make the dot product of 2 vectors
+ *
+ * @method     dot
+ * @param      {number[]}  v1      The first vector
+ * @param      {number[]}  v2      The second vector
+ * @return     {number}  The dot product
+ */
 TestsCoco.Tools.prototype.dot = function (v1,v2){
     var res = 0;
     for(var i = 0;i < v1.length;i++){
@@ -81,22 +120,43 @@ TestsCoco.Tools.prototype.dot = function (v1,v2){
     return res;
 }
 
+/**
+ * Compute the norm of a vector
+ *
+ * @method     norm
+ * @param      {number[]}  v       The vector 
+ * @return     {number}  The norm
+ */
 TestsCoco.Tools.prototype.norm = function (v){
     return Math.sqrt(this.dot(v,v));
 }
 
+/**
+ * Compute the cosine angle between 2 vectors
+ *
+ * @method     cosine
+ * @param      {number[]}  v1      The first vector
+ * @param      {number[]}  v2      The second vector
+ * @return     {number}  { description_of_the_return_value }
+ */
 TestsCoco.Tools.prototype.cosine = function (v1,v2){
     return (this.dot(v1,v2)/(this.norm(v1)*this.norm(v2)));
 }
 
-TestsCoco.Tools.prototype.getMaxOfArray = function (numArray) {
-  return Math.max.apply(null, numArray);
-}
-
-TestsCoco.Tools.prototype.getValuesOfObject = function (obj) {
-    return Object.keys(obj).map(function (k) { return obj[k];});
-}
-
+/**
+ * Generate an array with the number of occurence of each value of <tt>tab</tt>
+ *
+ * @method     arrayWithProbability
+ * @param      {Object}  tab     The array of probabilities
+ * @return     {Array}   The array generated
+ * @example    //Example
+ * var data = {1:0.4,
+ *             2:0.1,
+ *             3:0.2,
+ *             4:0.3}; 
+ * var arr = arrayWithProbability(data); 
+ * console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])
+ */
 TestsCoco.Tools.prototype.arrayWithProbability = function (tab) {
     var arr = [];
     $.each(tab, function(index,value){
@@ -107,12 +167,26 @@ TestsCoco.Tools.prototype.arrayWithProbability = function (tab) {
     return arr;
 }
 
+/**
+ * Get a random value in an array
+ *
+ * @method     randomWithProbability
+ * @param      {Array}  notRandomQuestions  The array 
+ * @return     {number}  The random value
+ */
 TestsCoco.Tools.prototype.randomWithProbability = function (notRandomQuestions) {
     var idx = Math.floor(Math.random() * notRandomQuestions.length);
     return notRandomQuestions[idx];
 }
 
 //Source : http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+/**
+ * Get the value of the query variable passed in the url
+ *
+ * @method     getQueryVariable
+ * @param      {string}  variable  The variable searched
+ * @return     {string}  The value of the variable
+ */
 TestsCoco.Tools.prototype.getQueryVariable = function (variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');

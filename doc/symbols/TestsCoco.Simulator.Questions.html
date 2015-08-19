@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - TestsCoco.Tools</title>
+		<title>JsDoc Reference - TestsCoco.Simulator.Questions</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -216,7 +216,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class TestsCoco.Tools
+				Class TestsCoco.Simulator.Questions
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -224,16 +224,16 @@ ul.inheritsList
 				
 				
 			
-				Tools
+				Questions
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/libs_js_Plateforme_tools.js.html">tools.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/libs_js_Plateforme_questions.js.html">questions.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class TestsCoco.Tools.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class TestsCoco.Simulator.Questions.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -246,9 +246,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/TestsCoco.Tools.html#constructor">TestsCoco.Tools</a></b>()
+								<b><a href="../symbols/TestsCoco.Simulator.Questions.html#constructor">TestsCoco.Simulator.Questions</a></b>()
 							</div>
-							<div class="description">Constructor of the Tools class</div>
+							<div class="description">Constructor of the Question class</div>
 						</td>
 					</tr>
 				</tbody>
@@ -262,7 +262,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class TestsCoco.Tools.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class TestsCoco.Simulator.Questions.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -275,81 +275,99 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#arrayWithProbability">arrayWithProbability</a></b>(tab)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#cleaningText">cleaningText</a></b>(str)
 								</div>
-								<div class="description">Generate an array with the number of occurence of each value of <tt>tab</tt></div>
+								<div class="description">Clean <tt>str</tt></div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#cosine">cosine</a></b>(v1, v2)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#filtering">filtering</a></b>(w, stpw)
 								</div>
-								<div class="description">Compute the cosine angle between 2 vectors</div>
+								<div class="description">Filtering function</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#dot">dot</a></b>(v1, v2)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#filterStopWords">filterStopWords</a></b>(str)
 								</div>
-								<div class="description">Make the dot product of 2 vectors</div>
+								<div class="description">Filter for stopwords</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#downloadJson">downloadJson</a></b>(data_to_dl, container, text, filename)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#generate">generate</a></b>(tab, media, nombre, longMin, longMax, nbRepMin, nbRepMax, otherWords)
 								</div>
-								<div class="description">Generate an HTML line that allow to download a json file</div>
+								<div class="description">Generates all the questions for one document</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#generateUid">generateUid</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#generateQuestion">generateQuestion</a></b>(tab_mots, longMin, longMax, nbRepMin, nbRepMax, otherTab)
 								</div>
-								<div class="description">Generate a unique Id</div>
+								<div class="description">Generate one question over a set of words</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#getQueryVariable">getQueryVariable</a></b>(variable)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#generateTime">generateTime</a></b>(obj)
 								</div>
-								<div class="description">Get the value of the query variable passed in the url</div>
+								<div class="description">Generate a random time</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#norm">norm</a></b>(v)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#generateTxt">generateTxt</a></b>(tab, l_min, l_max, tab_other)
 								</div>
-								<div class="description">Compute the norm of a vector</div>
+								<div class="description">Generate random text over a set of words</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#randomWithProbability">randomWithProbability</a></b>(notRandomQuestions)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#getAllWords">getAllWords</a></b>(data)
 								</div>
-								<div class="description">Get a random value in an array</div>
+								<div class="description">Get all the words contained in <tt>data</tt></div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Tools.html#transpose">transpose</a></b>(a)
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#getDonnees">getDonnees</a></b>(data)
 								</div>
-								<div class="description">Make the transposition of an array</div>
+								<div class="description">Get all the data needed to construct questions</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#getStopWords">getStopWords</a></b>(data1, data2)
+								</div>
+								<div class="description">Get all stopwords</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/TestsCoco.Simulator.Questions.html#main">main</a></b>(stop_word1, stop_word2, documents, other, nb_questions)
+								</div>
+								<div class="description">The main function of the Questions class</div>
 							</td>
 						</tr>
 					
@@ -370,11 +388,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>TestsCoco.Tools</b>()
+						<b>TestsCoco.Simulator.Questions</b>()
 				</div>
 				
 				<div class="description">
-					Constructor of the Tools class
+					Constructor of the Question class
 					
 				</div>
 				
@@ -401,28 +419,146 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name="arrayWithProbability"> </a>
+					<a name="cleaningText"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Array}</span>
-					<b>arrayWithProbability</b>(tab)
+					<span class="light">{string}</span>
+					<b>cleaningText</b>(str)
 					
 					</div>
 					<div class="description">
-						Generate an array with the number of occurence of each value of <tt>tab</tt>
+						Clean <tt>str</tt>
 						
 						
 					</div>
 					
 					
 					
-					<pre class="code">   //Example
-var data = {1:0.4,
-            2:0.1,
-            3:0.2,
-            4:0.3}; 
-var arr = arrayWithProbability(data); 
-console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>str</b>
+									
+								</dt>
+								<dd>The string to clean</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> The cleaned string</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="filtering"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>filtering</b>(w, stpw)
+					
+					</div>
+					<div class="description">
+						Filtering function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>w</b>
+									
+								</dt>
+								<dd>Set of words</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>stpw</b>
+									
+								</dt>
+								<dd>Set of stopwords</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="filterStopWords"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>filterStopWords</b>(str)
+					
+					</div>
+					<div class="description">
+						Filter for stopwords
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>str</b>
+									
+								</dt>
+								<dd>The string to filter</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="generate"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>generate</b>(tab, media, nombre, longMin, longMax, nbRepMin, nbRepMax, otherWords)
+					
+					</div>
+					<div class="description">
+						Generates all the questions for one document
+						
+						
+					</div>
 					
 					
 					
@@ -434,7 +570,49 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 									<span class="light fixedFont">{Object}</span> <b>tab</b>
 									
 								</dt>
-								<dd>The array of probabilities</dd>
+								<dd>Raw data for generation</dd>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>media</b>
+									
+								</dt>
+								<dd>The media on wich we generate the questions</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>nombre</b>
+									
+								</dt>
+								<dd>The number of questions to generate</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>longMin</b>
+									
+								</dt>
+								<dd>The minimum length of sentences</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>longMax</b>
+									
+								</dt>
+								<dd>The maximum length of sentences</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>nbRepMin</b>
+									
+								</dt>
+								<dd>The minimum number of answers by questions</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>nbRepMax</b>
+									
+								</dt>
+								<dd>The maximum number of answers by questions</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>otherWords</b>
+									
+								</dt>
+								<dd>Other set of words in wich we can pick words</dd>
 							
 							</dl>
 						
@@ -445,7 +623,7 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Array}</span> The array generated</dd>
+								<dd><span class="light fixedFont">{Array}</span> The questions generated</dd>
 							
 							</dl>
 						
@@ -454,15 +632,15 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 
 					<hr />
 				
-					<a name="cosine"> </a>
+					<a name="generateQuestion"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{number}</span>
-					<b>cosine</b>(v1, v2)
+					<span class="light">{Object}</span>
+					<b>generateQuestion</b>(tab_mots, longMin, longMax, nbRepMin, nbRepMax, otherTab)
 					
 					</div>
 					<div class="description">
-						Compute the cosine angle between 2 vectors
+						Generate one question over a set of words
 						
 						
 					</div>
@@ -474,16 +652,40 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{number[]}</span> <b>v1</b>
+									<span class="light fixedFont">{Array}</span> <b>tab_mots</b>
 									
 								</dt>
-								<dd>The first vector</dd>
+								<dd>Set of words</dd>
 							
 								<dt>
-									<span class="light fixedFont">{number[]}</span> <b>v2</b>
+									<span class="light fixedFont">{number}</span> <b>longMin</b>
 									
 								</dt>
-								<dd>The second vector</dd>
+								<dd>Minimal length of sentences</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>longMax</b>
+									
+								</dt>
+								<dd>Maximal length of sentences</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>nbRepMin</b>
+									
+								</dt>
+								<dd>Minimum number of answers</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>nbRepMax</b>
+									
+								</dt>
+								<dd>Maximum number of answers</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>otherTab</b>
+									
+								</dt>
+								<dd>Other set of words in wich we can pick words</dd>
 							
 							</dl>
 						
@@ -494,7 +696,7 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{number}</span> { description_of_the_return_value }</dd>
+								<dd><span class="light fixedFont">{Object}</span> The question generated</dd>
 							
 							</dl>
 						
@@ -503,15 +705,15 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 
 					<hr />
 				
-					<a name="dot"> </a>
+					<a name="generateTime"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{number}</span>
-					<b>dot</b>(v1, v2)
+					<span class="light">{Date}</span>
+					<b>generateTime</b>(obj)
 					
 					</div>
 					<div class="description">
-						Make the dot product of 2 vectors
+						Generate a random time
 						
 						
 					</div>
@@ -523,271 +725,7 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{number[]}</span> <b>v1</b>
-									
-								</dt>
-								<dd>The first vector</dd>
-							
-								<dt>
-									<span class="light fixedFont">{number[]}</span> <b>v2</b>
-									
-								</dt>
-								<dd>The second vector</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{number}</span> The dot product</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="downloadJson"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>downloadJson</b>(data_to_dl, container, text, filename)
-					
-					</div>
-					<div class="description">
-						Generate an HTML line that allow to download a json file
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>data_to_dl</b>
-									
-								</dt>
-								<dd>The data to download</dd>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>container</b>
-									
-								</dt>
-								<dd>The HTML container</dd>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>text</b>
-									
-								</dt>
-								<dd>The description of the file</dd>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>filename</b>
-									
-								</dt>
-								<dd>The filename of the data</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="generateUid"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{string}</span>
-					<b>generateUid</b>()
-					
-					</div>
-					<div class="description">
-						Generate a unique Id
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{string}</span> Th uid generated</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="getQueryVariable"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{string}</span>
-					<b>getQueryVariable</b>(variable)
-					
-					</div>
-					<div class="description">
-						Get the value of the query variable passed in the url
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>variable</b>
-									
-								</dt>
-								<dd>The variable searched</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{string}</span> The value of the variable</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="norm"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{number}</span>
-					<b>norm</b>(v)
-					
-					</div>
-					<div class="description">
-						Compute the norm of a vector
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{number[]}</span> <b>v</b>
-									
-								</dt>
-								<dd>The vector</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{number}</span> The norm</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="randomWithProbability"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{number}</span>
-					<b>randomWithProbability</b>(notRandomQuestions)
-					
-					</div>
-					<div class="description">
-						Get a random value in an array
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Array}</span> <b>notRandomQuestions</b>
-									
-								</dt>
-								<dd>The array</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{number}</span> The random value</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="transpose"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Array}</span>
-					<b>transpose</b>(a)
-					
-					</div>
-					<div class="description">
-						Make the transposition of an array
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Array}</span> <b>a</b>
+									<span class="light fixedFont">{Object}</span> <b>obj</b>
 									
 								</dt>
 								<dd></dd>
@@ -801,7 +739,270 @@ console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])</pre>
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Array}</span> The tansposed array</dd>
+								<dd><span class="light fixedFont">{Date}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="generateTxt"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{string}</span>
+					<b>generateTxt</b>(tab, l_min, l_max, tab_other)
+					
+					</div>
+					<div class="description">
+						Generate random text over a set of words
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>tab</b>
+									
+								</dt>
+								<dd>The set of words</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>l_min</b>
+									
+								</dt>
+								<dd>Minimal length of the text</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>l_max</b>
+									
+								</dt>
+								<dd>Maximal length of the text</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>tab_other</b>
+									
+								</dt>
+								<dd>Other set of words in wich we can pick words</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> The text generated</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getAllWords"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getAllWords</b>(data)
+					
+					</div>
+					<div class="description">
+						Get all the words contained in <tt>data</tt>
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
+									
+								</dt>
+								<dd>Set of words</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> All the words in data</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getDonnees"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getDonnees</b>(data)
+					
+					</div>
+					<div class="description">
+						Get all the data needed to construct questions
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
+									
+								</dt>
+								<dd>Raw input of data</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> The data needed</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getStopWords"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getStopWords</b>(data1, data2)
+					
+					</div>
+					<div class="description">
+						Get all stopwords
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>data1</b>
+									
+								</dt>
+								<dd>First set of stopwords</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>data2</b>
+									
+								</dt>
+								<dd>Second set of stopwords</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> The array of stopwords</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="main"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object}</span>
+					<b>main</b>(stop_word1, stop_word2, documents, other, nb_questions)
+					
+					</div>
+					<div class="description">
+						The main function of the Questions class
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>stop_word1</b>
+									
+								</dt>
+								<dd>First set of stopwords</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>stop_word2</b>
+									
+								</dt>
+								<dd>Second set of stopwords</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>documents</b>
+									
+								</dt>
+								<dd>All the documents on wich we generate questions</dd>
+							
+								<dt>
+									<span class="light fixedFont">{boolean}</span> <b>other</b>
+									
+								</dt>
+								<dd>Tell if we get words in other slides</dd>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>nb_questions</b>
+									
+								</dt>
+								<dd>The number of question to generate in each document</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> The questions generated</dd>
 							
 							</dl>
 						

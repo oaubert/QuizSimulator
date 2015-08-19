@@ -1,7 +1,9 @@
 /**
- * Constructor of the Answers module
+ * Constructor of the Answers class
  *
- * @class     <type> (Answers)
+ * @classdesc This class allows the simulator to answer a set of questions, and also make votes on the questions
+ * @class     Answers
+ * 
  */
 TestsCoco.Simulator.Answers = function(){
     this.dayInMillisecond = 86400000;
@@ -13,13 +15,12 @@ TestsCoco.Simulator.Answers = function(){
 /**
  * Generate the timecode of the answer
  *
- * @class     <type> (Answers)
+ * @method    generateTime
+ * @param      {Date}  session_start  
+ * @param      {Object}  question       The question to answer
+ * @param      {String}  profile        The user profile
  *
- * @param      {Date}  session_start  { }
- * @param      {Object}  question       { The question to answer }
- * @param      {String}  profile        { The user profile }
- *
- * @return     {Date}    { The date of the answer }
+ * @return     {Date}    The date of the answer
  */
 TestsCoco.Simulator.Answers.prototype.generateTime = function (session_start,question,profile){
     var d = session_start.getTime(), d2;
@@ -40,14 +41,13 @@ TestsCoco.Simulator.Answers.prototype.generateTime = function (session_start,que
 /**
  * Generate the answer of the user
  *
- * @class     <type> (Answers)
+ * @method    generateAnswer
+ * @param      {Object}  question       The question to answer
+ * @param      {Object}  user           The user who answer
+ * @param      {Date}    session_start  
+ * @param      {number}  session_id     
  *
- * @param      {Object}  question       { The question to answer }
- * @param      {Object}  user           { The user who answer }
- * @param      {Date}    session_start  {  }
- * @param      {number}  session_id     {  }
- *
- * @return     {Object}  { The answer of the user }
+ * @return     {Object}  The answer of the user
  */
 TestsCoco.Simulator.Answers.prototype.generateAnswer = function (question,user,session_start,session_id){
     var ret = {};
@@ -76,14 +76,13 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (question,user,s
 /**
  * Generate the vote of the user
  *
- * @class     <type> (Answers)
+ * @method    generateVote
+ * @param      {Object}  question       The question to answer
+ * @param      {Object}  user           The user who answer
+ * @param      {Date}    session_start  
+ * @param      {number}  session_id     
  *
- * @param      {Object}  question       { The question to answer }
- * @param      {Object}  user           { The user who answer }
- * @param      {Date}    session_start  {  }
- * @param      {number}  session_id     {  }
- *
- * @return     {Array}   { The vote and the answer of the user }
+ * @return     {Array}   The vote and the answer of the user
  */
 TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,session_start,session_id){
     var retour;
@@ -118,14 +117,13 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
 /**
  * Generate the answers for the set of questions
  *
- * @class     <type> (Answers)
+ * @method    generate
+ * @param      {Object}  question       The question to answer
+ * @param      {Object}  user           The user who answer
+ * @param      {Date}    session_start  
+ * @param      {number}  session_id     
  *
- * @param      {Object}  question       { The question to answer }
- * @param      {Object}  user           { The user who answer }
- * @param      {Date}    session_start  {  }
- * @param      {number}  session_id     {  }
- *
- * @return     {Array}   { All the answers of the user }
+ * @return     {Array}   All the answers of the user
  */
 TestsCoco.Simulator.Answers.prototype.generate = function (questions,user,session_start,session_id){
     var _this = this;
@@ -140,13 +138,12 @@ TestsCoco.Simulator.Answers.prototype.generate = function (questions,user,sessio
 /**
  * The main function of the answers module
  *
- * @class     <type> (Answers)
+ * @method    main
+ * @param      {Array}    questions          The set of questions to answer
+ * @param      {Object}   user               The user who answers to the questions
+ * @param      {Object}   session            The session when the user answer to the questions
  *
- * @param      {Array}    questions          { The set of questions to answer }
- * @param      {Object}   user               { The user who answers to the questions }
- * @param      {Object}   session            { The session when the user answer to the questions }
- *
- * @return     {Array}   {The answers given to the set of questions passed in param}
+ * @return     {Array}   The answers given to the set of questions passed in param
  */
 TestsCoco.Simulator.Answers.prototype.main = function (questions,user,session){
     var _this = this;

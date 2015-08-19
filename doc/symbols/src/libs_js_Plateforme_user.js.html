@@ -8,38 +8,38 @@
 	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**
 <span class='line'>  2</span>  * Constructor of the User class
 <span class='line'>  3</span>  *
-<span class='line'>  4</span>  * @class     &lt;type> (User)
-<span class='line'>  5</span>  *
-<span class='line'>  6</span>  * @param      {String}  name           { description }
-<span class='line'>  7</span>  * @param      {String}  profile        { description }
-<span class='line'>  8</span>  * @param      {Date[]}  session_dates  { description }
-<span class='line'>  9</span>  */</span><span class="WHIT">
-<span class='line'> 10</span> </span><span class="NAME">TestsCoco.User</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">name</span><span class="PUNC">,</span><span class="NAME">profile</span><span class="PUNC">,</span><span class="NAME">session_dates</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 11</span> </span><span class="WHIT">    </span><span class="NAME">this.name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 12</span> </span><span class="WHIT">    </span><span class="NAME">this.profile</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">profile</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 13</span> </span><span class="WHIT">    </span><span class="NAME">this.session_dates</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">session_dates</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 14</span> </span><span class="WHIT">    </span><span class="NAME">this.bias</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 15</span> </span><span class="WHIT">        </span><span class="NAME">answer_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.7</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 16</span> </span><span class="WHIT">        </span><span class="NAME">vote_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.9</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 17</span> </span><span class="WHIT">        </span><span class="NAME">right_answer_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.8</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 18</span> </span><span class="WHIT">        </span><span class="NAME">usefull_vote_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.7</span><span class="WHIT">
-<span class='line'> 19</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 20</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 21</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property.dayInMillisecond</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">86400000</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 22</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property.hourInMillisecond</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3600000</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 23</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property.minuteInMillisecond</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">60000</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 24</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 25</span> 
-<span class='line'> 26</span> </span><span class="COMM">/**
-<span class='line'> 27</span>  * Setter for the session date of the user
-<span class='line'> 28</span>  *
-<span class='line'> 29</span>  * @class     &lt;type> (User)
-<span class='line'> 30</span>  *
-<span class='line'> 31</span>  * @param      {Date}  start      { The date when all the sessions starts }
-<span class='line'> 32</span>  * @param      {number}  nb_tours   { The number of sessions to generate }
-<span class='line'> 33</span>  * @param      {Array}   documents  { The documents on which the sessions are made }
+<span class='line'>  4</span>  * @classdesc This class provide an object that define a user for the simulator
+<span class='line'>  5</span>  * @class     User
+<span class='line'>  6</span>  *
+<span class='line'>  7</span>  * @param      {String}  name           The name of the user
+<span class='line'>  8</span>  * @param      {String}  profile        The profile of the user
+<span class='line'>  9</span>  * @param      {Date[]}  session_dates  The session dates of the user
+<span class='line'> 10</span>  */</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="NAME">TestsCoco.User</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">name</span><span class="PUNC">,</span><span class="NAME">profile</span><span class="PUNC">,</span><span class="NAME">session_dates</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">    </span><span class="NAME">this.name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">    </span><span class="NAME">this.profile</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">profile</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">    </span><span class="NAME">this.session_dates</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">session_dates</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">    </span><span class="NAME">this.bias</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">        </span><span class="NAME">answer_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.7</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">        </span><span class="NAME">vote_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.9</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">        </span><span class="NAME">right_answer_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.8</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">        </span><span class="NAME">usefull_vote_rate</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0.7</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property.dayInMillisecond</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">86400000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property.hourInMillisecond</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3600000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">    </span><span class="NAME">this.date_property.minuteInMillisecond</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">60000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 26</span> 
+<span class='line'> 27</span> </span><span class="COMM">/**
+<span class='line'> 28</span>  * Setter for the session date of the user
+<span class='line'> 29</span>  *
+<span class='line'> 30</span>  * @method    setSessionDates
+<span class='line'> 31</span>  * @param      {Date}  start      The date when all the sessions starts
+<span class='line'> 32</span>  * @param      {number}  nb_tours   The number of sessions to generate
+<span class='line'> 33</span>  * @param      {Array}   documents  The documents on which the sessions are made
 <span class='line'> 34</span>  *
-<span class='line'> 35</span>  * @return     {Array}   { The sessions date of the user }
+<span class='line'> 35</span>  * @return     {Date[]}   The sessions date of the user
 <span class='line'> 36</span>  */</span><span class="WHIT">
 <span class='line'> 37</span> </span><span class="NAME">TestsCoco.User.prototype.setSessionDates</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">start</span><span class="PUNC">,</span><span class="NAME">nb_tours</span><span class="PUNC">,</span><span class="NAME">documents</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 38</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_this</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">

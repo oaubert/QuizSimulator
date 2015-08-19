@@ -1,9 +1,30 @@
+/**
+ * Constructor of the Question class
+ *
+ * @classdesc This class allows the simulator to generate questions over documents
+ * @class      Questions
+ */
 TestsCoco.Simulator.Questions = function(){};
 
+/**
+ * Get all stopwords
+ *
+ * @method     getStopWords
+ * @param      {Array}  data1   First set of stopwords
+ * @param      {Array}  data2   Second set of stopwords
+ * @return     {Array}  The array of stopwords
+ */
 TestsCoco.Simulator.Questions.prototype.getStopWords = function (data1,data2){
     return data1[0].split("\n").concat(data2[0].split("\n")).map(function(s){return s.trim()});
 }
 
+/**
+ * Clean <tt>str</tt>
+ *
+ * @method     cleaningText
+ * @param      {string}  str     The string to clean
+ * @return     {string}  The cleaned string
+ */
 TestsCoco.Simulator.Questions.prototype.cleaningText = function (str){
     return str.toLowerCase()
                 .replace(//g," ")
@@ -12,6 +33,13 @@ TestsCoco.Simulator.Questions.prototype.cleaningText = function (str){
                 .replace(/[\d]/g," ");
 }
 
+/**
+ * Get all the data needed to construct questions
+ *
+ * @method     getDonnees
+ * @param      {Object}  data    Raw input of data
+ * @return     {Array} The data needed
+ */
 TestsCoco.Simulator.Questions.prototype.getDonnees = function (data){
     var _this = this;
     var ret = [];
@@ -30,6 +58,13 @@ TestsCoco.Simulator.Questions.prototype.getDonnees = function (data){
     return ret
 }
 
+/**
+ * Get all the words contained in <tt>data</tt>
+ *
+ * @method     getAllWords
+ * @param      {Object}  data    Set of words
+ * @return     {Array}  All the words in data
+ */
 TestsCoco.Simulator.Questions.prototype.getAllWords = function (data){
     var words = [];
     data.forEach(function(value){
@@ -38,13 +73,27 @@ TestsCoco.Simulator.Questions.prototype.getAllWords = function (data){
     return _.uniq(words);
 }
 
+/**
+ * Filter for stopwords
+ *
+ * @method     filterStopWords
+ * @param      {string}  str     The string to filter
+ * @return     {boolean} 
+ */
 TestsCoco.Simulator.Questions.prototype.filterStopWords = function (str){
     return !($.inArray(str,this) > -1);
 }
 
-TestsCoco.Simulator.Questions.prototype.filtering = function (d,stpw){
+/**
+ * Filtering function
+ *
+ * @method     filtering
+ * @param      {Object}  w       Set of words
+ * @param      {Object}  stpw    Set of stopwords
+ */
+TestsCoco.Simulator.Questions.prototype.filtering = function (w,stpw){
     var _this = this;
-    $.each(d,function(index,value){
+    $.each(w,function(index,value){
         var tab_str = value.texte;
         var new_tab = tab_str.filter(_this.filterStopWords,stpw);
         value.texte=new_tab;
@@ -59,10 +108,27 @@ TestsCoco.Simulator.Questions.prototype.getFrequencies = function (arr){
     return ret;
 }
 
+/**
+ * Generate a random time
+ *
+ * @method     generateTime
+ * @param      {Object}  obj    
+ * @return     {Date}  
+ */
 TestsCoco.Simulator.Questions.prototype.generateTime = function (obj){
     return _.random(obj.deb,obj.fin);
 }
 
+/**
+ * Generate random text over a set of words
+ *
+ * @method     generateTxt
+ * @param      {Array}  tab        The set of words
+ * @param      {number}  l_min     Minimal length of the text
+ * @param      {number}  l_max     Maximal length of the text
+ * @param      {Array}  tab_other  Other set of words in wich we can pick words
+ * @return     {string}  The text generated
+ */
 TestsCoco.Simulator.Questions.prototype.generateTxt = function (tab,l_min,l_max,tab_other){
     var words;
     var txt="";
@@ -81,6 +147,18 @@ TestsCoco.Simulator.Questions.prototype.generateTxt = function (tab,l_min,l_max,
     return txt;
 }
 
+/**
+ * Generate one question over a set of words
+ *
+ * @method     generateQuestion
+ * @param      {Array}  tab_mots  Set of words
+ * @param      {number}  longMin   Minimal length of sentences
+ * @param      {number}  longMax   Maximal length of sentences
+ * @param      {number}  nbRepMin  Minimum number of answers
+ * @param      {number}  nbRepMax  Maximum number of answers
+ * @param      {Array}  otherTab  Other set of words in wich we can pick words
+ * @return     {Object}  The question generated
+ */
 TestsCoco.Simulator.Questions.prototype.generateQuestion = function (tab_mots,longMin,longMax,nbRepMin,nbRepMax,otherTab){
     var _this = this;
     var question = {};
@@ -102,6 +180,20 @@ TestsCoco.Simulator.Questions.prototype.generateQuestion = function (tab_mots,lo
     return question;
 }
 
+/**
+ * Generates all the questions for one document
+ *
+ * @method     generate
+ * @param      {Object}  tab         Raw data for generation
+ * @param      {string}  media       The media on wich we generate the questions
+ * @param      {number}  nombre      The number of questions to generate
+ * @param      {number}  longMin     The minimum length of sentences
+ * @param      {number}  longMax     The maximum length of sentences
+ * @param      {number}  nbRepMin    The minimum number of answers by questions
+ * @param      {number}  nbRepMax    The maximum number of answers by questions
+ * @param      {Array}  otherWords   Other set of words in wich we can pick words
+ * @return     {Array}   The questions generated
+ */
 TestsCoco.Simulator.Questions.prototype.generate = function (tab,media,nombre,longMin,longMax,nbRepMin,nbRepMax,otherWords){
     var tool = new TestsCoco.Tools();
     var _this = this;
@@ -138,6 +230,17 @@ TestsCoco.Simulator.Questions.prototype.generate = function (tab,media,nombre,lo
     return retour;
 }
 
+/**
+ * The main function of the Questions class
+ *
+ * @method     main
+ * @param      {Object}  stop_word1    First set of stopwords
+ * @param      {Object}  stop_word2    Second set of stopwords
+ * @param      {Array}  documents     All the documents on wich we generate questions
+ * @param      {boolean}  other        Tell if we get words in other slides
+ * @param      {number}  nb_questions  The number of question to generate in each document
+ * @return     {Object}  The questions generated
+ */
 TestsCoco.Simulator.Questions.prototype.main = function (stop_word1,stop_word2,documents,other,nb_questions){
     var _this = this;
     var stopwords_fr = this.getStopWords(stop_word1,stop_word2);

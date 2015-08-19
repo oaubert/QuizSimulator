@@ -1,11 +1,12 @@
 /**
  * Constructor of the User class
  *
- * @class     <type> (User)
+ * @classdesc This class provide an object that define a user for the simulator
+ * @class     User
  *
- * @param      {String}  name           { description }
- * @param      {String}  profile        { description }
- * @param      {Date[]}  session_dates  { description }
+ * @param      {String}  name           The name of the user
+ * @param      {String}  profile        The profile of the user
+ * @param      {Date[]}  session_dates  The session dates of the user
  */
 TestsCoco.User = function(name,profile,session_dates){
     this.name = name;
@@ -26,13 +27,12 @@ TestsCoco.User = function(name,profile,session_dates){
 /**
  * Setter for the session date of the user
  *
- * @class     <type> (User)
+ * @method    setSessionDates
+ * @param      {Date}  start      The date when all the sessions starts
+ * @param      {number}  nb_tours   The number of sessions to generate
+ * @param      {Array}   documents  The documents on which the sessions are made
  *
- * @param      {Date}  start      { The date when all the sessions starts }
- * @param      {number}  nb_tours   { The number of sessions to generate }
- * @param      {Array}   documents  { The documents on which the sessions are made }
- *
- * @return     {Array}   { The sessions date of the user }
+ * @return     {Date[]}   The sessions date of the user
  */
 TestsCoco.User.prototype.setSessionDates = function(start,nb_tours,documents) {
     var _this = this;

@@ -3,7 +3,8 @@ var TestsCoco = {
     /**
      * Constructor of the Simulator class
      *
-     * @class     <type> (Simulator)
+     * @classdesc This class gather all the component of the question/answer simulator
+     * @class     Simulator
      */
     Simulator : function(){},
     Tools : function(){},
