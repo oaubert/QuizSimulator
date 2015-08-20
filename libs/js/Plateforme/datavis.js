@@ -14,7 +14,11 @@ TestsCoco.DataVis.prototype.sortAndComplete = function (tab) {
     return _.mapValues(tab,function(value){
         var obj = {};
         order.forEach(function(elem){
-            obj[elem] = (value[elem]===undefined) ? 0 : value[elem];
+            if(value !== undefined){
+                obj[elem] = (value[elem]===undefined) ? 0 : value[elem];
+            }else{
+                obj[elem] = 0;
+            }
         });
         return obj;
     });
@@ -320,12 +324,21 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function(){
                 useless = 0,
                 skip_v = 0;
             $.each(value,function(q_index,q_value){
-                right += q_value.right_answer ? q_value.right_answer : 0;
-                wrong += q_value.wrong_answer ? q_value.wrong_answer : 0;
-                skip_a += q_value.skipped_answer ? q_value.skipped_answer : 0;
-                usefull += q_value.usefull ? q_value.usefull : 0;
-                useless += q_value.useless ? q_value.useless : 0;
-                skip_v += q_value.skipped_vote ? q_value.skipped_vote : 0;
+                if(q_value !== undefined){
+                    right += q_value.right_answer ? q_value.right_answer : 0;
+                    wrong += q_value.wrong_answer ? q_value.wrong_answer : 0;
+                    skip_a += q_value.skipped_answer ? q_value.skipped_answer : 0;
+                    usefull += q_value.usefull ? q_value.usefull : 0;
+                    useless += q_value.useless ? q_value.useless : 0;
+                    skip_v += q_value.skipped_vote ? q_value.skipped_vote : 0;
+                }else{
+                    right += 0,
+                    wrong += 0,
+                    skip_a += 0,
+                    usefull += 0,
+                    useless += 0,
+                    skip_v += 0;
+                }
             });
             return {
                 'right_answer':right,
@@ -588,7 +601,7 @@ TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates,sessionb
         return _.map(properties,function(user_value,user_id){
             var sorted_tab = _this.sortAndComplete(user_value);
             var values = _.map(sorted_tab,function(session_val,session_id){
-                    if (media_val.indexOf(session_id) > -1) 
+                    if (media_val.indexOf(session_id) > -1)
                         return {
                             'x' : new Date(dates[session_id]),
                             'y' : (session_val.right_answer *100) / (session_val.right_answer + session_val.wrong_answer),
@@ -1043,7 +1056,7 @@ TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
 
 TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.annotations = questions.annotations;
-    
+
     this.medias = _.groupBy(this.annotations,'media');
     
     this.sessions = _.groupBy(answers,'sessionId');

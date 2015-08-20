@@ -65,6 +65,17 @@ TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,text,fil
 }
 
 /**
+ * Send data in localStorage for later use
+ *
+ * @method     sendToLocalStorage
+ * @param      {Object}  data        Data to send
+ * @param      {string}  local_name  Name in the localStorage
+ */
+TestsCoco.Tools.prototype.sendToLocalStorage = function(data,local_name){
+    localStorage.setItem(local_name,LZString.compress(JSON.stringify(data)));
+}
+
+/**
  * Make the transposition of an array
  *
  * @method     transpose

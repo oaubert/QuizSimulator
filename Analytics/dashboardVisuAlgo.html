@@ -19,6 +19,7 @@
     <script src="../libs/js/Others/lodash.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/d3.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/nv.d3.min.js" type="text/javascript"></script>
+    <script src="../libs/js/Others/lz-string.js" type="text/javascript"></script>
     <script src="../libs/js/Plateforme/test_plateforme.js"></script>
     <script src="../libs/js/Plateforme/questions.js" type="text/javascript"></script>
     <script src="../libs/js/Plateforme/answers.js" type="text/javascript"></script>
@@ -67,12 +68,19 @@
     </div>
     <script type="text/javascript">
         var visualizer = new TestsCoco.DataVis("#page-wrapper");
-        $.when($.get("../Donnees_tests/analytics_data/questions_3files.json"),
-                    $.get("../Donnees_tests/analytics_data/answers_3files.json"))
-                .done(function(data1,data2){
-                    visualizer.getAllData(data1[0],data2[0]);
-                    visualizer.generateGraphVisuAlgo();
-                });
+        if(localStorage.getItem("sim_question") !== null && localStorage.getItem("sim_answer") !== null){
+            var local_question = localStorage.getItem('sim_question');
+            var local_answer = localStorage.getItem('sim_answer');
+            visualizer.getAllData(JSON.parse(LZString.decompress(local_question)),JSON.parse(LZString.decompress(local_answer)));
+            visualizer.generateGraphVisuAlgo();
+        }else{
+            $.when($.get("../Donnees_tests/analytics_data/questions_testLZ.json"),
+                        $.get("../Donnees_tests/analytics_data/answers_testLZ.json"))
+                    .done(function(data1,data2){
+                        visualizer.getAllData(data1[0],data2[0]);
+                        visualizer.generateGraphVisuAlgo();
+                    });
+        }
     </script>
 </body>
 </html>
