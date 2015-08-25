@@ -1,8 +1,7 @@
 /**
  * Constructor of the Answers class
  *
- * @classdesc This class allows the simulator to answer a set of questions, and also make votes on the questions
- * @class     Answers
+ * @class     <Answers> This class allows the simulator to answer a set of questions, and also make votes on the questions
  * 
  */
 TestsCoco.Simulator.Answers = function(){

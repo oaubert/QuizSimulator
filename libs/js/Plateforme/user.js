@@ -1,8 +1,7 @@
 /**
  * Constructor of the User class
  *
- * @classdesc This class provide an object that define a user for the simulator
- * @class     User
+ * @class     <User> This class provide an object that define a user for the simulator
  *
  * @param      {String}  name           The name of the user
  * @param      {String}  profile        The profile of the user

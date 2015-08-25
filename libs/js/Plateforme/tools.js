@@ -1,8 +1,6 @@
 /**
  * Constructor of the Tools class
- *
- * @classdesc This class gathers a bunch of usefull tools
- * @class     Tools
+ * @class     <Tools> This class gathers a bunch of usefull tools 
  */
 TestsCoco.Tools = function(){};
 
