@@ -209,3 +209,44 @@ TestsCoco.Tools.prototype.getQueryVariable = function (variable) {
     }
     console.log('Query variable %s not found', variable);
 }
+
+/**
+ * Generate visualisation by types
+ *
+ * @method     visualize
+ * @param      {DataVis}  visualizer  Instance of DataVis module
+ * @param      {string}  type        Type of visualisation (student,teacher or algorithm visualisation)
+ */
+TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
+
+    var _this = this;
+    function checkType(){
+        if(type == 'student'){
+            var user = _this.getQueryVariable('username');
+            var session = _this.getQueryVariable('session');
+            visualizer.generateGraphStudent(user,session);
+        }else if (type == 'teacher'){
+            var media = _this.getQueryVariable('mediaId');
+            visualizer.generateGraphTeacher(media);
+        }else {
+            visualizer.generateGraphVisuAlgo();
+        }
+    }
+
+    var questions_filepath = "../Donnees_tests/analytics_data/questions_3files.json";
+    var answers_filepath = "../Donnees_tests/analytics_data/answers_3files.json";
+
+    if(localStorage.getItem("sim_question") !== null && localStorage.getItem("sim_answer") !== null){
+        var local_question = localStorage.getItem('sim_question');
+        var local_answer = localStorage.getItem('sim_answer');
+        visualizer.getAllData(JSON.parse(LZString.decompress(local_question)),JSON.parse(LZString.decompress(local_answer)));
+        checkType();
+    }else{
+        $.when($.get(questions_filepath),
+                    $.get(answers_filepath))
+                .done(function(questions,answers){
+                    visualizer.getAllData(questions[0],answers[0]);
+                    checkType();
+                });
+    }
+}

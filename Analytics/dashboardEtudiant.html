@@ -21,6 +21,7 @@
     <script src="../libs/js/Others/lodash.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/d3.min.js" type="text/javascript"></script>
     <script src="../libs/js/Others/nv.d3.min.js" type="text/javascript"></script>
+    <script src="../libs/js/Others/lz-string.js" type="text/javascript"></script>
     <script src="../libs/js/Plateforme/test_plateforme.js"></script>
     <script src="../libs/js/Plateforme/questions.js" type="text/javascript"></script>
     <script src="../libs/js/Plateforme/answers.js" type="text/javascript"></script>
@@ -134,19 +135,7 @@
         var tool = new TestsCoco.Tools();
         var visualizer = new TestsCoco.DataVis("#page-wrapper");
 
-        function simulate(){
-            $.when($.get("../Donnees_tests/analytics_data/questions_3files.json"),
-                    $.get("../Donnees_tests/analytics_data/answers_3files.json"))
-                .done(function(data1,data2){
-                        var user = tool.getQueryVariable('username');
-                        var session = tool.getQueryVariable('session');
-                        visualizer.getAllData(data1[0],data2[0]);
-                        visualizer.generateGraphStudent(user,session);
-                    }
-                );
-        }
-
-        simulate();
+        tool.visualize(visualizer,'student');
     </script>
 </body>
 </html>

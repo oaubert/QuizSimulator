@@ -72,137 +72,188 @@
 <span class='line'> 65</span> </span><span class="PUNC">}</span><span class="WHIT">
 <span class='line'> 66</span> 
 <span class='line'> 67</span> </span><span class="COMM">/**
-<span class='line'> 68</span>  * Make the transposition of an array
+<span class='line'> 68</span>  * Send data in localStorage for later use
 <span class='line'> 69</span>  *
-<span class='line'> 70</span>  * @method     transpose
-<span class='line'> 71</span>  * @param      {Array}  a      
-<span class='line'> 72</span>  * @return     {Array}  The tansposed array
+<span class='line'> 70</span>  * @method     sendToLocalStorage
+<span class='line'> 71</span>  * @param      {Object}  data        Data to send
+<span class='line'> 72</span>  * @param      {string}  local_name  Name in the localStorage
 <span class='line'> 73</span>  */</span><span class="WHIT">
-<span class='line'> 74</span> </span><span class="NAME">TestsCoco.Tools.prototype.transpose</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 75</span> 
-<span class='line'> 76</span> </span><span class="WHIT">    </span><span class="COMM">// Calculate the width and height of the Array</span><span class="WHIT">
-<span class='line'> 77</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">w</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a.length</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">a.length</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
-<span class='line'> 78</span> </span><span class="WHIT">        </span><span class="NAME">h</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Array</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 79</span> 
-<span class='line'> 80</span> </span><span class="WHIT">    </span><span class="COMM">// In case it is a zero matrix, no transpose routine needed.</span><span class="WHIT">
-<span class='line'> 81</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">h</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">w</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 82</span> 
-<span class='line'> 83</span> </span><span class="WHIT">    </span><span class="COMM">/**
-<span class='line'> 84</span>     * @var {Number} i Counter
-<span class='line'> 85</span>     * @var {Number} j Counter
-<span class='line'> 86</span>     * @var {Array} t Transposed data is stored in this array.
-<span class='line'> 87</span>     */</span><span class="WHIT">
-<span class='line'> 88</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">t</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 89</span> 
-<span class='line'> 90</span> </span><span class="WHIT">    </span><span class="COMM">// Loop through every item in the outer array (height)</span><span class="WHIT">
-<span class='line'> 91</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">&lt;</span><span class="NAME">h</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 92</span> 
-<span class='line'> 93</span> </span><span class="WHIT">        </span><span class="COMM">// Insert a new row (array)</span><span class="WHIT">
-<span class='line'> 94</span> </span><span class="WHIT">        </span><span class="NAME">t</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 95</span> 
-<span class='line'> 96</span> </span><span class="WHIT">        </span><span class="COMM">// Loop through every item per item in outer array (width)</span><span class="WHIT">
-<span class='line'> 97</span> </span><span class="WHIT">        </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="NAME">j</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">&lt;</span><span class="NAME">w</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 98</span> 
-<span class='line'> 99</span> </span><span class="WHIT">          </span><span class="COMM">// Save transposed data.</span><span class="WHIT">
-<span class='line'>100</span> </span><span class="WHIT">          </span><span class="NAME">t</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>101</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>102</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="NAME">TestsCoco.Tools.prototype.sendToLocalStorage</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">,</span><span class="NAME">local_name</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">    </span><span class="NAME">localStorage.setItem</span><span class="PUNC">(</span><span class="NAME">local_name</span><span class="PUNC">,</span><span class="NAME">LZString.compress</span><span class="PUNC">(</span><span class="NAME">JSON.stringify</span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 77</span> 
+<span class='line'> 78</span> </span><span class="COMM">/**
+<span class='line'> 79</span>  * Make the transposition of an array
+<span class='line'> 80</span>  *
+<span class='line'> 81</span>  * @method     transpose
+<span class='line'> 82</span>  * @param      {Array}  a      
+<span class='line'> 83</span>  * @return     {Array}  The tansposed array
+<span class='line'> 84</span>  */</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="NAME">TestsCoco.Tools.prototype.transpose</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 86</span> 
+<span class='line'> 87</span> </span><span class="WHIT">    </span><span class="COMM">// Calculate the width and height of the Array</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">w</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a.length</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">a.length</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="WHIT">        </span><span class="NAME">h</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Array</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 90</span> 
+<span class='line'> 91</span> </span><span class="WHIT">    </span><span class="COMM">// In case it is a zero matrix, no transpose routine needed.</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">h</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">w</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 93</span> 
+<span class='line'> 94</span> </span><span class="WHIT">    </span><span class="COMM">/**
+<span class='line'> 95</span>     * @var {Number} i Counter
+<span class='line'> 96</span>     * @var {Number} j Counter
+<span class='line'> 97</span>     * @var {Array} t Transposed data is stored in this array.
+<span class='line'> 98</span>     */</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">t</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>100</span> 
+<span class='line'>101</span> </span><span class="WHIT">    </span><span class="COMM">// Loop through every item in the outer array (height)</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">&lt;</span><span class="NAME">h</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'>103</span> 
-<span class='line'>104</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">t</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>105</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">        </span><span class="COMM">// Insert a new row (array)</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">        </span><span class="NAME">t</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>106</span> 
-<span class='line'>107</span> </span><span class="COMM">/**
-<span class='line'>108</span>  * Make the dot product of 2 vectors
-<span class='line'>109</span>  *
-<span class='line'>110</span>  * @method     dot
-<span class='line'>111</span>  * @param      {number[]}  v1      The first vector
-<span class='line'>112</span>  * @param      {number[]}  v2      The second vector
-<span class='line'>113</span>  * @return     {number}  The dot product
-<span class='line'>114</span>  */</span><span class="WHIT">
-<span class='line'>115</span> </span><span class="NAME">TestsCoco.Tools.prototype.dot</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>116</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>117</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">v1.length</span><span class="PUNC">;</span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>118</span> </span><span class="WHIT">        </span><span class="NAME">res</span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">*</span><span class="NAME">v2</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>119</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>120</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">res</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>121</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>122</span> 
-<span class='line'>123</span> </span><span class="COMM">/**
-<span class='line'>124</span>  * Compute the norm of a vector
-<span class='line'>125</span>  *
-<span class='line'>126</span>  * @method     norm
-<span class='line'>127</span>  * @param      {number[]}  v       The vector 
-<span class='line'>128</span>  * @return     {number}  The norm
-<span class='line'>129</span>  */</span><span class="WHIT">
-<span class='line'>130</span> </span><span class="NAME">TestsCoco.Tools.prototype.norm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>131</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.sqrt</span><span class="PUNC">(</span><span class="NAME">this.dot</span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">,</span><span class="NAME">v</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">        </span><span class="COMM">// Loop through every item per item in outer array (width)</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">        </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="NAME">j</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">&lt;</span><span class="NAME">w</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>109</span> 
+<span class='line'>110</span> </span><span class="WHIT">          </span><span class="COMM">// Save transposed data.</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">          </span><span class="NAME">t</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>114</span> 
+<span class='line'>115</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">t</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> 
+<span class='line'>118</span> </span><span class="COMM">/**
+<span class='line'>119</span>  * Make the dot product of 2 vectors
+<span class='line'>120</span>  *
+<span class='line'>121</span>  * @method     dot
+<span class='line'>122</span>  * @param      {number[]}  v1      The first vector
+<span class='line'>123</span>  * @param      {number[]}  v2      The second vector
+<span class='line'>124</span>  * @return     {number}  The dot product
+<span class='line'>125</span>  */</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="NAME">TestsCoco.Tools.prototype.dot</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">res</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">v1.length</span><span class="PUNC">;</span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">        </span><span class="NAME">res</span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">*</span><span class="NAME">v2</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">res</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>132</span> </span><span class="PUNC">}</span><span class="WHIT">
 <span class='line'>133</span> 
 <span class='line'>134</span> </span><span class="COMM">/**
-<span class='line'>135</span>  * Compute the cosine angle between 2 vectors
+<span class='line'>135</span>  * Compute the norm of a vector
 <span class='line'>136</span>  *
-<span class='line'>137</span>  * @method     cosine
-<span class='line'>138</span>  * @param      {number[]}  v1      The first vector
-<span class='line'>139</span>  * @param      {number[]}  v2      The second vector
-<span class='line'>140</span>  * @return     {number}  { description_of_the_return_value }
-<span class='line'>141</span>  */</span><span class="WHIT">
-<span class='line'>142</span> </span><span class="NAME">TestsCoco.Tools.prototype.cosine</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>143</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.dot</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">/</span><span class="PUNC">(</span><span class="NAME">this.norm</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">)</span><span class="PUNC">*</span><span class="NAME">this.norm</span><span class="PUNC">(</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>144</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>145</span> 
-<span class='line'>146</span> </span><span class="COMM">/**
-<span class='line'>147</span>  * Generate an array with the number of occurence of each value of &lt;tt>tab&lt;/tt>
-<span class='line'>148</span>  *
-<span class='line'>149</span>  * @method     arrayWithProbability
-<span class='line'>150</span>  * @param      {Object}  tab     The array of probabilities
-<span class='line'>151</span>  * @return     {Array}   The array generated
-<span class='line'>152</span>  * @example    //Example
-<span class='line'>153</span>  * var data = {1:0.4,
-<span class='line'>154</span>  *             2:0.1,
-<span class='line'>155</span>  *             3:0.2,
-<span class='line'>156</span>  *             4:0.3}; 
-<span class='line'>157</span>  * var arr = arrayWithProbability(data); 
-<span class='line'>158</span>  * console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])
-<span class='line'>159</span>  */</span><span class="WHIT">
-<span class='line'>160</span> </span><span class="NAME">TestsCoco.Tools.prototype.arrayWithProbability</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">tab</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>161</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">arr</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>162</span> </span><span class="WHIT">    </span><span class="NAME">$.each</span><span class="PUNC">(</span><span class="NAME">tab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">index</span><span class="PUNC">,</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>163</span> </span><span class="WHIT">        </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>164</span> </span><span class="WHIT">            </span><span class="NAME">arr.push</span><span class="PUNC">(</span><span class="NAME">index</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>165</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>166</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>167</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">arr</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>168</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>169</span> 
-<span class='line'>170</span> </span><span class="COMM">/**
-<span class='line'>171</span>  * Get a random value in an array
-<span class='line'>172</span>  *
-<span class='line'>173</span>  * @method     randomWithProbability
-<span class='line'>174</span>  * @param      {Array}  notRandomQuestions  The array 
-<span class='line'>175</span>  * @return     {number}  The random value
-<span class='line'>176</span>  */</span><span class="WHIT">
-<span class='line'>177</span> </span><span class="NAME">TestsCoco.Tools.prototype.randomWithProbability</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">notRandomQuestions</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>178</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">idx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="NAME">Math.random</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">notRandomQuestions.length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>179</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">notRandomQuestions</span><span class="PUNC">[</span><span class="NAME">idx</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>180</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>181</span> 
-<span class='line'>182</span> </span><span class="COMM">//Source : http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript</span><span class="WHIT">
-<span class='line'>183</span> </span><span class="COMM">/**
-<span class='line'>184</span>  * Get the value of the query variable passed in the url
-<span class='line'>185</span>  *
-<span class='line'>186</span>  * @method     getQueryVariable
-<span class='line'>187</span>  * @param      {string}  variable  The variable searched
-<span class='line'>188</span>  * @return     {string}  The value of the variable
-<span class='line'>189</span>  */</span><span class="WHIT">
-<span class='line'>190</span> </span><span class="NAME">TestsCoco.Tools.prototype.getQueryVariable</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">variable</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>191</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">query</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">window.location.search.substring</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>192</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">vars</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">query.split</span><span class="PUNC">(</span><span class="STRN">'&'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>193</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">vars.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>194</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pair</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">vars</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'='</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>195</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">decodeURIComponent</span><span class="PUNC">(</span><span class="NAME">pair</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">variable</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>196</span> </span><span class="WHIT">            </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">decodeURIComponent</span><span class="PUNC">(</span><span class="NAME">pair</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>197</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>198</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>199</span> </span><span class="WHIT">    </span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">'Query variable %s not found'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">variable</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>200</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>201</span> </span></pre></body></html>
+<span class='line'>137</span>  * @method     norm
+<span class='line'>138</span>  * @param      {number[]}  v       The vector 
+<span class='line'>139</span>  * @return     {number}  The norm
+<span class='line'>140</span>  */</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="NAME">TestsCoco.Tools.prototype.norm</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.sqrt</span><span class="PUNC">(</span><span class="NAME">this.dot</span><span class="PUNC">(</span><span class="NAME">v</span><span class="PUNC">,</span><span class="NAME">v</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>144</span> 
+<span class='line'>145</span> </span><span class="COMM">/**
+<span class='line'>146</span>  * Compute the cosine angle between 2 vectors
+<span class='line'>147</span>  *
+<span class='line'>148</span>  * @method     cosine
+<span class='line'>149</span>  * @param      {number[]}  v1      The first vector
+<span class='line'>150</span>  * @param      {number[]}  v2      The second vector
+<span class='line'>151</span>  * @return     {number}  { description_of_the_return_value }
+<span class='line'>152</span>  */</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="NAME">TestsCoco.Tools.prototype.cosine</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.dot</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">,</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">/</span><span class="PUNC">(</span><span class="NAME">this.norm</span><span class="PUNC">(</span><span class="NAME">v1</span><span class="PUNC">)</span><span class="PUNC">*</span><span class="NAME">this.norm</span><span class="PUNC">(</span><span class="NAME">v2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>156</span> 
+<span class='line'>157</span> </span><span class="COMM">/**
+<span class='line'>158</span>  * Generate an array with the number of occurence of each value of &lt;tt>tab&lt;/tt>
+<span class='line'>159</span>  *
+<span class='line'>160</span>  * @method     arrayWithProbability
+<span class='line'>161</span>  * @param      {Object}  tab     The array of probabilities
+<span class='line'>162</span>  * @return     {Array}   The array generated
+<span class='line'>163</span>  * @example    //Example
+<span class='line'>164</span>  * var data = {1:0.4,
+<span class='line'>165</span>  *             2:0.1,
+<span class='line'>166</span>  *             3:0.2,
+<span class='line'>167</span>  *             4:0.3}; 
+<span class='line'>168</span>  * var arr = arrayWithProbability(data); 
+<span class='line'>169</span>  * console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])
+<span class='line'>170</span>  */</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="NAME">TestsCoco.Tools.prototype.arrayWithProbability</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">tab</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">arr</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">    </span><span class="NAME">$.each</span><span class="PUNC">(</span><span class="NAME">tab</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">index</span><span class="PUNC">,</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">        </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">            </span><span class="NAME">arr.push</span><span class="PUNC">(</span><span class="NAME">index</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">arr</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>180</span> 
+<span class='line'>181</span> </span><span class="COMM">/**
+<span class='line'>182</span>  * Get a random value in an array
+<span class='line'>183</span>  *
+<span class='line'>184</span>  * @method     randomWithProbability
+<span class='line'>185</span>  * @param      {Array}  notRandomQuestions  The array 
+<span class='line'>186</span>  * @return     {number}  The random value
+<span class='line'>187</span>  */</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="NAME">TestsCoco.Tools.prototype.randomWithProbability</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">notRandomQuestions</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">idx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.floor</span><span class="PUNC">(</span><span class="NAME">Math.random</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">notRandomQuestions.length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">notRandomQuestions</span><span class="PUNC">[</span><span class="NAME">idx</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>192</span> 
+<span class='line'>193</span> </span><span class="COMM">//Source : http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="COMM">/**
+<span class='line'>195</span>  * Get the value of the query variable passed in the url
+<span class='line'>196</span>  *
+<span class='line'>197</span>  * @method     getQueryVariable
+<span class='line'>198</span>  * @param      {string}  variable  The variable searched
+<span class='line'>199</span>  * @return     {string}  The value of the variable
+<span class='line'>200</span>  */</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="NAME">TestsCoco.Tools.prototype.getQueryVariable</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">variable</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">query</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">window.location.search.substring</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">vars</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">query.split</span><span class="PUNC">(</span><span class="STRN">'&'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">vars.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pair</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">vars</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">split</span><span class="PUNC">(</span><span class="STRN">'='</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">decodeURIComponent</span><span class="PUNC">(</span><span class="NAME">pair</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">variable</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">            </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">decodeURIComponent</span><span class="PUNC">(</span><span class="NAME">pair</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>209</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="WHIT">    </span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">'Query variable %s not found'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">variable</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>212</span> 
+<span class='line'>213</span> </span><span class="COMM">/**
+<span class='line'>214</span>  * Generate visualisation by types
+<span class='line'>215</span>  *
+<span class='line'>216</span>  * @method     visualize
+<span class='line'>217</span>  * @param      {DataVis}  visualizer  Instance of DataVis module
+<span class='line'>218</span>  * @param      {string}  type        Type of visualisation (student,teacher or algorithm visualisation)
+<span class='line'>219</span>  */</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="NAME">TestsCoco.Tools.prototype.visualize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">visualizer</span><span class="PUNC">,</span><span class="NAME">type</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>221</span> 
+<span class='line'>222</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_this</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">    </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkType</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'student'</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="WHIT">            </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">user</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_this.getQueryVariable</span><span class="PUNC">(</span><span class="STRN">'username'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="WHIT">            </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">session</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_this.getQueryVariable</span><span class="PUNC">(</span><span class="STRN">'session'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="WHIT">            </span><span class="NAME">visualizer.generateGraphStudent</span><span class="PUNC">(</span><span class="NAME">user</span><span class="PUNC">,</span><span class="NAME">session</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">type</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'teacher'</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">            </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">media</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_this.getQueryVariable</span><span class="PUNC">(</span><span class="STRN">'mediaId'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">            </span><span class="NAME">visualizer.generateGraphTeacher</span><span class="PUNC">(</span><span class="NAME">media</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">            </span><span class="NAME">visualizer.generateGraphVisuAlgo</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>235</span> 
+<span class='line'>236</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">questions_filepath</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"../Donnees_tests/analytics_data/questions_3files.json"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">answers_filepath</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"../Donnees_tests/analytics_data/answers_3files.json"</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> 
+<span class='line'>239</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">localStorage.getItem</span><span class="PUNC">(</span><span class="STRN">"sim_question"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">localStorage.getItem</span><span class="PUNC">(</span><span class="STRN">"sim_answer"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">local_question</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">localStorage.getItem</span><span class="PUNC">(</span><span class="STRN">'sim_question'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">local_answer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">localStorage.getItem</span><span class="PUNC">(</span><span class="STRN">'sim_answer'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">        </span><span class="NAME">visualizer.getAllData</span><span class="PUNC">(</span><span class="NAME">JSON.parse</span><span class="PUNC">(</span><span class="NAME">LZString.decompress</span><span class="PUNC">(</span><span class="NAME">local_question</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">JSON.parse</span><span class="PUNC">(</span><span class="NAME">LZString.decompress</span><span class="PUNC">(</span><span class="NAME">local_answer</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">        </span><span class="NAME">checkType</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="KEYW">else</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">        </span><span class="NAME">$.when</span><span class="PUNC">(</span><span class="NAME">$.get</span><span class="PUNC">(</span><span class="NAME">questions_filepath</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>246</span> </span><span class="WHIT">                    </span><span class="NAME">$.get</span><span class="PUNC">(</span><span class="NAME">answers_filepath</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">                </span><span class="PUNC">.</span><span class="NAME">done</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">questions</span><span class="PUNC">,</span><span class="NAME">answers</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">                    </span><span class="NAME">visualizer.getAllData</span><span class="PUNC">(</span><span class="NAME">questions</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="NAME">answers</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">                    </span><span class="NAME">checkType</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">                </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="PUNC">}</span></pre></body></html>
