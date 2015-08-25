@@ -1,12 +1,14 @@
 /**
  * Constructor of the Chooser class
  *
- * @classdesc This class is the base of the choosing algorithm behind the generation of questions of the simulator
- * @class     Chooser
+ * @class     <Chooser> This class is the base of the choosing algorithm behind the generation of questions of the simulator
  * 
  * @param      {number}  sim_threshold  The threshold of the similarity between two questions
  */
 TestsCoco.Simulator.Chooser = function(sim_threshold){
+    /**
+     * @prop      {number} similarity_treshold Threshold of similarity between two questions
+     */
     this.similarity_threshold = sim_threshold;
 };
 

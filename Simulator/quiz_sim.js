@@ -70,8 +70,13 @@ function simulate(other_words,nb_tours,nb_question_by_tours,nb_questions){
                         else {
                             status.innerHTML = "100%";
                             clearTimeout(timeout);
+
+                            tool.sendToLocalStorage(questions,'sim_question');
+                            tool.sendToLocalStorage(answers,'sim_answer')
+
                             tool.downloadJson(questions,'#quest',"questions",'questions');
                             tool.downloadJson(answers,'#ans',"answers",'answers');
+                            
                             $("#loading").css("display","none");
                             $("#loading").empty();
                             $("#files").css("display","block");

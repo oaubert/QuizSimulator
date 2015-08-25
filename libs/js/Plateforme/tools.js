@@ -1,8 +1,6 @@
 /**
  * Constructor of the Tools class
- *
- * @classdesc This class gathers a bunch of usefull tools
- * @class     Tools
+ * @class     <Tools> This class gathers a bunch of usefull tools 
  */
 TestsCoco.Tools = function(){};
 
@@ -62,6 +60,17 @@ TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,text,fil
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data_to_dl, null, 4));
 
     $('<a href="data:' + data + '" download="'+filename+'.json">'+text+'</a>').appendTo(container);
+}
+
+/**
+ * Send data in localStorage for later use
+ *
+ * @method     sendToLocalStorage
+ * @param      {Object}  data        Data to send
+ * @param      {string}  local_name  Name in the localStorage
+ */
+TestsCoco.Tools.prototype.sendToLocalStorage = function(data,local_name){
+    localStorage.setItem(local_name,LZString.compress(JSON.stringify(data)));
 }
 
 /**
@@ -197,4 +206,45 @@ TestsCoco.Tools.prototype.getQueryVariable = function (variable) {
         }
     }
     console.log('Query variable %s not found', variable);
+}
+
+/**
+ * Generate visualisation by types
+ *
+ * @method     visualize
+ * @param      {DataVis}  visualizer  Instance of DataVis module
+ * @param      {string}  type        Type of visualisation (student,teacher or algorithm visualisation)
+ */
+TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
+
+    var _this = this;
+    function checkType(){
+        if(type == 'student'){
+            var user = _this.getQueryVariable('username');
+            var session = _this.getQueryVariable('session');
+            visualizer.generateGraphStudent(user,session);
+        }else if (type == 'teacher'){
+            var media = _this.getQueryVariable('mediaId');
+            visualizer.generateGraphTeacher(media);
+        }else {
+            visualizer.generateGraphVisuAlgo();
+        }
+    }
+
+    var questions_filepath = "../Donnees_tests/analytics_data/questions_3files.json";
+    var answers_filepath = "../Donnees_tests/analytics_data/answers_3files.json";
+
+    if(localStorage.getItem("sim_question") !== null && localStorage.getItem("sim_answer") !== null){
+        var local_question = localStorage.getItem('sim_question');
+        var local_answer = localStorage.getItem('sim_answer');
+        visualizer.getAllData(JSON.parse(LZString.decompress(local_question)),JSON.parse(LZString.decompress(local_answer)));
+        checkType();
+    }else{
+        $.when($.get(questions_filepath),
+                    $.get(answers_filepath))
+                .done(function(questions,answers){
+                    visualizer.getAllData(questions[0],answers[0]);
+                    checkType();
+                });
+    }
 }

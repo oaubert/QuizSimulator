@@ -1,8 +1,7 @@
 /**
  * Constructor of the Question class
  *
- * @classdesc This class allows the simulator to generate questions over documents
- * @class      Questions
+ * @class      <Questions> This class allows the simulator to generate questions over documents
  */
 TestsCoco.Simulator.Questions = function(){};
 
