@@ -231,8 +231,8 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
         }
     }
 
-    var questions_filepath = "../Donnees_tests/analytics_data/questions_3files.json";
-    var answers_filepath = "../Donnees_tests/analytics_data/answers_3files.json";
+    var questions_filepath = "../Donnees_tests/analytics_data/questions_prod.json";
+    var answers_filepath = "../Donnees_tests/analytics_data/answers_prod.json";
 
     if(localStorage.getItem("sim_question") !== null && localStorage.getItem("sim_answer") !== null){
         var local_question = localStorage.getItem('sim_question');
