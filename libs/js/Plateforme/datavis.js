@@ -1080,9 +1080,6 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.medias = _.groupBy(this.annotations,'media');
     
     this.sessions = _.groupBy(answers,'sessionId');
-    //par média ex : m20131010
-    var info_video1 = this.getMediaInfo('m20131010');
-    
     this.properties_count = _.countBy(answers,'property');
     
     this.propertiesByQuestion = this.getPropertiesByKey(answers,'subject','property');
