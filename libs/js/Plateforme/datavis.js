@@ -172,77 +172,37 @@ TestsCoco.DataVis.prototype.makeRegExp = function (tab){
 };
 
 TestsCoco.DataVis.prototype.modifyLabel = function(str){
-    var lab= '';
-    switch(str){
-        case 'right_answer':
-            lab = 'Bonnes';
-            break;
-        case 'wrong_answer':
-            lab = 'Mauvaises';
-            break;
-        case 'skipped_answer':
-            lab = 'Passées';
-            break;
-        case 'usefull':
-            lab = 'Utiles';
-            break;
-        case 'useless':
-            lab = 'Inutiles';
-            break;
-        case 'skipped_vote':
-            lab = 'Passés';
-            break;
-    }
-    return lab;
+    var label = {
+        right_answer: 'Bonnes',
+        wrong_answer: 'Mauvaises',
+        skipped_answer: 'Passées',
+        usefull: 'Utiles',
+        useless: 'Inutiles',
+        skipped_vote: 'Passés'
+    };
+    return label[str];
 };
 
 TestsCoco.DataVis.prototype.getColor = function(str, type){
-    var color;
-    if(type == 'user'){
-        switch(str){
-            case 'right_answer':
-                color = '#6B8E23';
-                break;
-            case 'wrong_answer':
-                color = '#B22222';
-                break;
-            case 'skipped_answer':
-                color = 'gray';
-                break;
-            case 'usefull':
-                color = '#6B8E23';
-                break;
-            case 'useless':
-                color = '#B22222';
-                break;
-            case 'skipped_vote':
-                color = 'gray';
-                break;
+    var colors = {
+        'user': {
+            right_answer: '#6B8E23',
+            wrong_answer: '#B22222',
+            skipped_answer: 'gray',
+            usefull: '#6B8E23',
+            useless: '#B22222',
+            skipped_vote: 'gray'
+        },
+        'default': {
+            'right_answer': 'green',
+            'wrong_answer': 'red',
+            'skipped_answer': '#C0C0C0',
+            'usefull': 'green',
+            'useless': 'red',
+            'skipped_vote': '#C0C0C0'
         }
-    }else{
-        switch(str){
-            case 'right_answer':
-                color = 'green';
-                break;
-            case 'wrong_answer':
-                color = 'red';
-                break;
-            case 'skipped_answer':
-                color = '#C0C0C0';
-                break;
-            case 'usefull':
-                color = 'green';
-                break;
-            case 'useless':
-                color = 'red';
-                break;
-            case 'skipped_vote':
-                color = '#C0C0C0';
-                break;
-        }
-    }
-
-    return color;
+    };
+    return colors[type || 'default'][str];
 };
 
 TestsCoco.DataVis.prototype.combine = function(tab){
