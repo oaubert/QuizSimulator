@@ -77,11 +77,11 @@ TestsCoco.DataVis.prototype.aggregate = function(tab,key1,key2,key3) {
 TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab){
     var obj = {};
     var valueByPropertyByQuestion = this.aggregate(tab,'subject','property','value');
-    $.each(valueByPropertyByQuestion,function(index,value){
-        obj[index] = {}
-        $.each(value,function(index2,value2){
+    _.each(valueByPropertyByQuestion,function(value, index) {
+        obj[index] = {};
+        _.each(value,function(value2, index2){
             if(index2.match(/right_answer|wrong_answer/gi) != null){
-                $.each(value2,function(index3,value3){
+                _.each(value2,function(value3, index3){
                     obj[index][index3]=value3;
                 });
             }
@@ -94,8 +94,7 @@ TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations){
     
     var ret = {};
 
-    $.each(annotations,function(index,value){
-        if(value.type === 'Quizz'){
+    _.each(annotations,function(value, index){
         if(value.type === 'Quiz' || value.type_title === 'Quiz'){
             var q_id = value.id;
             var desc = value.content.data.question;
@@ -103,7 +102,7 @@ TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations){
             var time = value.begin;
             var correct =[];
             var content=[];
-            $.each(ans,function(ans_index,ans_value){
+            _.each(ans, function(ans_value, ans_index) {
                 content.push(ans_value.content);
                 correct.push(ans_value.correct);
             });
