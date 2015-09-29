@@ -240,6 +240,8 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
         visualizer.getAllData(JSON.parse(LZString.decompress(local_question)),JSON.parse(LZString.decompress(local_answer)));
         checkType();
     }else{
+        $.when($.getJSON(questions_filepath),
+                    $.getJSON(answers_filepath))
         $.when($.get(questions_filepath),
                     $.get(answers_filepath))
                 .done(function(questions,answers){
