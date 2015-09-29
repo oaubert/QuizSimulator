@@ -199,14 +199,12 @@ TestsCoco.DataVis.prototype.getColor = function(str, type){
 };
 
 TestsCoco.DataVis.prototype.combine = function(tab){
-    var ret = [];
-    $.each(tab,function(index,elem){
-        var obj = {};
-        obj['key']=index;
-        obj['values']=elem[0].values;
-        ret.push(obj);
+    return _.map(tab, function (elem, index) {
+        return {
+            key: index,
+            value: elem[0].values
+        };
     });
-    return ret;
 };
 
 TestsCoco.DataVis.prototype.getUsers = function(answers){
