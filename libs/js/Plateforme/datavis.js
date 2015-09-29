@@ -848,18 +848,19 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
  * 
  */
  
- TestsCoco.DataVis.prototype.dataForScatter_VisuAlgo = function(sessionByMedia,properties,infos,sessionDates){
-    var _this = this,
-        colors = {  'utile': 'green',
-                    'inutile': 'red',
-                    'neutre': 'grey',
-                    'pas voté': 'black'
-                };
 
-    return _.mapValues(sessionByMedia,function(med_val,med_id){
-        return _.map(colors,  function (category,cle) {
-            var temp=[];
-            var n = _.size(med_val);
+ TestsCoco.DataVis.prototype.dataForScatter_VisuAlgo = function(sessionByMedia,properties,infos,sessionDates){
+     var _this = this,
+         colors = {  'utile': 'green',
+                     'inutile': 'red',
+                     'neutre': 'grey',
+                     'pas voté': 'black'
+                  };
+
+     return _.mapValues(sessionByMedia,function(med_val,med_id){
+         return _.map(colors,  function (category,cle) {
+             var temp=[];
+             var n = _.size(med_val);
             med_val.forEach(function(s_val){
                 var sorted_question_obj = _this.sortAndComplete(properties[s_val]);
                 _.each(sorted_question_obj, function(q_val, q_idx) {
