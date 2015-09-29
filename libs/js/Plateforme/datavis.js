@@ -96,6 +96,7 @@ TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations){
 
     $.each(annotations,function(index,value){
         if(value.type === 'Quizz'){
+        if(value.type === 'Quiz' || value.type_title === 'Quiz'){
             var q_id = value.id;
             var desc = value.content.description;
             var ans = value.content.answers;
@@ -311,8 +312,8 @@ TestsCoco.DataVis.prototype.getGeneralAverage = function(medias){
 }
 
 TestsCoco.DataVis.prototype.getMediaInfo = function(media_id){
-    var begin_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quizz'), 'begin');
-    var end_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quizz'), 'end');
+    var begin_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quiz'), 'begin');
+    var end_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quiz'), 'end');
     var max_time = _.max(end_times);
     return {'times':begin_times,'max_time':max_time};
 }
