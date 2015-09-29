@@ -98,8 +98,8 @@ TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations){
         if(value.type === 'Quizz'){
         if(value.type === 'Quiz' || value.type_title === 'Quiz'){
             var q_id = value.id;
-            var desc = value.content.description;
-            var ans = value.content.answers;
+            var desc = value.content.data.question;
+            var ans = value.content.data.answers;
             var time = value.begin;
             var correct =[];
             var content=[];
