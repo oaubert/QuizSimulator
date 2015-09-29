@@ -233,9 +233,9 @@ TestsCoco.DataVis.prototype.getMedia = function(medias,subject){
 TestsCoco.DataVis.prototype.getUsersAverage = function(prop,sessions){
     var _this = this;
     var ret = {};
-    $.each(prop,function(index,value){
+    _.each(prop,function(value, index){
         ret[index]={};
-        $.each(value,function(s_idx,s_val){
+        _.each(value,function(s_val, s_idx){
             var med = _.findKey(sessions,function(s){return _.includes(s,s_idx);});
             ret[index][med] = ret[index][med] ? ret[index][med] : [];
             var right = s_val.right_answer ? s_val.right_answer : 0;
@@ -256,7 +256,7 @@ TestsCoco.DataVis.prototype.getGeneralAverage = function(medias){
     var videos = _.keys(medias);
     videos.forEach(function(video){
         ret[video]=0;
-        $.each(averages,function(index,value){
+        _.each(averages,function(value, index){
             ret[video] += value[video];
         });
         ret[video] = ret[video]/n;
@@ -299,7 +299,7 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function(){
                 usefull = 0,
                 useless = 0,
                 skip_v = 0;
-            $.each(value,function(q_index,q_value){
+            _.each(value,function(q_value, q_index){
                 if(q_value !== undefined){
                     right += q_value.right_answer ? q_value.right_answer : 0;
                     wrong += q_value.wrong_answer ? q_value.wrong_answer : 0;
@@ -328,19 +328,18 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function(){
 };
 
 TestsCoco.DataVis.prototype.getMediaBySession = function(){
-
-    var sub_bySession = _.mapValues(this.sessions,function(value){
+    var sub_bySession = _.mapValues(this.sessions, function(value){
         return value[0].subject;
     });
 
-    var q_byMed = _.mapValues(this.getPropertiesByQuestionByMedia(),function(val){
+    var q_byMed = _.mapValues(this.getPropertiesByQuestionByMedia(), function(val){
         return _.keys(val);
     });
 
-    return _.mapValues(sub_bySession,function(value){
+    return _.mapValues(sub_bySession, function(value){
         var ret;
-        $.each(q_byMed,function(idx,val){
-            if($.inArray(value,val) != -1){
+        _.each(q_byMed,function(val, idx) {
+            if(_.indexOf(value, val) != -1) {
                 ret = idx;
             }
         });
@@ -360,8 +359,8 @@ TestsCoco.DataVis.prototype.getSessionByMedia = function(){
     return _.mapValues(questionByMedia,function(value){
         var ret=[];
         value.forEach(function(q_val){
-            $.each(questionBySession,function(idx,val){
-                if($.inArray(q_val,val) != -1){
+            _.each(questionBySession,function(val, idx){
+                if(_.indexOf(q_val,val) != -1) {
                     ret.push(idx);
                 }
             });
@@ -382,16 +381,16 @@ TestsCoco.DataVis.prototype.dataForHisto = function(wantedData,tab_total,tab_use
     var sorted_total_data = _.mapValues(this.sortAndComplete(tab_total),function(val){
         return _this.getPercentages(val);
     });
-    $.each(tab_user,function(index,value){
+    _.each(tab_user,function(value, index){
         ret[index]=[];
         var sorted_session_data = _.mapValues(_this.sortAndComplete(value),function(val){
             return _this.getPercentages(val);
         });
-        $.each(sorted_session_data,function(s_index,s_value){
+        _.each(sorted_session_data,function(s_value, s_index){
             var data = {};
             data['key']=s_index;
             data['values']=[];
-            $.each(s_value,function(prop_index,prop_value){
+            _.each(s_value,function(prop_value, prop_index) {
                 if(prop_index.match(_this.makeRegExp(wantedData)) != null){
                     var prop = {};
                     var val;
@@ -402,7 +401,7 @@ TestsCoco.DataVis.prototype.dataForHisto = function(wantedData,tab_total,tab_use
                 }
             });
             var total_data = sorted_total_data[tab_media[s_index]];
-            $.each(total_data,function(index2,value2){
+            _.each(total_data,function(value2, index2) {
                 if(index2.match(_this.makeRegExp(wantedData)) != null){
                     var prop = {};
                     prop['label']='Total '+_this.modifyLabel(index2);
@@ -610,15 +609,15 @@ TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates,sessionb
 TestsCoco.DataVis.prototype.dataForScatter_HistoStudent = function(dates,sessionbymedia,properties){
     var _this = this;
     var ret = {};
-    $.each(properties,function(index,value){
+    _.each(properties,function(value, index){
         ret[index] = [];
-        $.each(sessionbymedia,function(med_id,med_value){
+        _.each(sessionbymedia,function(med_value, med_id){
             var medias = {};
             medias['key'] = med_id;
             medias['values'] = [];
             var sorted_tab = _this.sortAndComplete(value);
-            $.each(sorted_tab,function(session_idx,session_value){
-                if($.inArray(session_idx,med_value) != -1){
+            _.each(sorted_tab,function(session_value, session_idx){
+                if(_.indexOf(session_idx,med_value) != -1){
                     var point = {};
                     point['x'] = new Date(dates[session_idx]);
                     point['y'] = (session_value.right_answer *100) / (session_value.right_answer + session_value.wrong_answer);
@@ -1121,7 +1120,7 @@ TestsCoco.DataVis.prototype.generateAnswerDetails = function (container,question
 
 TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function(){
     var _this = this;
-    $.each(this.medias,function(med_id,med_val){
+    _.each(this.medias,function(med_val, med_id) {
         var size = _.size(_this.sessionByMedia[med_id]);
         _this.makeScatterGraph_VisuAlgo(_this.data_Scatter_VisuAlgo[med_id],size,_this.getMediaInfo(med_id),med_id);
     });
