@@ -6,7 +6,7 @@
  */
 TestsCoco.DataVis = function(container){
         this.container = container;
-}
+};
 
 /**
  * Sorts and complete an object with the right properties
@@ -28,13 +28,13 @@ TestsCoco.DataVis.prototype.sortAndComplete = function (tab) {
         });
         return obj;
     });
-}
+};
 
 /**
  * Get the session dates of objects in <tt>tab</tt>
  *
  * @method     getSessionDate
- * @param      {Object}  tab    
+ * @param      {Object}  tab
  * @return     {Object}  The session dates
  */
 TestsCoco.DataVis.prototype.getSessionDate = function(tab){
@@ -42,7 +42,7 @@ TestsCoco.DataVis.prototype.getSessionDate = function(tab){
     return _.mapValues(group,function(value){
         return _.first(value).date;
     });
-}
+};
 
 /**
  * Count the properties (<tt>key2</tt>) in data of <tt>tab </tt> grouped by <tt>key1</tt>
@@ -51,28 +51,28 @@ TestsCoco.DataVis.prototype.getSessionDate = function(tab){
  * @param      {Object}  tab     Initial object
  * @param      {string}  key     First key for grouping data
  * @param      {string}  key2    Second key for counting
- * @return     {Object}  
+ * @return     {Object}
  */
 TestsCoco.DataVis.prototype.getPropertiesByKey = function(tab,key,key2) {
     var group = _.groupBy(tab,key);
     return _.mapValues(group,function(value){
         return _.countBy(value,key2);
     });
-}
+};
 
 TestsCoco.DataVis.prototype.aggregate = function(tab,key1,key2,key3) {
     var group = _.groupBy(tab,key1);
-    
+
     var groupByKey2 = _.mapValues(group,function(value){
         return _.groupBy(value,key2);
     });
-    
+
     return _.mapValues(groupByKey2,function(value){
         return _.mapValues(value,function(value2){
             return _.countBy(value2,key3);
         });
     });
-}
+};
 
 TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab){
     var obj = {};
@@ -88,10 +88,10 @@ TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab){
         });
     });
     return obj;
-}
+};
 
 TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations){
-    
+
     var ret = {};
 
     _.each(annotations,function(value, index){
@@ -113,27 +113,27 @@ TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations){
             ret[q_id]['time']=time;
         }
     });
-    
+
     return ret;
-}
+};
 
 TestsCoco.DataVis.prototype.getPercentages = function(obj){
     obj.all_answer=(obj.right_answer+obj.wrong_answer);
     obj.all_answer_and_skipped=(obj.right_answer+obj.wrong_answer);
-    
+
     obj.all_utility_answer=(obj.usefull + obj.useless);
     obj.all_utility_answer_and_skipped=(obj.usefull + obj.useless + obj.skipped_vote);
-    
+
     obj.right_answer = obj.right_answer * 100 / (obj.all_answer);
     obj.wrong_answer = obj.wrong_answer * 100 / (obj.all_answer);
     obj.skipped_answer = obj.skipped_answer * 100 / (obj.all_answer_and_skipped);
-    
+
     obj.usefull = obj.usefull * 100 / (obj.all_utility_answer);
     obj.useless = obj.useless * 100 / (obj.all_utility_answer);
     obj.skipped_vote = obj.skipped_vote * 100 / (obj.all_utility_answer_and_skipped);
-    
+
     return obj;
-}
+};
 
 TestsCoco.DataVis.prototype.leastSquares = function (xSeries, ySeries) {
     var reduceSumFunc = function(prev, cur) { return prev + cur; };
@@ -143,33 +143,33 @@ TestsCoco.DataVis.prototype.leastSquares = function (xSeries, ySeries) {
     }
     var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
     var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
-        
+
     var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
         .reduce(reduceSumFunc);
-        
+
     var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
         .reduce(reduceSumFunc);
-            
+
     var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
         .reduce(reduceSumFunc);
-            
+
     var slope = ssXY / ssXX;
     var intercept = yBar - (xBar * slope);
     var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
-        
+
     return [slope, intercept, rSquare];
-}
+};
 
 TestsCoco.DataVis.prototype.makeRegExp = function (tab){
     var str = '';
-    $.each(tab,function(index,value){
+    _.each(tab,function(value, index){
         str+=value;
         if(index != (tab.length-1)){
             str+='|';
         }
     });
     return new RegExp(str,'gi');
-}
+};
 
 TestsCoco.DataVis.prototype.modifyLabel = function(str){
     var lab= '';
@@ -194,9 +194,9 @@ TestsCoco.DataVis.prototype.modifyLabel = function(str){
             break;
     }
     return lab;
-}
+};
 
-TestsCoco.DataVis.prototype.getColor = function(str,type){
+TestsCoco.DataVis.prototype.getColor = function(str, type){
     var color;
     if(type == 'user'){
         switch(str){
@@ -241,9 +241,9 @@ TestsCoco.DataVis.prototype.getColor = function(str,type){
                 break;
         }
     }
-    
+
     return color;
-}
+};
 
 TestsCoco.DataVis.prototype.combine = function(tab){
     var ret = [];
@@ -254,30 +254,30 @@ TestsCoco.DataVis.prototype.combine = function(tab){
         ret.push(obj);
     });
     return ret;
-}
+};
 
 TestsCoco.DataVis.prototype.getUsers = function(answers){
     return _.keys(_.groupBy(answers,'username'));
-}
+};
 
 TestsCoco.DataVis.prototype.getSessionByUser = function(answers){
     return _.mapValues(_.groupBy(answers,'username'),function(val){
                 return _.keys(_.groupBy(val,'sessionId'));
             });
-}
+};
 
 TestsCoco.DataVis.prototype.getMedia = function(medias,subject){
 
     var med = _.mapValues(medias,function(val){
             return _.filter(val,function(v){
                 return v.id == subject;
-            })
+            });
         });
-        
+
     return _.findKey(med,function(v){
         return v.length != 0;
-    })
-}
+    });
+};
 
 TestsCoco.DataVis.prototype.getUsersAverage = function(prop,sessions){
     var _this = this;
@@ -295,7 +295,7 @@ TestsCoco.DataVis.prototype.getUsersAverage = function(prop,sessions){
     return _.mapValues(ret,function(media){
             return _.mapValues(media,function(notes){ return _.sum(notes) / notes.length});
     });
-}
+};
 
 TestsCoco.DataVis.prototype.getGeneralAverage = function(medias){
     var _this = this;
@@ -311,34 +311,34 @@ TestsCoco.DataVis.prototype.getGeneralAverage = function(medias){
         ret[video] = ret[video]/n;
     });
     return ret;
-}
+};
 
 TestsCoco.DataVis.prototype.getMediaInfo = function(media_id){
     var begin_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quiz'), 'begin');
     var end_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quiz'), 'end');
     var max_time = _.max(end_times);
     return {'times':begin_times,'max_time':max_time};
-}
+};
 
 TestsCoco.DataVis.prototype.getPropertiesByQuestionByMedia = function(){
     var _this = this;
-    
+
     var questionByMedia = _.mapValues(this.medias,function(value){
         return _.keys(_.groupBy(value,'id'));
     });
-    
+
     var mapped = _.mapValues(questionByMedia,function(value){
         return _.mapKeys(value,function(val,key){
             return val;
         });
     });
-    
+
     return ret = _.mapValues(mapped,function(value){
         return _.mapValues(value,function(val){
             return _this.propertiesByQuestion[val];
         });
     });
-}
+};
 
 TestsCoco.DataVis.prototype.getPropertiesByMedia = function(){
     return _.mapValues(this.getPropertiesByQuestionByMedia(),function(value){
@@ -366,26 +366,26 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function(){
                 }
             });
             return {
-                'right_answer':right,
-                'wrong_answer':wrong,
-                'skipped_answer':skip_a,
-                'usefull':usefull,
-                'useless':useless,
-                'skipped_vote':skip_v,
+                'right_answer': right,
+                'wrong_answer': wrong,
+                'skipped_answer': skip_a,
+                'usefull': usefull,
+                'useless': useless,
+                'skipped_vote': skip_v
             };
         });
-}
+};
 
 TestsCoco.DataVis.prototype.getMediaBySession = function(){
-    
+
     var sub_bySession = _.mapValues(this.sessions,function(value){
         return value[0].subject;
     });
-    
+
     var q_byMed = _.mapValues(this.getPropertiesByQuestionByMedia(),function(val){
         return _.keys(val);
     });
-    
+
     return _.mapValues(sub_bySession,function(value){
         var ret;
         $.each(q_byMed,function(idx,val){
@@ -395,17 +395,17 @@ TestsCoco.DataVis.prototype.getMediaBySession = function(){
         });
         return ret;
     });
-}
+};
 
 TestsCoco.DataVis.prototype.getSessionByMedia = function(){
     var questionByMedia = _.mapValues(this.medias,function(value){
         return _.keys(_.groupBy(value,'id'));
     });
-    
+
     var questionBySession = _.mapValues(this.sessions,function(val){
         return _.keys(_.groupBy(val,'subject'));
     });
-    
+
     return _.mapValues(questionByMedia,function(value){
         var ret=[];
         value.forEach(function(q_val){
@@ -418,12 +418,12 @@ TestsCoco.DataVis.prototype.getSessionByMedia = function(){
         return _.uniq(ret);
     });
 
-}
+};
 
-/* 
+/*
  * Histograms
  *
- */ 
+ */
 
 TestsCoco.DataVis.prototype.dataForHisto = function(wantedData,tab_total,tab_user,tab_media){
     var _this = this;
@@ -460,20 +460,20 @@ TestsCoco.DataVis.prototype.dataForHisto = function(wantedData,tab_total,tab_use
                     data['values'].push(prop);
                 }
             });
-            
+
             ret[index].push([data]);
         });
     });
-        
+
     return ret;
-}
+};
 
 TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total,tab_user,tab_media){
     var _this = this;
     var sorted_total_data = _.mapValues(this.sortAndComplete(tab_total),function(val){
         return _this.getPercentages(val);
     });
-    
+
     function get_data(key,tab,category){
         return {
                 'key' : key,
@@ -483,8 +483,8 @@ TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total
                                             'y' : prop_value,
                                             'index' : prop_index,
                                             'color' : _this.getColor(prop_index,category)
-                                        }
-                                    }).filter(function(s){return _.includes(wantedData,s.index)})
+                                        };
+                                    }).filter(function(s){ return _.includes(wantedData,s.index); } )
             };
     };
 
@@ -497,7 +497,7 @@ TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total
             return [get_data('Sur la session (étudiant seul)',s_value,'user'),get_data('Totale (tous les étudiants)',total_data,'total')];
         });
     });
-}
+};
 
 TestsCoco.DataVis.prototype.dataForHisto_AnswerDetail = function(tab,info_questions) {
     return _.mapValues(tab,function(q_val,q_idx){
@@ -523,7 +523,7 @@ TestsCoco.DataVis.prototype.dataForHisto_AnswerDetail = function(tab,info_questi
             'values' : values
         }];
     });
-}
+};
 
 TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,title){
     if(document.getElementById(container) === null){
@@ -536,10 +536,10 @@ TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,tit
                     .yDomain([0,100])
                     .showControls(false)
                     .showLegend(false);
-       
+
             chart.yAxis.axisLabel(title);
             chart.multibar.stacked(false);
-            
+
             d3.select(selector)
                 .datum(data)
                 .transition()
@@ -550,15 +550,15 @@ TestsCoco.DataVis.prototype.makeHistogram_AnsVote = function (data,container,tit
 
         return chart;
     });
-}
+};
 
 TestsCoco.DataVis.prototype.makeHistogram = function(data,container,title){
-    
+
     if(document.getElementById(container) === null){
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
     var selector = '#'+container+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.discreteBarChart()
             .x(function(d) { return d.label })
@@ -566,8 +566,8 @@ TestsCoco.DataVis.prototype.makeHistogram = function(data,container,title){
             .staggerLabels(true)
             .showValues(true)
             .duration(250);
-            
-            
+
+
         chart.yAxis.axisLabel(title);
 
         d3.select(selector)
@@ -577,13 +577,13 @@ TestsCoco.DataVis.prototype.makeHistogram = function(data,container,title){
         nv.utils.windowResize(chart.update);
         return chart;
     });
-}
+};
 
 /*
  * ScatterGraphs
- * 
+ *
  */
-  
+
 TestsCoco.DataVis.prototype.dataForScatter_UtileJuste = function(tab_medias){
     var _this = this;
     return _.mapValues(tab_medias,function(val,key){
@@ -596,7 +596,7 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJuste = function(tab_medias){
                     'y' : (q_val.right_answer + q_val.wrong_answer)==0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer),
                     'shape' : 'circle',
                     'question_id' : q_idx
-                }
+                };
             })
         }];
     });
@@ -628,7 +628,7 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJusteByTps = function(tab_medias
             };
         });
     });
-}
+};
 
 TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates,sessionbymedia,properties){
     var _this = this;
@@ -651,10 +651,10 @@ TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates,sessionb
                 'values' : values,
                 'slope' : leastData[0],
                 'intercept' : leastData[1]
-            }
+            };
         });
     });
-}
+};
 
 TestsCoco.DataVis.prototype.dataForScatter_HistoStudent = function(dates,sessionbymedia,properties){
     var _this = this;
@@ -679,14 +679,14 @@ TestsCoco.DataVis.prototype.dataForScatter_HistoStudent = function(dates,session
         });
     });
     return ret;
-}
+};
 
 TestsCoco.DataVis.prototype.makeScatterGraph_Student = function(data,container){
     if(document.getElementById(container) === null){
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
     var selector = '#'+container+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.scatterChart()
             .yDomain([0,100])
@@ -702,24 +702,24 @@ TestsCoco.DataVis.prototype.makeScatterGraph_Student = function(data,container){
             return d3.time.format('%d/%m/%y')(new Date(d))
         });
         chart.yAxis.tickFormat(d3.format('.02f'));
-        
+
         d3.select(selector)
             .datum(data)
             .call(chart);
 
         nv.utils.windowResize(chart.update);
-        
+
         return chart;
     });
 
-}
+};
 
 TestsCoco.DataVis.prototype.makeScatterGraph_UtileJusteByTps = function(data,mediaInfo,container){
     if(document.getElementById(container) === null){
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
     var selector = '#'+container+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.scatterChart()
             .xDomain([0,mediaInfo.max_time])
@@ -736,8 +736,8 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJusteByTps = function(data,med
             return d3.time.format('%X')(new Date(d+ new Date(2015,7,22,0,0).getTime()))
         });
         chart.yAxis.tickFormat(d3.format('.02f'));
-        
-        
+
+
         d3.select(selector)
             .datum(data)
             .call(chart);
@@ -760,17 +760,16 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJusteByTps = function(data,med
                 y1: 30 + chart.yAxis.scale()(0),
                 x2: 75 + chart.xAxis.scale()(mediaInfo.max_time),
                 y2: 30 + chart.yAxis.scale()(0)
-            })
-            
+            });
         });
-       
-        
+
+
         return chart;
     });
-}
+};
 
 TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,container){
-    
+
     if(document.getElementById(container) === null){
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
@@ -797,7 +796,7 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
         d3.select(selector)
             .datum(data)
             .call(chart);
-            
+
             var lineX = d3.select(selector)
                             .append('line')
                             .attr({
@@ -825,31 +824,28 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
                 y1: 30 + chart.yAxis.scale()(0),
                 x2: 75 + chart.xAxis.scale()(1),
                 y2: 30 + chart.yAxis.scale()(0)
-            }),
+            });
             lineY.attr({
                 x1: 75 + chart.xAxis.scale()(0),
                 y1: 30 + chart.yAxis.scale()(-1),
                 x2: 75 + chart.xAxis.scale()(0),
                 y2: 30 + chart.yAxis.scale()(1)
-            })
-            
-        });
-        return chart;  },
-        function(){
-            chart.scatter.dispatch.on('elementClick',function(e){
-                var id_question = e.point.question_id;
-                visu.generateAnswerDetails('detailsQuestion',id_question);
             });
-                
         });
-
-}
+        return chart;
+    },
+                function(){
+                    chart.scatter.dispatch.on('elementClick',function(e){
+                        var id_question = e.point.question_id;
+                        visu.generateAnswerDetails('detailsQuestion',id_question);
+                    });
+                });
+};
 
 /*
  * Scatter Visu Algo
- * 
+ *
  */
- 
 
  TestsCoco.DataVis.prototype.dataForScatter_VisuAlgo = function(sessionByMedia,properties,infos,sessionDates){
      var _this = this,
@@ -891,7 +887,7 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
             };
         });
     });
- } 
+ };
 
 TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,mediaInfo,media){
     if(document.getElementById(media) === null){
@@ -906,7 +902,7 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
         $('.analytics').append(str);
     }
     var selector = '#graph_'+media+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.scatterChart()
             .xDomain([0,mediaInfo.max_time])
@@ -922,9 +918,9 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
         chart.xAxis.tickFormat(function(d) {
             return d3.time.format('%X')(new Date(d+ new Date(2015,7,22,0,0).getTime()))
         });
-        
-        
-        
+
+
+
         d3.select(selector)
             .datum(data)
             .call(chart);
@@ -932,13 +928,13 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data,size,medi
         nv.utils.windowResize(chart.update);
         return chart;
     });
-}
+};
 
 /*
  * LineGraphs
- * 
+ *
  */
-  
+
 TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date,tab_user){
     var _this = this;
     return _.mapValues(tab_user,function(user){
@@ -951,15 +947,15 @@ TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date,tab_user){
             })
         }];
     });
-}
+};
 
 TestsCoco.DataVis.prototype.makeLineGraph = function(data,container){
-    
+
     if(document.getElementById(container) === null){
         $(this.container).append('<div id='+container+'><svg></svg></div>');
     }
     var selector = '#'+container+' svg';
-    
+
     nv.addGraph(function() {
         var chart = nv.models.lineChart()
             .useInteractiveGuideline(false)
@@ -977,7 +973,7 @@ TestsCoco.DataVis.prototype.makeLineGraph = function(data,container){
 
         chart.yAxis.tickFormat(d3.format('1'));
 
-        
+
 
         d3.select(selector)
             .datum(data)
@@ -987,7 +983,7 @@ TestsCoco.DataVis.prototype.makeLineGraph = function(data,container){
 
         return chart;
     });
-}
+};
 
 TestsCoco.DataVis.prototype.makeSparkLine = function(data,container){
     var users = _.keys(data);
@@ -997,12 +993,12 @@ TestsCoco.DataVis.prototype.makeSparkLine = function(data,container){
         str+='<tr><td class="smallColumn">'+elem+'</td><td><svg id="chart_'+elem+'" class="sparkline"></svg></td><td class="smallColumn" id="average_'+elem+'"></td><td class="smallColumn" id="progression_'+elem+'"></td>/tr>';
     });
     $('#'+container).append(str);
-    
+
     users.forEach(function(user){
         var chart_selector = '#chart_'+user,
             average_selector = '#average_'+user,
             progression_selector = '#progression_'+user;
-            
+
         nv.addGraph(function() {
             var chart = nv.models.sparklinePlus();
             chart.margin({left:70})
@@ -1031,13 +1027,13 @@ TestsCoco.DataVis.prototype.makeSparkLine = function(data,container){
         var prog = _this.leastSquares(dates,notes)[0] > 0 ? 'bien' : 'pas bien';
         $(progression_selector).append(prog);
     })
-}
+};
 
 /*
  * BulletCharts
- * 
+ *
  */
-  
+
 TestsCoco.DataVis.prototype.dataForBullet = function (userAverage, generalAverage){
 
     return _.mapValues(userAverage,function(user){
@@ -1053,7 +1049,7 @@ TestsCoco.DataVis.prototype.dataForBullet = function (userAverage, generalAverag
             };
         });
     });
-}
+};
 
 TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
     var width = 760,
@@ -1063,7 +1059,7 @@ TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
     var chart = nv.models.bulletChart()
             .width(width - margin.right - margin.left)
             .height(height - margin.top - margin.bottom);
-            
+
     var vis = d3.select("#"+container).selectAll("svg")
         .data(data)
         .enter().append("svg")
@@ -1072,38 +1068,39 @@ TestsCoco.DataVis.prototype.makeBulletChart = function(data,container){
         .attr("height", height);
 
     vis.transition().duration(1000).call(chart);
-    
+
     return vis;
-}
+};
 
 TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.annotations = questions.annotations;
 
     this.medias = _.groupBy(this.annotations,'media');
-    
+
     this.sessions = _.groupBy(answers,'sessionId');
+
     this.properties_count = _.countBy(answers,'property');
-    
+
     this.propertiesByQuestion = this.getPropertiesByKey(answers,'subject','property');
     this.propertiesBySession = this.getPropertiesByKey(answers,'sessionId','property');
-    
+
     this.userBySession = this.getPropertiesByKey(answers,'sessionId','username');
     this.userByQuestion = this.getPropertiesByKey(answers,'subject','username');
-    
+
     this.propertiesByUserByQuestion = this.aggregate(answers,'subject','username','property');
     this.propertiesByUserBySession = this.aggregate(answers,'sessionId','username','property');
-    
+
     this.propertiesByQuestionByUser = this.aggregate(answers,'username','subject','property');
     this.propertiesBySessionByUser = this.aggregate(answers,'username','sessionId','property');
-    
+
     this.propertiesByQuestionBySession = this.aggregate(answers,'sessionId','subject','property');
-    
+
     this.NbAnswerByQuestion = this.getNbAnswerByQuestion(answers);
-    
+
     this.session_date = this.getSessionDate(answers);
-    
+
     this.info_questions = this.getInfoQuestions(this.annotations);
-    
+
     this.propertiesByMedia = this.getPropertiesByMedia();
     this.propertiesByQuestionByMedia = this.getPropertiesByQuestionByMedia();
 
@@ -1115,7 +1112,7 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.data_Histo_vote = this.dataForHisto_AnsVote(['usefull','useless','skipped_vote'],this.propertiesByMedia,this.propertiesBySessionByUser,this.mediaBySession);
     this.data_Bullet = this.dataForBullet(this.getUsersAverage(this.propertiesBySessionByUser,this.sessionByMedia),this.getGeneralAverage(this.medias));
     this.data_Scatter_HistoStudent = this.dataForScatter_HistoStudent(this.session_date,this.sessionByMedia,this.propertiesBySessionByUser);
-    
+
     // Data For Teacher
     this.data_Line = this.dataForLineGraph(this.session_date,this.propertiesBySessionByUser);
     this.data_Scatter_UtileJuste = this.dataForScatter_UtileJuste(this.propertiesByQuestionByMedia);
@@ -1124,52 +1121,52 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
 
     // Data For Questions
     this.data_Histo_answer_detail = this.dataForHisto_AnswerDetail(this.NbAnswerByQuestion,this.info_questions);
-    
+
     // Data For VisuAlgo
     this.data_Scatter_VisuAlgo = this.dataForScatter_VisuAlgo(this.sessionByMedia,this.propertiesByQuestionBySession,this.info_questions,this.session_date);
-}
+};
 
 TestsCoco.DataVis.prototype.generateGraphStudent = function(username,session_number){
-    
+
     this.makeHistogram_AnsVote(this.data_Histo_answer[username][session_number],'bonneMauvaiseSkip','Pourcentage de réponses');
-    
+
     this.makeHistogram_AnsVote(this.data_Histo_vote[username][session_number],'utilePasUtile','Pourcentage de votes');
 
     this.makeBulletChart(this.data_Bullet[username],'bulletChartAllStudents');
 
     this.makeScatterGraph_Student(this.data_Scatter_HistoStudent[username],'histoStudentAllVideos');
-}
+};
 
 TestsCoco.DataVis.prototype.generateGraphTeacher = function(media_id){
-    
+
     this.makeScatterGraph_UtileJuste(this.data_Scatter_UtileJuste[media_id],'repUtile');
-    
+
     this.makeSparkLine(this.data_Line,'table_spark');
 
     this.makeScatterGraph_UtileJusteByTps(this.data_Scatter_UtileJusteByTps[media_id],this.getMediaInfo(media_id),'repUtileTps');
-    
+
     this.makeScatterGraph_Student(this.data_Scatter_NoteStudent[media_id],'histoAllStudents');
-}
+};
 
 TestsCoco.DataVis.prototype.generateAnswerDetails = function (container,question_id){
     $('#'+container).empty();
-    
+
     var q_info = this.info_questions[question_id];
     var q_prop = this.sortAndComplete(this.propertiesByQuestion)[question_id];
     var usefull = (q_prop.usefull + q_prop.useless) == 0 ? 0 : q_prop.usefull * 100 / (q_prop.usefull + q_prop.useless);
     var useless = (q_prop.usefull + q_prop.useless) == 0 ? 0 : q_prop.useless * 100 / (q_prop.usefull + q_prop.useless);
-    
+
     var str_detail = '<div id="questionContent" ><b>Question:</b>'+q_info.enonce+'<br><br><ol>';
     q_info.answers.forEach(function(answer){
         str_detail+='<li>'+answer+'</li>';
     });
-    str_detail+='</ol></div>'
-    str_detail+='<div id="voteParRep"><h3 id="utPUt">Utile: '+_.round(usefull, 2)+'% - Pas utile: '+_.round(useless, 2)+'%</h3><svg></svg></div>';
-    
+    str_detail += '</ol></div>';
+    str_detail += '<div id="voteParRep"><h3 id="utPUt">Utile: '+_.round(usefull, 2)+'% - Pas utile: '+_.round(useless, 2)+'%</h3><svg></svg></div>';
+
     $('#'+container).append(str_detail);
-    
+
     this.makeHistogram(this.data_Histo_answer_detail[question_id],'voteParRep','Nombre de réponses');
-}
+};
 
 TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function(){
     var _this = this;
@@ -1177,7 +1174,7 @@ TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function(){
         var size = _.size(_this.sessionByMedia[med_id]);
         _this.makeScatterGraph_VisuAlgo(_this.data_Scatter_VisuAlgo[med_id],size,_this.getMediaInfo(med_id),med_id);
     });
-}
+};
 
 /**
  * Main function of the Datavis class, only for tests purpose
@@ -1190,7 +1187,7 @@ TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function(){
 TestsCoco.DataVis.prototype.main = function(questions,answers,type){
 
     this.getAllData(questions,answers);
-    
+
     if(type=='student'){
         this.generateGraphStudent('Alfred','5fc69b16-dcc6-4599-b82d-06404576d4dd');
     }
@@ -1198,4 +1195,4 @@ TestsCoco.DataVis.prototype.main = function(questions,answers,type){
         this.generateGraphTeacher('m20131010');
     }
 
-}
+};
