@@ -242,11 +242,14 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
     }else{
         $.when($.getJSON(questions_filepath),
                     $.getJSON(answers_filepath))
-        $.when($.get(questions_filepath),
-                    $.get(answers_filepath))
-                .done(function(questions,answers){
-                    visualizer.getAllData(questions[0],answers[0]);
-                    checkType();
+            .done(function(questions,answers){
+                // Sanitize type info
+                _.each(questions[0].annotations, function (a) {
+                    if (a.type_title == 'Quiz')
+                        a.type = 'Quiz';
                 });
+                visualizer.getAllData(questions[0],answers[0]);
+                checkType();
+            });
     }
 }
