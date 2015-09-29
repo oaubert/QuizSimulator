@@ -138,7 +138,10 @@ TestsCoco.DataVis.prototype.getPercentages = function(obj){
 
 TestsCoco.DataVis.prototype.leastSquares = function (xSeries, ySeries) {
     var reduceSumFunc = function(prev, cur) { return prev + cur; };
-        
+
+    if (! xSeries.length || ! ySeries.length) {
+        return [0, 0, 0];
+    }
     var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
     var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
         
