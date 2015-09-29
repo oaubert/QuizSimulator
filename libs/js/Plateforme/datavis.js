@@ -161,14 +161,7 @@ TestsCoco.DataVis.prototype.leastSquares = function (xSeries, ySeries) {
 };
 
 TestsCoco.DataVis.prototype.makeRegExp = function (tab){
-    var str = '';
-    _.each(tab,function(value, index){
-        str+=value;
-        if(index != (tab.length-1)){
-            str+='|';
-        }
-    });
-    return new RegExp(str,'gi');
+    return new RegExp(tab.join("|"),'gi');
 };
 
 TestsCoco.DataVis.prototype.modifyLabel = function(str){
