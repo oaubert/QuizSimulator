@@ -499,15 +499,22 @@ TestsCoco.DataVis.prototype.dataForHisto_AnsVote = function(wantedData,tab_total
 
 TestsCoco.DataVis.prototype.dataForHisto_AnswerDetail = function(tab,info_questions) {
     return _.mapValues(tab,function(q_val,q_idx){
-        var nb_ans = info_questions[q_idx].answers.length;
-        var correct = info_questions[q_idx].correct;
         var values = [];
-        for(var i = 0 ; i < nb_ans ; i++){
-            values.push({
-                'label' : (i+1),
-                'value' : (q_val[i] != undefined) ? q_val[i] : 0,
-                'color' : correct[i] ? 'green' : 'grey'
-            });
+        if (info_questions[q_idx] !== undefined) {
+            var nb_ans = info_questions[q_idx].answers.length;
+            var correct = info_questions[q_idx].correct;
+            for(var i = 0 ; i < nb_ans ; i++){
+                values.push({
+                    'label' : (i+1),
+                    'value' : (q_val[i] != undefined) ? q_val[i] : 0,
+                    'color' : correct[i] ? 'green' : 'grey'
+                });
+            }
+        } else {
+            // No more existing question. Produce a 1-answer pseudo question
+            values = [ { 'label': 1,
+                         'value': 0,
+                         'color': 'green' } ];
         }
         return [{
             'key' : q_idx,
@@ -600,20 +607,23 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJusteByTps = function(tab_medias
         return keys.map(function(key){
             return {
                 'key' : key,
-                'values' : _.map(sorted_question_obj,function(q_val,q_idx){
-                                var ordonnee;
-                                if(key == 'Justesse'){
-                                    ordonnee = (q_val.right_answer + q_val.wrong_answer) == 0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer);
-                                }else{
-                                    ordonnee = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
-                                }
-                                return {
-                                    'x':  infos[q_idx].time,
-                                    'y':  ordonnee,
-                                    'shape': 'circle'
-                                }
-                            })
-            }
+                'values' : _.map(
+                    _.pick(sorted_question_obj, function(q_val, q_idx) {
+                        return infos[q_idx] !== undefined;
+                    }), function(q_val, q_idx){
+                    var ordonnee;
+                    if (key == 'Justesse') {
+                        ordonnee = (q_val.right_answer + q_val.wrong_answer) == 0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer);
+                    } else {
+                        ordonnee = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                    }
+                    return {
+                        'x':  infos[q_idx].time,
+                        'y':  ordonnee,
+                        'shape': 'circle'
+                    };
+                })
+            };
         });
     });
 }
