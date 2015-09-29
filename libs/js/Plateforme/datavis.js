@@ -38,7 +38,7 @@ TestsCoco.DataVis.prototype.sortAndComplete = function (tab) {
  * @return     {Object}  The session dates
  */
 TestsCoco.DataVis.prototype.getSessionDate = function(tab){
-    var group = _.groupBy(tab,'sessionId');
+    var group = _.groupBy(tab,'session');
     return _.mapValues(group,function(value){
         return _.first(value).date;
     });
@@ -213,7 +213,7 @@ TestsCoco.DataVis.prototype.getUsers = function(answers){
 
 TestsCoco.DataVis.prototype.getSessionByUser = function(answers){
     return _.mapValues(_.groupBy(answers,'username'),function(val){
-                return _.keys(_.groupBy(val,'sessionId'));
+                return _.keys(_.groupBy(val,'session'));
             });
 };
 
@@ -1027,23 +1027,23 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
 
     this.medias = _.groupBy(this.annotations,'media');
 
-    this.sessions = _.groupBy(answers,'sessionId');
+    this.sessions = _.groupBy(answers,'session');
 
     this.properties_count = _.countBy(answers,'property');
 
     this.propertiesByQuestion = this.getPropertiesByKey(answers,'subject','property');
-    this.propertiesBySession = this.getPropertiesByKey(answers,'sessionId','property');
+    this.propertiesBySession = this.getPropertiesByKey(answers,'session','property');
 
-    this.userBySession = this.getPropertiesByKey(answers,'sessionId','username');
+    this.userBySession = this.getPropertiesByKey(answers,'session','username');
     this.userByQuestion = this.getPropertiesByKey(answers,'subject','username');
 
     this.propertiesByUserByQuestion = this.aggregate(answers,'subject','username','property');
-    this.propertiesByUserBySession = this.aggregate(answers,'sessionId','username','property');
+    this.propertiesByUserBySession = this.aggregate(answers,'session','username','property');
 
     this.propertiesByQuestionByUser = this.aggregate(answers,'username','subject','property');
-    this.propertiesBySessionByUser = this.aggregate(answers,'username','sessionId','property');
+    this.propertiesBySessionByUser = this.aggregate(answers,'username','session','property');
 
-    this.propertiesByQuestionBySession = this.aggregate(answers,'sessionId','subject','property');
+    this.propertiesByQuestionBySession = this.aggregate(answers,'session','subject','property');
 
     this.NbAnswerByQuestion = this.getNbAnswerByQuestion(answers);
 
