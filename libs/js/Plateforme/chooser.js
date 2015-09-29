@@ -107,7 +107,7 @@ TestsCoco.Simulator.Chooser.prototype.getTime = function (tab){
     var ret={};
     var ann = tab.annotations;
     tab.forEach(function(elem){
-        if(elem.type == "Quizz"){
+        if(elem.type == "Quiz"){
             ret[elem.id] = elem.begin;
         }
     });
@@ -125,7 +125,7 @@ TestsCoco.Simulator.Chooser.prototype.getEnonce = function (tab){
     var ret={};
     var ann = tab.annotations;
     tab.forEach(function(elem){
-        if(elem.type == "Quizz"){
+        if(elem.type == "Quiz"){
             ret[elem.id] = elem.content.description;
         }
     });
