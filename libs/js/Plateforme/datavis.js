@@ -862,44 +862,30 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data,containe
             var n = _.size(med_val);
             med_val.forEach(function(s_val){
                 var sorted_question_obj = _this.sortAndComplete(properties[s_val]);
-                $.each(sorted_question_obj,function(q_idx,q_val){
+                _.each(sorted_question_obj, function(q_val, q_idx) {
                     var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
-                    if(q_val.skipped_vote){
-                        temp.push({
-                                        'x' : infos[q_idx].time,
-                                        'y' : n,
-                                        'key' : 'pas voté',
-                                        'shape' : 'circle'
-                                    });
-                    }else if(utility == 0){
-                        temp.push({
-                                        'x' : infos[q_idx].time,
-                                        'y' : n,
-                                        'key' : 'neutre',
-                                        'shape' : 'circle'
-                                    });
-                    }else if(utility > 0){
-                        temp.push({
-                                        'x' : infos[q_idx].time,
-                                        'y' : n,
-                                        'key' : 'utile',
-                                        'shape' : 'circle'
-                                    });
-                    }else{
-                        temp.push({
-                                        'x' : infos[q_idx].time,
-                                        'y' : n,
-                                        'key' : 'inutile',
-                                        'shape' : 'circle'
-                                    });
-                    }
+                    var key = 'inutile';
+                    if (q_val.skipped_vote) {
+                        key = 'pas voté';
+                    } else if (utility == 0) {
+                        key = 'neutre';
+                    } else if (utility > 0) {
+                        key = 'utile';
+                    };
+
+                    temp.push({
+                        'x' : infos[q_idx] != undefined ? infos[q_idx].time : 0,
+                        'y' : n,
+                        'key' : key,
+                        'shape' : 'circle' });
                 });
                 n--;
             });
-            return {key: cle,
-                    color: category, 
-                    values: temp.filter( function (p) { return p.key == cle }) 
-                    };
+            return {
+                key: cle,
+                color: category,
+                values: temp.filter( function (p) { return p.key == cle; }) 
+            };
         });
     });
  } 
