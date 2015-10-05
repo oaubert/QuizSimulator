@@ -1106,11 +1106,16 @@ TestsCoco.DataVis.prototype.generateAnswerDetails = function (container,question
     var usefull = (q_prop.usefull + q_prop.useless) == 0 ? 0 : q_prop.usefull * 100 / (q_prop.usefull + q_prop.useless);
     var useless = (q_prop.usefull + q_prop.useless) == 0 ? 0 : q_prop.useless * 100 / (q_prop.usefull + q_prop.useless);
 
-    var str_detail = '<div id="questionContent" ><b>Question:</b>'+q_info.enonce+'<br><br><ol>';
-    q_info.answers.forEach(function(answer){
-        str_detail+='<li>'+answer+'</li>';
-    });
-    str_detail += '</ol></div>';
+    var str_detail = "";
+    if (q_info) {
+        str_detail = '<div id="questionContent" ><b>Question:</b>' + q_info.enonce + '<br><br><ol>';
+        q_info.answers.forEach(function(answer) {
+            str_detail+='<li>' + answer + '</li>';
+        });
+        str_detail += '</ol></div>';
+    } else {
+        str_detail = '<div id="questionContent"><b>Unknown question</b></div>';
+    }
     str_detail += '<div id="voteParRep"><h3 id="utPUt">Utile: '+_.round(usefull, 2)+'% - Pas utile: '+_.round(useless, 2)+'%</h3><svg></svg></div>';
 
     $('#'+container).append(str_detail);
