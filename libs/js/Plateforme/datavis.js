@@ -891,14 +891,18 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data, size, me
 TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date, tab_user) {
     var _this = this;
     return _.mapValues(tab_user, function(user) {
-        return [{
-            'key' : 'Note',
-            'values' : _.map(_this.sortAndComplete(user), function(session_value, session_index) {
-                var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
-                var date = new Date (tab_date[session_index]);
-                return [date, moyenne];
-            })
-        }];
+        return [
+            {
+                'key' : 'Note',
+                'values' : _(_this.sortAndComplete(user)).filter( function(session_value) {
+                    return (session_value.right_answer + session_value.wrong_answer) > 0;
+                }).map(function(session_value, session_index) {
+                    var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
+                    var date = new Date (tab_date[session_index]);
+                    return [date, moyenne];
+                }).value()
+            }
+        ];
     });
 };
 
