@@ -1,8 +1,8 @@
 /**
  * Constructor of the Tools class
- * @class     <Tools> This class gathers a bunch of usefull tools 
+ * @class     <Tools> This class gathers a bunch of usefull tools
  */
-TestsCoco.Tools = function(){};
+TestsCoco.Tools = function() {};
 
 /**
  * Generate a unique Id
@@ -15,11 +15,11 @@ TestsCoco.Tools.prototype.generateUid = function () {
           var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
           return v.toString(16);
       });
-}
-        
-TestsCoco.Tools.prototype.pickRandomNumber = function (min,max){
+};
+
+TestsCoco.Tools.prototype.pickRandomNumber = function (min,max) {
     return Math.floor(Math.random() * (max - min)) + min;
-}
+};
 
 TestsCoco.Tools.prototype.arrayUnique = function (array) {
     var a = array.concat();
@@ -31,19 +31,19 @@ TestsCoco.Tools.prototype.arrayUnique = function (array) {
     }
 
     return a;
-}
+};
 
 TestsCoco.Tools.prototype.randomDate = function (start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
+};
 
 TestsCoco.Tools.prototype.getMaxOfArray = function (numArray) {
   return Math.max.apply(null, numArray);
-}
+};
 
 TestsCoco.Tools.prototype.getValuesOfObject = function (obj) {
     return Object.keys(obj).map(function (k) { return obj[k];});
-}
+};
 
 /**
  * Generate an HTML line that allow to download a json file
@@ -54,13 +54,13 @@ TestsCoco.Tools.prototype.getValuesOfObject = function (obj) {
  * @param      {string}  text       The description of the file
  * @param      {string}  filename    The filename of the data
  */
-TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,text,filename){
+TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,text,filename) {
     $(container).empty();
-    
+
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data_to_dl, null, 4));
 
     $('<a href="data:' + data + '" download="'+filename+'.json">'+text+'</a>').appendTo(container);
-}
+};
 
 /**
  * Send data in localStorage for later use
@@ -69,15 +69,15 @@ TestsCoco.Tools.prototype.downloadJson = function (data_to_dl,container,text,fil
  * @param      {Object}  data        Data to send
  * @param      {string}  local_name  Name in the localStorage
  */
-TestsCoco.Tools.prototype.sendToLocalStorage = function(data,local_name){
-    localStorage.setItem(local_name,LZString.compress(JSON.stringify(data)));
-}
+TestsCoco.Tools.prototype.sendToLocalStorage = function(data,local_name) {
+    localStorage.setItem(local_name, LZString.compress(JSON.stringify(data)));
+};
 
 /**
  * Make the transposition of an array
  *
  * @method     transpose
- * @param      {Array}  a      
+ * @param      {Array}  a
  * @return     {Array}  The tansposed array
  */
 TestsCoco.Tools.prototype.transpose = function(a) {
@@ -111,7 +111,7 @@ TestsCoco.Tools.prototype.transpose = function(a) {
     }
 
     return t;
-};
+};;
 
 /**
  * Make the dot product of 2 vectors
@@ -121,24 +121,24 @@ TestsCoco.Tools.prototype.transpose = function(a) {
  * @param      {number[]}  v2      The second vector
  * @return     {number}  The dot product
  */
-TestsCoco.Tools.prototype.dot = function (v1,v2){
+TestsCoco.Tools.prototype.dot = function (v1,v2) {
     var res = 0;
-    for(var i = 0;i < v1.length;i++){
+    for(var i = 0;i < v1.length;i++) {
         res+= (v1[i]*v2[i]);
     }
     return res;
-}
+};
 
 /**
  * Compute the norm of a vector
  *
  * @method     norm
- * @param      {number[]}  v       The vector 
+ * @param      {number[]}  v       The vector
  * @return     {number}  The norm
  */
-TestsCoco.Tools.prototype.norm = function (v){
+TestsCoco.Tools.prototype.norm = function (v) {
     return Math.sqrt(this.dot(v,v));
-}
+};
 
 /**
  * Compute the cosine angle between 2 vectors
@@ -148,9 +148,9 @@ TestsCoco.Tools.prototype.norm = function (v){
  * @param      {number[]}  v2      The second vector
  * @return     {number}  { description_of_the_return_value }
  */
-TestsCoco.Tools.prototype.cosine = function (v1,v2){
+TestsCoco.Tools.prototype.cosine = function (v1,v2) {
     return (this.dot(v1,v2)/(this.norm(v1)*this.norm(v2)));
-}
+};
 
 /**
  * Generate an array with the number of occurence of each value of <tt>tab</tt>
@@ -162,31 +162,31 @@ TestsCoco.Tools.prototype.cosine = function (v1,v2){
  * var data = {1:0.4,
  *             2:0.1,
  *             3:0.2,
- *             4:0.3}; 
- * var arr = arrayWithProbability(data); 
+ *             4:0.3};
+ * var arr = arrayWithProbability(data);
  * console.log(arr); ( --> : [1,1,1,1,2,3,3,4,4,4])
  */
 TestsCoco.Tools.prototype.arrayWithProbability = function (tab) {
     var arr = [];
-    $.each(tab, function(index,value){
-        for(var i = 0; i < value; i++){
+    $.each(tab, function(index,value) {
+        for(var i = 0; i < value; i++) {
             arr.push(index);
         }
     });
     return arr;
-}
+};
 
 /**
  * Get a random value in an array
  *
  * @method     randomWithProbability
- * @param      {Array}  notRandomQuestions  The array 
+ * @param      {Array}  notRandomQuestions  The array
  * @return     {number}  The random value
  */
 TestsCoco.Tools.prototype.randomWithProbability = function (notRandomQuestions) {
     var idx = Math.floor(Math.random() * notRandomQuestions.length);
     return notRandomQuestions[idx];
-}
+};
 
 //Source : http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
 /**
@@ -206,7 +206,8 @@ TestsCoco.Tools.prototype.getQueryVariable = function (variable) {
         }
     }
     console.log('Query variable %s not found', variable);
-}
+    return undefined;
+};
 
 /**
  * Generate visualisation by types
@@ -218,12 +219,12 @@ TestsCoco.Tools.prototype.getQueryVariable = function (variable) {
 TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
 
     var _this = this;
-    function checkType(){
-        if(type == 'student'){
+    function checkType() {
+        if(type == 'student') {
             var user = _this.getQueryVariable('useruuid');
             var session = _this.getQueryVariable('session');
             visualizer.generateGraphStudent(user,session);
-        }else if (type == 'teacher'){
+        }else if (type == 'teacher') {
             var media = _this.getQueryVariable('mediaId');
             visualizer.generateGraphTeacher(media);
         }else {
@@ -234,15 +235,15 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
     var questions_filepath = "../Donnees_tests/analytics_data/questions_prod.json";
     var answers_filepath = "../Donnees_tests/analytics_data/answers_prod.json";
 
-    if(localStorage.getItem("sim_question") !== null && localStorage.getItem("sim_answer") !== null){
+    if(localStorage.getItem("sim_question") !== null && localStorage.getItem("sim_answer") !== null) {
         var local_question = localStorage.getItem('sim_question');
         var local_answer = localStorage.getItem('sim_answer');
         visualizer.getAllData(JSON.parse(LZString.decompress(local_question)),JSON.parse(LZString.decompress(local_answer)));
         checkType();
     }else{
         $.when($.getJSON(questions_filepath),
-                    $.getJSON(answers_filepath))
-            .done(function(questions,answers){
+               $.getJSON(answers_filepath))
+            .done(function(questions,answers) {
                 // Sanitize type info
                 _.each(questions[0].annotations, function (a) {
                     if (a.type_title == 'Quiz')
@@ -256,4 +257,4 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
                 checkType();
             });
     }
-}
+};

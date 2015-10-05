@@ -2,7 +2,7 @@
  * Constructor of the Chooser class
  *
  * @class     <Chooser> This class is the base of the choosing algorithm behind the generation of questions of the simulator
- * 
+ *
  * @param      {number}  sim_threshold  The threshold of the similarity between two questions
  */
 TestsCoco.Simulator.Chooser = function(sim_threshold){
@@ -19,19 +19,19 @@ TestsCoco.Simulator.Chooser = function(sim_threshold){
  * @param      {Object[]}  tab_ans    The array of answer to analyse
  * @param      {Object[]}  tab_quest  The array of questions to analyse
  *
- * @return     {Object}  The properties 
+ * @return     {Object}  The properties
  */
 TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_quest){
- 
+
     var ann = tab_quest.annotations;
-    
+
     var shown_properties = ["right_answer","wrong_answer","skipped_answer"];
     var votted_properties = ["usefull","useless","skipped_vote"];
-    
+
     var shown = {};
     var votted = {};
     var positive_vote = {};
-    
+
     tab_ans.forEach(function(elem){
         if(jQuery.inArray(elem.property,shown_properties) != -1){
             if(elem.subject in shown){
@@ -58,7 +58,7 @@ TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_qu
             }
         }
     });
-    
+
     tab_quest.forEach(function(elem){
         if(jQuery.inArray(elem.id,Object.keys(shown)) == -1){
             shown[elem.id] = 0;
@@ -70,7 +70,7 @@ TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_qu
             positive_vote[elem.id] = 0;
         }
     });
-    
+
     return {"shown":shown,"votted":votted,"positive_vote":positive_vote};
 }
 
@@ -100,7 +100,7 @@ TestsCoco.Simulator.Chooser.prototype.percentage = function (tab1,tab2){
  *
  * @method    getTime
  * @param      {Object}  tab
- * 
+ *
  * @return     {Object}  The times
  */
 TestsCoco.Simulator.Chooser.prototype.getTime = function (tab){
@@ -168,7 +168,7 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
     var p1=phrase1.tokenizeAndStem(),
         p2=phrase2.tokenizeAndStem();
 
-    
+
     if(p1.length == 0 || p2.length == 0)
         return 0;
 
@@ -179,7 +179,7 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
     tfidf.addDocument(p1);
     tfidf.addDocument(p2);
     var row =[];
-    
+
     var j = 0;
     words.forEach(function(elem){
         var temp = [];
@@ -189,7 +189,7 @@ TestsCoco.Simulator.Chooser.prototype.syntax_similarity = function (phrase1,phra
         row[j]=temp;
         ++j;
     })
-    
+
     var column = tool.transpose(row);
 
     return tool.cosine(column[0],column[1]);
@@ -234,14 +234,14 @@ TestsCoco.Simulator.Chooser.prototype.QuestionSimilarity = function (q1,q2){
 TestsCoco.Simulator.Chooser.prototype.similarity = function (tab) {
     var _this = this,
         ret = [];
-    
+
     $.each(tab, function(index, value) {
         ret[index] = [];
         $.each(tab, function(index2, value2) {
             ret[index][index2] = _this.QuestionSimilarity(index,index2);
         });
     });
-    
+
     return ret;
 }
 
@@ -253,19 +253,19 @@ TestsCoco.Simulator.Chooser.prototype.similarity = function (tab) {
  * @param      {Object}  questions   Set of questions
  */
 TestsCoco.Simulator.Chooser.prototype.getData = function (answers,questions){
-    
+
     //nombre de fois où la question à été vue
     /**
-    * @prop      {Array} nb_show The number of times the questions were shown 
+    * @prop      {Array} nb_show The number of times the questions were shown
     */
     this.nb_shown = this.countOccurences(answers,questions).shown;
-    
+
     //nombre total de vote que la question a reçue
     /**
     * @prop      {Array} nb_vote The total number of votes the questions received
     */
     this.nb_vote = this.countOccurences(answers,questions).votted;
-    
+
     //nombre total de votes positif que la question a reçue
     /**
     * @prop      {Array} nb_positive_vote The total number of positive votes the questions received
@@ -295,7 +295,7 @@ TestsCoco.Simulator.Chooser.prototype.getData = function (answers,questions){
     * @prop      {Array} enonces The descriptions of all questions
     */
     this.enonces = this.getEnonce(questions);
-    
+
 };
 
 /**
@@ -373,18 +373,18 @@ TestsCoco.Simulator.Chooser.prototype.choose = function (answers,questions,numbe
     var _this = this;
     var tool = new TestsCoco.Tools();
     var questionsToDisplay = [];
-    
+
     var sim = this.similarity(this.time);
 
     var scores = this.getAllScores(questions);
-    
+
     var probas = this.getAllProba(questions,scores);
 
     var allQuestions = tool.arrayWithProbability(scores);
-    
+
     do{
         var quest = tool.randomWithProbability(allQuestions);
-       
+
         if (!_.any(questionsToDisplay,function(value){
                                                 return sim[quest][value] > this.similarity_threshold;
                                         })
@@ -392,9 +392,9 @@ TestsCoco.Simulator.Chooser.prototype.choose = function (answers,questions,numbe
             questionsToDisplay.push(quest);
             allQuestions = _.filter(allQuestions,function(id){return id!=quest});
         }
-        
+
     }while(questionsToDisplay.length < numberOfQuestions || !allQuestions)
-    
+
     return questionsToDisplay;
 }
 
@@ -412,13 +412,13 @@ TestsCoco.Simulator.Chooser.prototype.getChoosenQuestions = function (answers,qu
     var disp = this.choose(answers,questions,numberOfQuestions);
 
     var choosenQuestions = [];
-    
+
     $.each(questions, function(index,value){
         if($.inArray(value.id,disp) != -1){
             choosenQuestions.push(value);
         }
     });
-    
+
     return {annotations : choosenQuestions};
 }
 
@@ -438,6 +438,6 @@ TestsCoco.Simulator.Chooser.prototype.main = function (answers,questions,numberO
     var medias = _.groupBy(questions.annotations,'media');
 
     this.getData(answers,medias[media]);
-    
+
     return this.getChoosenQuestions(answers,medias[media],numberOfQuestions);
 }

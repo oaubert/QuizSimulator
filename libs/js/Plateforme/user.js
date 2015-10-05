@@ -7,7 +7,7 @@
  * @param      {String}  profile        The profile of the user
  * @param      {Date[]}  session_dates  The session dates of the user
  */
-TestsCoco.User = function(name,profile,session_dates){
+TestsCoco.User = function(name,profile,session_dates) {
     this.name = name;
     this.profile = profile;
     this.session_dates = session_dates;
@@ -21,7 +21,7 @@ TestsCoco.User = function(name,profile,session_dates){
     this.date_property.dayInMillisecond = 86400000;
     this.date_property.hourInMillisecond = 3600000;
     this.date_property.minuteInMillisecond = 60000;
-}
+};
 
 /**
  * Setter for the session date of the user
@@ -37,7 +37,7 @@ TestsCoco.User.prototype.setSessionDates = function(start,nb_tours,documents) {
     var _this = this;
     var tool = new TestsCoco.Tools();
     var dates = [];
-    
+
     var cases = {
       "regular": function(tab) {
                     var doc = _.random(documents.length-1);
@@ -81,4 +81,4 @@ TestsCoco.User.prototype.setSessionDates = function(start,nb_tours,documents) {
     };
 
     this.session_dates = cases[ this.profile ] ? cases[ this.profile ](dates) : cases._default();
-}
+};

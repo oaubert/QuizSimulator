@@ -2,7 +2,7 @@
  * Constructor of the Answers class
  *
  * @class     <Answers> This class allows the simulator to answer a set of questions, and also make votes on the questions
- * 
+ *
  */
 TestsCoco.Simulator.Answers = function(){
     this.dayInMillisecond = 86400000;
@@ -15,7 +15,7 @@ TestsCoco.Simulator.Answers = function(){
  * Generate the timecode of the answer
  *
  * @method    generateTime
- * @param      {Date}  session_start  
+ * @param      {Date}  session_start
  * @param      {Object}  question       The question to answer
  * @param      {String}  profile        The user profile
  *
@@ -43,8 +43,8 @@ TestsCoco.Simulator.Answers.prototype.generateTime = function (session_start,que
  * @method    generateAnswer
  * @param      {Object}  question       The question to answer
  * @param      {Object}  user           The user who answer
- * @param      {Date}    session_start  
- * @param      {number}  session_id     
+ * @param      {Date}    session_start
+ * @param      {number}  session_id
  *
  * @return     {Object}  The answer of the user
  */
@@ -64,7 +64,7 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (question,user,s
                                 return (value.correct) ? -1 : index;
                             }).filter(function(i){return i>-1}));
         }
-       
+
     }else{
         ret.property = "skipped_answer";
         ret.value = 0;
@@ -78,8 +78,8 @@ TestsCoco.Simulator.Answers.prototype.generateAnswer = function (question,user,s
  * @method    generateVote
  * @param      {Object}  question       The question to answer
  * @param      {Object}  user           The user who answer
- * @param      {Date}    session_start  
- * @param      {number}  session_id     
+ * @param      {Date}    session_start
+ * @param      {number}  session_id
  *
  * @return     {Array}   The vote and the answer of the user
  */
@@ -90,7 +90,7 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     vote.subject = question.id;
     vote.date = this.generateTime(session_start,question,user.profile);
     vote.sessionId = session_id;
-    
+
     var ans = this.generateAnswer(question,user,session_start,session_id);
     if(ans.property != "skipped_answer"){
         if(Math.random() < user.bias.vote_rate){
@@ -109,7 +109,7 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     }else{
         retour = [ans];
     }
-    
+
     return retour;
 }
 
@@ -119,8 +119,8 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
  * @method    generate
  * @param      {Object}  question       The question to answer
  * @param      {Object}  user           The user who answer
- * @param      {Date}    session_start  
- * @param      {number}  session_id     
+ * @param      {Date}    session_start
+ * @param      {number}  session_id
  *
  * @return     {Array}   All the answers of the user
  */

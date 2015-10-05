@@ -77,7 +77,7 @@ TestsCoco.Simulator.Questions.prototype.getAllWords = function (data){
  *
  * @method     filterStopWords
  * @param      {string}  str     The string to filter
- * @return     {boolean} 
+ * @return     {boolean}
  */
 TestsCoco.Simulator.Questions.prototype.filterStopWords = function (str){
     return !($.inArray(str,this) > -1);
@@ -111,8 +111,8 @@ TestsCoco.Simulator.Questions.prototype.getFrequencies = function (arr){
  * Generate a random time
  *
  * @method     generateTime
- * @param      {Object}  obj    
- * @return     {Date}  
+ * @param      {Object}  obj
+ * @return     {Date}
  */
 TestsCoco.Simulator.Questions.prototype.generateTime = function (obj){
     return _.random(obj.deb,obj.fin);
@@ -132,13 +132,13 @@ TestsCoco.Simulator.Questions.prototype.generateTxt = function (tab,l_min,l_max,
     var words;
     var txt="";
     var long = _.random(l_min,l_max);
-    
+
     if((tab_other != null || tab_other.length != 0 || tab_other != undefined) && (tab.length < long)){
         words = tab.concat(tab_other);
     }else{
         words = tab;
     }
-    
+
     for(var i=0; i<=long; i++){
             var index = _.random(words.length);
             txt+= words[index]+" ";
@@ -203,7 +203,7 @@ TestsCoco.Simulator.Questions.prototype.generate = function (tab,media,nombre,lo
        var obj_av = tab[idx-1];
        var obj_ap = tab[idx+1];
        var time = _this.generateTime(obj);
-       var mots; 
+       var mots;
        var t1 = obj.texte, t2, t3;
        if(idx > 0 && idx < tab.length - 1){
            t2 = tab[idx-1].texte;
@@ -250,12 +250,12 @@ TestsCoco.Simulator.Questions.prototype.main = function (stop_word1,stop_word2,d
         var donnees = _this.getDonnees(elem);
 
         _this.filtering(donnees,stopwords_fr);
-        
+
         var all_words = other ? _this.getAllWords(donnees) : [];
-        
+
         allQuest = allQuest.concat(_this.generate(donnees,media,nb_questions,5,10,2,5,all_words));
     });
-    
+
     return {"annotations" : allQuest};
-    
+
 }
