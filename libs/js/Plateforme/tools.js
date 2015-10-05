@@ -220,7 +220,7 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
     var _this = this;
     function checkType(){
         if(type == 'student'){
-            var user = _this.getQueryVariable('username');
+            var user = _this.getQueryVariable('useruuid');
             var session = _this.getQueryVariable('session');
             visualizer.generateGraphStudent(user,session);
         }else if (type == 'teacher'){

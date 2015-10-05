@@ -208,11 +208,11 @@ TestsCoco.DataVis.prototype.combine = function(tab){
 };
 
 TestsCoco.DataVis.prototype.getUsers = function(answers){
-    return _.keys(_.groupBy(answers,'username'));
+    return _.keys(_.groupBy(answers,'useruuid'));
 };
 
 TestsCoco.DataVis.prototype.getSessionByUser = function(answers){
-    return _.mapValues(_.groupBy(answers,'username'),function(val){
+    return _.mapValues(_.groupBy(answers,'useruuid'),function(val){
                 return _.keys(_.groupBy(val,'session'));
             });
 };
@@ -1034,14 +1034,14 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.propertiesByQuestion = this.getPropertiesByKey(answers,'subject','property');
     this.propertiesBySession = this.getPropertiesByKey(answers,'session','property');
 
-    this.userBySession = this.getPropertiesByKey(answers,'session','username');
-    this.userByQuestion = this.getPropertiesByKey(answers,'subject','username');
+    this.userBySession = this.getPropertiesByKey(answers,'session','useruuid');
+    this.userByQuestion = this.getPropertiesByKey(answers,'subject','useruuid');
 
-    this.propertiesByUserByQuestion = this.aggregate(answers,'subject','username','property');
-    this.propertiesByUserBySession = this.aggregate(answers,'session','username','property');
+    this.propertiesByUserByQuestion = this.aggregate(answers,'subject','useruuid','property');
+    this.propertiesByUserBySession = this.aggregate(answers,'session','useruuid','property');
 
-    this.propertiesByQuestionByUser = this.aggregate(answers,'username','subject','property');
-    this.propertiesBySessionByUser = this.aggregate(answers,'username','session','property');
+    this.propertiesByQuestionByUser = this.aggregate(answers,'useruuid','subject','property');
+    this.propertiesBySessionByUser = this.aggregate(answers,'useruuid','session','property');
 
     this.propertiesByQuestionBySession = this.aggregate(answers,'session','subject','property');
 
@@ -1076,15 +1076,15 @@ TestsCoco.DataVis.prototype.getAllData = function (questions,answers) {
     this.data_Scatter_VisuAlgo = this.dataForScatter_VisuAlgo(this.sessionByMedia,this.propertiesByQuestionBySession,this.info_questions,this.session_date);
 };
 
-TestsCoco.DataVis.prototype.generateGraphStudent = function(username,session_number){
+TestsCoco.DataVis.prototype.generateGraphStudent = function(useruuid,session_number){
 
-    this.makeHistogram_AnsVote(this.data_Histo_answer[username][session_number],'bonneMauvaiseSkip','Pourcentage de réponses');
+    this.makeHistogram_AnsVote(this.data_Histo_answer[useruuid][session_number],'bonneMauvaiseSkip','Pourcentage de réponses');
 
-    this.makeHistogram_AnsVote(this.data_Histo_vote[username][session_number],'utilePasUtile','Pourcentage de votes');
+    this.makeHistogram_AnsVote(this.data_Histo_vote[useruuid][session_number],'utilePasUtile','Pourcentage de votes');
 
-    this.makeBulletChart(this.data_Bullet[username],'bulletChartAllStudents');
+    this.makeBulletChart(this.data_Bullet[useruuid],'bulletChartAllStudents');
 
-    this.makeScatterGraph_Student(this.data_Scatter_HistoStudent[username],'histoStudentAllVideos');
+    this.makeScatterGraph_Student(this.data_Scatter_HistoStudent[useruuid],'histoStudentAllVideos');
 };
 
 TestsCoco.DataVis.prototype.generateGraphTeacher = function(media_id){
