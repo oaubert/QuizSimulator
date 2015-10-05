@@ -248,6 +248,10 @@ TestsCoco.Tools.prototype.visualize = function (visualizer,type) {
                     if (a.type_title == 'Quiz')
                         a.type = 'Quiz';
                 });
+                _.each(answers[0], function (ans) {
+                    if (ans.session === undefined)
+                        ans.session = ans.date.slice(0, 10);
+                });
                 visualizer.getAllData(questions[0],answers[0]);
                 checkType();
             });
