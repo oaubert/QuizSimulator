@@ -582,18 +582,19 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJusteByTps = function(tab_medias
 
 TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates,sessionbymedia,properties){
     var _this = this;
-    return _.mapValues(sessionbymedia,function(media_val,media_id){
-        return _.map(properties,function(user_value,user_id){
+    return _.mapValues(sessionbymedia, function(media_val, media_id) {
+        return _.map(properties, function(user_value, user_id) {
             var sorted_tab = _this.sortAndComplete(user_value);
-            var values = _.map(sorted_tab,function(session_val,session_id){
-                    if (media_val.indexOf(session_id) > -1)
-                        return {
-                            'x' : new Date(dates[session_id]),
-                            'y' : (session_val.right_answer *100) / (session_val.right_answer + session_val.wrong_answer),
-                            'shape' : 'circle'
-                        };
-                }).filter(function (v) { return v !== undefined; });
-            var xSerie = _.map(values,function(val){return val.x.getTime();});
+            var values = _.map(
+                _.filter(sorted_tab, function(session_val, session_id) {
+                    return media_val.indexOf(session_id) > -1;
+                }), function(session_val, session_id) {
+                    return {
+                        'x' : new Date(dates[session_id]),
+                        'y' : (session_val.right_answer *100) / (session_val.right_answer + session_val.wrong_answer),
+                        'shape' : 'circle'
+                    };
+                });
             var ySerie = _.pluck(values, 'y');
             var leastData = _this.leastSquares(xSerie,ySerie);
             return {
