@@ -1161,6 +1161,38 @@ TestsCoco.DataVis.prototype.makeBulletChart = function(data, container) {
 };
 
 /**
+ * Convert numerical answer index into string signature.
+ * i.e. 2 -> "010"
+ */
+TestsCoco.DataVis.prototype.homogeneizeAnswers = function (answers, annotations) {
+    answers = _(answers)
+        .filter(function (ans) {
+            // Remove answers with undefined values:
+            return (! ((ans.property == 'right_answer' || ans.property == 'wrong_answer') && ans.value === undefined));
+        }
+               )
+        .map(function (ans) {
+            // Homogeneize answer values: convert numbers to signature string
+            if ((ans.property == 'right_answer' || ans.property == 'wrong_answer') && typeof ans.value == "number") {
+                // a.value is an index. Convert it to the signature
+                var a = annotations[ans.subject];
+                var len = ans.value + 1;
+                if (a !== undefined) {
+                    len = a.content.data.answers.length;
+                }
+                var signature = _.range(len).map(function (i) {
+                    return ans.value == i ? "1" : "0";
+                }).join("");
+                // Replace the answer value
+                ans.value = signature;
+            };
+            return ans;
+        })
+        .value();
+    return answers;
+};
+
+/**
  * Get all the data needed to make all the graphs
  *
  * @method     getAllData
@@ -1169,6 +1201,9 @@ TestsCoco.DataVis.prototype.makeBulletChart = function(data, container) {
  */
 TestsCoco.DataVis.prototype.getAllData = function (questions, answers) {
     this.annotations = questions.annotations;
+    this.annotationDict = _.indexBy(this.annotations, 'id');
+    answers = this.homogeneizeAnswers(answers, this.annotationDict);
+    this.answers = answers;
 
     this.medias = _.groupBy(this.annotations, 'media');
 
