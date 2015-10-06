@@ -15,7 +15,7 @@ TestsCoco.User = function(name,profile,session_dates) {
         answer_rate : 0.7,
         vote_rate : 0.9,
         right_answer_rate : 0.8,
-        usefull_vote_rate : 0.7
+        useful_vote_rate : 0.7
     };
     this.date_property = {};
     this.date_property.dayInMillisecond = 86400000;

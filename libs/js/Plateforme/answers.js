@@ -94,8 +94,8 @@ TestsCoco.Simulator.Answers.prototype.generateVote = function (question,user,ses
     var ans = this.generateAnswer(question,user,session_start,session_id);
     if(ans.property != "skipped_answer"){
         if(Math.random() < user.bias.vote_rate){
-            if(Math.random() < user.bias.usefull_vote_rate){
-                vote.property = "usefull";
+            if(Math.random() < user.bias.useful_vote_rate){
+                vote.property = "useful";
                 vote.value = 1;
             }else{
                 vote.property = "useless";

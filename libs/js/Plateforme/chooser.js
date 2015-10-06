@@ -26,7 +26,7 @@ TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_qu
     var ann = tab_quest.annotations;
 
     var shown_properties = ["right_answer","wrong_answer","skipped_answer"];
-    var votted_properties = ["usefull","useless","skipped_vote"];
+    var votted_properties = ["useful","useless","skipped_vote"];
 
     var shown = {};
     var votted = {};
@@ -49,7 +49,7 @@ TestsCoco.Simulator.Chooser.prototype.countOccurences = function (tab_ans,tab_qu
                 votted[elem.subject] = 1;
             }
         }
-        if(elem.property=="usefull"){
+        if(elem.property=="useful"){
             if(elem.subject in positive_vote){
                 positive_vote[elem.subject] = ++positive_vote[elem.subject];
             }
@@ -140,7 +140,7 @@ TestsCoco.Simulator.Chooser.prototype.getEnonce = function (tab){
  * @return     {Object}  The votes count
  */
 TestsCoco.Simulator.Chooser.prototype.positive = function (tab){
-    var votted_properties = ["usefull","useless","skipped_vote"];
+    var votted_properties = ["useful","useless","skipped_vote"];
     var res={};
     tab.forEach(function(elem){
         if($.inArray(elem.property,votted_properties) != -1){

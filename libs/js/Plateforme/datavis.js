@@ -16,7 +16,7 @@ TestsCoco.DataVis = function(container) {
  * @return     {Object}  The completed and ordered object
  */
 TestsCoco.DataVis.prototype.sortAndComplete = function (tab) {
-    var order = ['right_answer', 'wrong_answer', 'skipped_answer', 'usefull', 'useless', 'skipped_vote'];
+    var order = ['right_answer', 'wrong_answer', 'skipped_answer', 'useful', 'useless', 'skipped_vote'];
     return _.mapValues(tab, function(value) {
         var obj = {};
         order.forEach(function(elem) {
@@ -121,14 +121,14 @@ TestsCoco.DataVis.prototype.getPercentages = function(obj) {
     obj.all_answer=(obj.right_answer+obj.wrong_answer);
     obj.all_answer_and_skipped=(obj.right_answer+obj.wrong_answer);
 
-    obj.all_utility_answer=(obj.usefull + obj.useless);
-    obj.all_utility_answer_and_skipped=(obj.usefull + obj.useless + obj.skipped_vote);
+    obj.all_utility_answer=(obj.useful + obj.useless);
+    obj.all_utility_answer_and_skipped=(obj.useful + obj.useless + obj.skipped_vote);
 
     obj.right_answer = obj.right_answer * 100 / (obj.all_answer);
     obj.wrong_answer = obj.wrong_answer * 100 / (obj.all_answer);
     obj.skipped_answer = obj.skipped_answer * 100 / (obj.all_answer_and_skipped);
 
-    obj.usefull = obj.usefull * 100 / (obj.all_utility_answer);
+    obj.useful = obj.useful * 100 / (obj.all_utility_answer);
     obj.useless = obj.useless * 100 / (obj.all_utility_answer);
     obj.skipped_vote = obj.skipped_vote * 100 / (obj.all_utility_answer_and_skipped);
 
@@ -169,7 +169,7 @@ TestsCoco.DataVis.prototype.modifyLabel = function(str) {
         right_answer: 'Bonnes',
         wrong_answer: 'Mauvaises',
         skipped_answer: 'Passées',
-        usefull: 'Utiles',
+        useful: 'Utiles',
         useless: 'Inutiles',
         skipped_vote: 'Passés'
     };
@@ -182,7 +182,7 @@ TestsCoco.DataVis.prototype.getColor = function(str, type) {
             right_answer: '#6B8E23',
             wrong_answer: '#B22222',
             skipped_answer: 'gray',
-            usefull: '#6B8E23',
+            useful: '#6B8E23',
             useless: '#B22222',
             skipped_vote: 'gray'
         },
@@ -190,7 +190,7 @@ TestsCoco.DataVis.prototype.getColor = function(str, type) {
             'right_answer': 'green',
             'wrong_answer': 'red',
             'skipped_answer': '#C0C0C0',
-            'usefull': 'green',
+            'useful': 'green',
             'useless': 'red',
             'skipped_vote': '#C0C0C0'
         }
@@ -296,7 +296,7 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function() {
             var right = 0,
                 wrong = 0,
                 skip_a = 0,
-                usefull = 0,
+                useful = 0,
                 useless = 0,
                 skip_v = 0;
             _.each(value, function(q_value, q_index) {
@@ -304,14 +304,14 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function() {
                     right += q_value.right_answer ? q_value.right_answer : 0;
                     wrong += q_value.wrong_answer ? q_value.wrong_answer : 0;
                     skip_a += q_value.skipped_answer ? q_value.skipped_answer : 0;
-                    usefull += q_value.usefull ? q_value.usefull : 0;
+                    useful += q_value.useful ? q_value.useful : 0;
                     useless += q_value.useless ? q_value.useless : 0;
                     skip_v += q_value.skipped_vote ? q_value.skipped_vote : 0;
                 } else {
                     right += 0,
                     wrong += 0,
                     skip_a += 0,
-                    usefull += 0,
+                    useful += 0,
                     useless += 0,
                     skip_v += 0;
                 }
@@ -320,7 +320,7 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function() {
                 'right_answer': right,
                 'wrong_answer': wrong,
                 'skipped_answer': skip_a,
-                'usefull': usefull,
+                'useful': useful,
                 'useless': useless,
                 'skipped_vote': skip_v
             };
@@ -542,7 +542,7 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJuste = function(tab_medias) {
             'key' : key,
             'values' : _.map(sorted_question_obj, function(q_val, q_idx) {
                 return {
-                    'x' : (q_val.usefull + q_val.useless)==0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless),
+                    'x' : (q_val.useful + q_val.useless)==0 ? 0 : (q_val.useful - q_val.useless) / (q_val.useful + q_val.useless),
                     'y' : (q_val.right_answer + q_val.wrong_answer)==0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer),
                     'shape' : 'circle',
                     'question_id' : q_idx
@@ -567,7 +567,7 @@ TestsCoco.DataVis.prototype.dataForScatter_UtileJusteByTps = function(tab_medias
                     if (key == 'Justesse') {
                         ordonnee = (q_val.right_answer + q_val.wrong_answer) == 0 ? 0: (q_val.right_answer - q_val.wrong_answer) / (q_val.right_answer + q_val.wrong_answer);
                     } else {
-                        ordonnee = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                        ordonnee = (q_val.useful + q_val.useless) == 0 ? 0 : (q_val.useful - q_val.useless) / (q_val.useful + q_val.useless);
                     }
                     return {
                         'x':  infos[q_idx].time,
@@ -811,7 +811,7 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data, contain
             med_val.forEach(function(s_val) {
                 var sorted_question_obj = _this.sortAndComplete(properties[s_val]);
                 _.each(sorted_question_obj, function(q_val, q_idx) {
-                    var utility = (q_val.usefull + q_val.useless) == 0 ? 0 : (q_val.usefull - q_val.useless) / (q_val.usefull + q_val.useless);
+                    var utility = (q_val.useful + q_val.useless) == 0 ? 0 : (q_val.useful - q_val.useless) / (q_val.useful + q_val.useless);
                     var key = 'inutile';
                     if (q_val.skipped_vote) {
                         key = 'pas voté';
@@ -1063,7 +1063,7 @@ TestsCoco.DataVis.prototype.getAllData = function (questions, answers) {
 
     // Data For Student
     this.data_Histo_answer = this.dataForHisto_AnsVote(['right_answer', 'wrong_answer', 'skipped_answer'], this.propertiesByMedia, this.propertiesBySessionByUser, this.mediaBySession);
-    this.data_Histo_vote = this.dataForHisto_AnsVote(['usefull', 'useless', 'skipped_vote'], this.propertiesByMedia, this.propertiesBySessionByUser, this.mediaBySession);
+    this.data_Histo_vote = this.dataForHisto_AnsVote(['useful', 'useless', 'skipped_vote'], this.propertiesByMedia, this.propertiesBySessionByUser, this.mediaBySession);
     this.data_Bullet = this.dataForBullet(this.getUsersAverage(this.propertiesBySessionByUser, this.sessionByMedia), this.getGeneralAverage(this.medias));
     this.data_Scatter_HistoStudent = this.dataForScatter_HistoStudent(this.session_date, this.sessionByMedia, this.propertiesBySessionByUser);
 
@@ -1107,8 +1107,8 @@ TestsCoco.DataVis.prototype.generateAnswerDetails = function (container, questio
 
     var q_info = this.info_questions[question_id];
     var q_prop = this.sortAndComplete(this.propertiesByQuestion)[question_id];
-    var usefull = (q_prop.usefull + q_prop.useless) == 0 ? 0 : q_prop.usefull * 100 / (q_prop.usefull + q_prop.useless);
-    var useless = (q_prop.usefull + q_prop.useless) == 0 ? 0 : q_prop.useless * 100 / (q_prop.usefull + q_prop.useless);
+    var useful = (q_prop.useful + q_prop.useless) == 0 ? 0 : q_prop.useful * 100 / (q_prop.useful + q_prop.useless);
+    var useless = (q_prop.useful + q_prop.useless) == 0 ? 0 : q_prop.useless * 100 / (q_prop.useful + q_prop.useless);
 
     var str_detail = "";
     if (q_info) {
@@ -1120,7 +1120,7 @@ TestsCoco.DataVis.prototype.generateAnswerDetails = function (container, questio
     } else {
         str_detail = '<div id="questionContent"><b>Unknown question</b></div>';
     }
-    str_detail += '<div id="voteParRep"><h3 id="utPUt">Utile: '+_.round(usefull, 2)+'% - Pas utile: '+_.round(useless, 2)+'%</h3><svg></svg></div>';
+    str_detail += '<div id="voteParRep"><h3 id="utPUt">Utile: '+_.round(useful, 2)+'% - Pas utile: '+_.round(useless, 2)+'%</h3><svg></svg></div>';
 
     $('#'+container).append(str_detail);
 
