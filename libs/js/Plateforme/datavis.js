@@ -40,7 +40,7 @@ TestsCoco.DataVis.prototype.sortAndComplete = function (tab) {
 TestsCoco.DataVis.prototype.getSessionDate = function(tab) {
     var group = _.groupBy(tab, 'session');
     return _.mapValues(group, function(value) {
-        return _.first(value).date;
+        return new Date(_.first(value).date);
     });
 };
 
@@ -590,8 +590,8 @@ TestsCoco.DataVis.prototype.dataForScatter_NoteStudent = function(dates, session
                     return media_val.indexOf(session_id) > -1;
                 }), function(session_val, session_id) {
                     return {
-                        'x' : new Date(dates[session_id]),
-                        'y' : (session_val.right_answer *100) / (session_val.right_answer + session_val.wrong_answer),
+                        'x' : dates[session_id],
+                        'y' : (session_val.right_answer * 100) / (session_val.right_answer + session_val.wrong_answer),
                         'shape' : 'circle'
                     };
                 });
@@ -621,7 +621,7 @@ TestsCoco.DataVis.prototype.dataForScatter_HistoStudent = function(dates, sessio
             _.each(sorted_tab, function(session_value, session_idx) {
                 if(_.indexOf(session_idx, med_value) != -1) {
                     var point = {};
-                    point['x'] = new Date(dates[session_idx]);
+                    point['x'] = dates[session_idx];
                     point['y'] = (session_value.right_answer *100) / (session_value.right_answer + session_value.wrong_answer);
                     point['shape'] = 'circle';
                     medias['values'].push(point);
@@ -894,13 +894,15 @@ TestsCoco.DataVis.prototype.dataForLineGraph = function(tab_date, tab_user) {
         return [
             {
                 'key' : 'Note',
-                'values' : _(_this.sortAndComplete(user)).filter( function(session_value) {
-                    return (session_value.right_answer + session_value.wrong_answer) > 0;
-                }).map(function(session_value, session_index) {
+                'values' : _(_this.sortAndComplete(user)).map(function(session_value, session_index) {
+                    var date = tab_date[session_index];
                     var moyenne = (session_value.right_answer * 100) / (session_value.right_answer + session_value.wrong_answer);
-                    var date = new Date (tab_date[session_index]);
-                    return [date, moyenne];
-                }).value()
+                    if (date !== undefined && !isNaN(moyenne)) {
+                        return [ date, moyenne ];
+                    } else {
+                        return undefined;
+                    }
+                }).filter(function (v) { return v !== undefined; }).value()
             }
         ];
     });
@@ -958,7 +960,7 @@ TestsCoco.DataVis.prototype.makeSparkLine = function(data, container) {
 
         nv.addGraph(function() {
             var chart = nv.models.sparklinePlus();
-            chart.margin({left:70})
+            chart.margin({left: 0})
                 .x(function(d) { return d[0]; })
                 .y(function(d) { return d[1]; })
                 .showLastValue(true)
