@@ -644,7 +644,6 @@ TestsCoco.DataVis.prototype.makeScatterGraph_Student = function(data, container)
             .yDomain([0, 100])
             .showDistX(true)
             .showDistY(true)
-            .useVoronoi(true)
             .color(d3.scale.category10().range())
             .duration(300);
 
@@ -678,7 +677,6 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJusteByTps = function(data, me
             .yDomain([-1, 1])
             .showDistX(true)
             .showDistY(true)
-            .useVoronoi(true)
             .color(d3.scale.category10().range())
             .duration(300);
 
@@ -734,7 +732,6 @@ TestsCoco.DataVis.prototype.makeScatterGraph_UtileJuste = function(data, contain
             .yDomain([-1, 1])
             .showXAxis(true)
             .showYAxis(true)
-            .useVoronoi(true)
             .color(d3.scale.category10().range())
             .duration(300);
 
@@ -861,7 +858,6 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data, size, me
             .yDomain([(size+2), 0])
             .showDistX(true)
             .showDistY(true)
-            .useVoronoi(true)
             .color(d3.scale.category10().range())
             .duration(300);
 
@@ -921,8 +917,7 @@ TestsCoco.DataVis.prototype.makeLineGraph = function(data, container) {
             .x(function(d) { return d[0]; })
             .y(function(d) { return d[1]; })
             .color(d3.scale.category10().range())
-            .duration(300)
-            .clipVoronoi(false);
+            .duration(300);
 
         chart.xAxis.axisLabel('Date');
         chart.yAxis.axisLabel('Note');
