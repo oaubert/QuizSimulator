@@ -92,19 +92,25 @@ TestsCoco.DataVis.prototype.aggregate = function(tab, key1, key2, key3) {
  * @return     {Object}  Object with first key, the question id, and second key, the answer property. The values are the number of each property.
  */
 TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab){
-    var obj = {};
-    var valueByPropertyByQuestion = this.aggregate(tab, 'subject', 'property', 'value');
-    _.each(valueByPropertyByQuestion, function(value, index) {
-        obj[index] = {};
-        _.each(value, function(value2, index2) {
-            if(index2.match(/right_answer|wrong_answer/gi) != null) {
-                _.each(value2, function(value3, index3) {
-                    obj[index][index3]=value3;
-                });
-            }
-        });
-    });
-    return obj;
+    return _(tab)
+        .filter( function (ans) {
+            // Keep only right/wrong answers
+            return (ans.property == 'right_answer' || ans.property == 'wrong_answer');
+        })
+        .groupBy('subject')
+        .mapValues( function (arr) {
+            return _.countBy(
+                // Count by question index
+                _.flatten(
+                    // Flatten the list of question  indexes
+                    _.map(
+                        // For each signature
+                        _.pluck(arr, 'value'),
+                        function (sig) {
+                            // Convert signature to array of question indexes
+                            return _.map(sig, function (c, i) { return (c == "1" ? i : undefined); } ).filter( function (v) { return v !== undefined; }); })));
+        })
+        .value();
 };
 
 /**
