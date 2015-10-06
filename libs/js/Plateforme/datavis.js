@@ -45,7 +45,7 @@ TestsCoco.DataVis.prototype.getSessionDate = function(tab) {
 };
 
 /**
- * Count the properties (<tt>key2</tt>) in data of <tt>tab </tt> grouped by <tt>key1</tt>
+ * Count the properties (<tt>key2</tt>) in data of <tt>tab</tt> grouped by <tt>key1</tt>
  *
  * @method     getPropertiesByKey
  * @param      {Object}  tab     Initial object
@@ -60,11 +60,21 @@ TestsCoco.DataVis.prototype.getPropertiesByKey = function(tab, key, key2) {
     });
 };
 
+/**
+ * Count the properties (<tt>key3</tt>) in data of <tt>tab</tt> grouped first by <tt>key2</tt> and by <tt>key2</tt>
+ *
+ * @method     aggregate
+ * @param      {Object}  tab     Initial object
+ * @param      {string}  key1    First key for grouping
+ * @param      {string}  key2    Second key for grouping
+ * @param      {string}  key3    Third key for counting
+ * @return     {Object}
+ */
 TestsCoco.DataVis.prototype.aggregate = function(tab, key1, key2, key3) {
     var group = _.groupBy(tab, key1);
 
-    var groupByKey2 = _.mapValues(group, function(value) {
-        return _.groupBy(value, key2);
+    var groupByKey2 = _.mapValues(group,function(value){
+        return _.groupBy(value,key2);
     });
 
     return _.mapValues(groupByKey2, function(value) {
@@ -74,7 +84,14 @@ TestsCoco.DataVis.prototype.aggregate = function(tab, key1, key2, key3) {
     });
 };
 
-TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab) {
+/**
+ * Get the number of answers by questions
+ *
+ * @method     getNbAnswerByQuestion
+ * @param      {Object}  tab     Dataset of answers
+ * @return     {Object}  Object with first key, the question id, and second key, the answer property. The values are the number of each property.
+ */
+TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab){
     var obj = {};
     var valueByPropertyByQuestion = this.aggregate(tab, 'subject', 'property', 'value');
     _.each(valueByPropertyByQuestion, function(value, index) {
@@ -90,8 +107,14 @@ TestsCoco.DataVis.prototype.getNbAnswerByQuestion = function(tab) {
     return obj;
 };
 
+/**
+ * Get the informations needed for each questions, in order to display them.
+ *
+ * @method     getInfoQuestions
+ * @param      {Array}  annotations  Set of annotations
+ * @return     {Object}  Informations about each questions
+ */
 TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations) {
-
     var ret = {};
 
     _.each(annotations, function(value, index) {
@@ -117,12 +140,19 @@ TestsCoco.DataVis.prototype.getInfoQuestions = function(annotations) {
     return ret;
 };
 
+/**
+ * Get the percentages of values of properties of an object
+ *
+ * @method     getPercentages
+ * @param      {Object}  obj     Initial object
+ * @return     {Object}  Object with percentages
+ */
 TestsCoco.DataVis.prototype.getPercentages = function(obj) {
     obj.all_answer=(obj.right_answer+obj.wrong_answer);
-    obj.all_answer_and_skipped=(obj.right_answer+obj.wrong_answer);
+    obj.all_answer_and_skipped=(obj.right_answer+obj.wrong_answer+obj.skipped_answer);
 
-    obj.all_utility_answer=(obj.useful + obj.useless);
-    obj.all_utility_answer_and_skipped=(obj.useful + obj.useless + obj.skipped_vote);
+    obj.all_utility_answer=(obj.usefull + obj.useless);
+    obj.all_utility_answer_and_skipped=(obj.usefull + obj.useless + obj.skipped_vote);
 
     obj.right_answer = obj.right_answer * 100 / (obj.all_answer);
     obj.wrong_answer = obj.wrong_answer * 100 / (obj.all_answer);
@@ -135,6 +165,14 @@ TestsCoco.DataVis.prototype.getPercentages = function(obj) {
     return obj;
 };
 
+/**
+ * Calculate the least squares of two series
+ *
+ * @method     leastSquares
+ * @param      {Array}  xSeries  The first series
+ * @param      {Array}  ySeries  The second series
+ * @return     {Array}   Array that contains : slope, intercept ans rSquare of the least squares
+ */
 TestsCoco.DataVis.prototype.leastSquares = function (xSeries, ySeries) {
     var reduceSumFunc = function(prev, cur) { return prev + cur; };
 
@@ -160,10 +198,24 @@ TestsCoco.DataVis.prototype.leastSquares = function (xSeries, ySeries) {
     return [slope, intercept, rSquare];
 };
 
+/**
+ * Constructs a RegExp
+ *
+ * @method     makeRegExp
+ * @param      {Array}  tab     Elements of the RegExp
+ * @return     {RegExp}  The RegExp generated
+ */
 TestsCoco.DataVis.prototype.makeRegExp = function (tab) {
     return new RegExp(tab.join("|"), 'gi');
 };
 
+/**
+ * Make the french traduction of the label for the answers
+ *
+ * @method     modifyLabel
+ * @param      {string}  str     Initial label
+ * @return     {string}  Modified label
+ */
 TestsCoco.DataVis.prototype.modifyLabel = function(str) {
     var label = {
         right_answer: 'Bonnes',
@@ -176,6 +228,14 @@ TestsCoco.DataVis.prototype.modifyLabel = function(str) {
     return label[str];
 };
 
+/**
+ * Associate a color to a label.
+ *
+ * @method     getColor
+ * @param      {strinf}  str     The label
+ * @param      {string}  type    Type of category
+ * @return     {string}  Color code
+ */
 TestsCoco.DataVis.prototype.getColor = function(str, type) {
     var colors = {
         'user': {
@@ -198,6 +258,13 @@ TestsCoco.DataVis.prototype.getColor = function(str, type) {
     return colors[type || 'default'][str];
 };
 
+/**
+ * Combine data of an object into an array of objects
+ *
+ * @method     combine
+ * @param      {Object}  tab     Initial object
+ * @return     {Array}   Array of objects
+ */
 TestsCoco.DataVis.prototype.combine = function(tab) {
     return _.map(tab, function (elem, index) {
         return {
@@ -207,18 +274,39 @@ TestsCoco.DataVis.prototype.combine = function(tab) {
     });
 };
 
+/**
+ * Get the user uuids
+ *
+ * @method     getUsers
+ * @param      {Object}  answers  Set of answers
+ * @return     {Array}  The user uuids
+ */
 TestsCoco.DataVis.prototype.getUsers = function(answers) {
     return _.keys(_.groupBy(answers, 'useruuid'));
 };
 
+/**
+ * Get the session ids by user
+ *
+ * @method     getSessionByUser
+ * @param      {Object}  answers  Set of answers
+ * @return     {Object}  Keys are the user uuids and values, arrays of session id
+ */
 TestsCoco.DataVis.prototype.getSessionByUser = function(answers) {
     return _.mapValues(_.groupBy(answers, 'useruuid'), function(val) {
                 return _.keys(_.groupBy(val, 'session'));
-            });
+    });
 };
 
+/**
+ * Get the media of one question
+ *
+ * @method     getMedia
+ * @param      {Object}  medias   Set of medias
+ * @param      {string}  subject  Question id
+ * @return     {string}  Media id
+ */
 TestsCoco.DataVis.prototype.getMedia = function(medias, subject) {
-
     var med = _.mapValues(medias, function(val) {
             return _.filter(val, function(v) {
                 return v.id == subject;
@@ -230,6 +318,14 @@ TestsCoco.DataVis.prototype.getMedia = function(medias, subject) {
     });
 };
 
+/**
+ * Get the average score by user
+ *
+ * @method     getUsersAverage
+ * @param      {Object}  prop      Properties of each question
+ * @param      {Object}  sessions  Properties of each session
+ * @return     {Object}  Score by user
+ */
 TestsCoco.DataVis.prototype.getUsersAverage = function(prop, sessions) {
     var _this = this;
     var ret = {};
@@ -248,6 +344,13 @@ TestsCoco.DataVis.prototype.getUsersAverage = function(prop, sessions) {
     });
 };
 
+/**
+ * Get the average score for each media
+ *
+ * @method     getGeneralAverage
+ * @param      {Object}  medias  Set of medias
+ * @return     {Object}  Average score by media
+ */
 TestsCoco.DataVis.prototype.getGeneralAverage = function(medias) {
     var _this = this;
     var ret = {};
@@ -264,13 +367,26 @@ TestsCoco.DataVis.prototype.getGeneralAverage = function(medias) {
     return ret;
 };
 
-TestsCoco.DataVis.prototype.getMediaInfo = function(media_id) {
+/**
+ * Get information for each media
+ *
+ * @method     getMediaInfo
+ * @param      {string}  media_id
+ * @return     {Object}  Informations about the media
+ */
+TestsCoco.DataVis.prototype.getMediaInfo = function(media_id){
     var begin_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quiz'), 'begin');
     var end_times = _.pluck(_.filter(_.values(this.medias[media_id]), 'type', 'Quiz'), 'end');
     var max_time = _.max(end_times);
-    return {'times':begin_times, 'max_time':max_time};
+    return {'times': begin_times, 'max_time': max_time};
 };
 
+/**
+ * Get the answers properties of each question of each media
+ *
+ * @method     getPropertiesByQuestionByMedia
+ * @return     {Object}  Properties by question by media
+ */
 TestsCoco.DataVis.prototype.getPropertiesByQuestionByMedia = function() {
     var _this = this;
 
@@ -291,8 +407,14 @@ TestsCoco.DataVis.prototype.getPropertiesByQuestionByMedia = function() {
     });
 };
 
-TestsCoco.DataVis.prototype.getPropertiesByMedia = function() {
-    return _.mapValues(this.getPropertiesByQuestionByMedia(), function(value) {
+/**
+ * Get all the answers properties by medias
+ *
+ * @method     getPropertiesByMedia
+ * @return     {Object}  Properties by media
+ */
+TestsCoco.DataVis.prototype.getPropertiesByMedia = function(){
+    return _.mapValues(this.getPropertiesByQuestionByMedia(),function(value){
             var right = 0,
                 wrong = 0,
                 skip_a = 0,
@@ -327,8 +449,15 @@ TestsCoco.DataVis.prototype.getPropertiesByMedia = function() {
         });
 };
 
+/**
+ * Get the media id for each sessions
+ *
+ * @method     getMediaBySession
+ * @return     {Object}  Medias by session
+ */
 TestsCoco.DataVis.prototype.getMediaBySession = function() {
-    var sub_bySession = _.mapValues(this.sessions, function(value) {
+
+    var sub_bySession = _.mapValues(this.sessions,function(value) {
         return value[0].subject;
     });
 
@@ -347,6 +476,12 @@ TestsCoco.DataVis.prototype.getMediaBySession = function() {
     });
 };
 
+/**
+ * Get the sessions ids for each medias
+ *
+ * @method     getSessionByMedia
+ * @return     {Object}  Sessions by media
+ */
 TestsCoco.DataVis.prototype.getSessionByMedia = function() {
     var questionByMedia = _.mapValues(this.medias, function(value) {
         return _.keys(_.groupBy(value, 'id'));
@@ -864,7 +999,6 @@ TestsCoco.DataVis.prototype.makeScatterGraph_VisuAlgo = function (data, size, me
         chart.xAxis.axisLabel('Temps Video');
         chart.yAxis.axisLabel('Tirage');
         chart.xAxis.tickFormat(function(d) {
-            // FIXME: hardcoded date here??
             return d3.time.format('%X')(new Date(d+ new Date(2015, 7, 22, 0, 0).getTime()));
         });
 
@@ -1026,6 +1160,13 @@ TestsCoco.DataVis.prototype.makeBulletChart = function(data, container) {
     return vis;
 };
 
+/**
+ * Get all the data needed to make all the graphs
+ *
+ * @method     getAllData
+ * @param      {Object}  questions  Set of questions
+ * @param      {Object}  answers    Set of answers
+ */
 TestsCoco.DataVis.prototype.getAllData = function (questions, answers) {
     this.annotations = questions.annotations;
 
@@ -1080,13 +1221,32 @@ TestsCoco.DataVis.prototype.getAllData = function (questions, answers) {
     this.data_Scatter_VisuAlgo = this.dataForScatter_VisuAlgo(this.sessionByMedia, this.propertiesByQuestionBySession, this.info_questions, this.session_date);
 };
 
+/**
+ * Generates the graphs needed for the student dashboard
+ *
+ * @method     generateGraphStudent
+ * @param      {<type>}  username
+ * @param      {<type>}  session_number
+ */
 TestsCoco.DataVis.prototype.generateGraphStudent = function(useruuid, session_number) {
-
     this.makeHistogram_AnsVote(this.data_Histo_answer[useruuid][session_number], 'bonneMauvaiseSkip', 'Pourcentage de réponses');
 
     this.makeHistogram_AnsVote(this.data_Histo_vote[useruuid][session_number], 'utilePasUtile', 'Pourcentage de votes');
 
     this.makeBulletChart(this.data_Bullet[useruuid], 'bulletChartAllStudents');
+};
+
+/**
+ * Generates the graphs needed for the teacher dashboard
+ *
+ * @method     generateGraphTeacher
+ * @param      {<type>}  media_id
+ */
+TestsCoco.DataVis.prototype.generateGraphTeacher = function(media_id){
+
+    this.makeScatterGraph_UtileJuste(this.data_Scatter_UtileJuste[media_id],'repUtile');
+
+    this.makeSparkLine(this.data_Line,'table_spark');
 
     this.makeScatterGraph_Student(this.data_Scatter_HistoStudent[useruuid], 'histoStudentAllVideos');
 };
@@ -1102,6 +1262,13 @@ TestsCoco.DataVis.prototype.generateGraphTeacher = function(media_id) {
     this.makeScatterGraph_Student(this.data_Scatter_NoteStudent[media_id], 'histoAllStudents');
 };
 
+/**
+ * Generates the graphs for the answers details
+ *
+ * @method     generateAnswerDetails
+ * @param      {string}  container    HTML id of the container where to place the answers details
+ * @param      {string}  question_id
+ */
 TestsCoco.DataVis.prototype.generateAnswerDetails = function (container, question_id) {
     $('#'+container).empty();
 
@@ -1127,7 +1294,12 @@ TestsCoco.DataVis.prototype.generateAnswerDetails = function (container, questio
     this.makeHistogram(this.data_Histo_answer_detail[question_id], 'voteParRep', 'Nombre de réponses');
 };
 
-TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function() {
+/**
+ * Generates the graphs for the visualisation of the algorithm
+ *
+ * @method     generateGraphVisuAlgo
+ */
+TestsCoco.DataVis.prototype.generateGraphVisuAlgo = function(){
     var _this = this;
     _.each(this.medias, function(med_val, med_id) {
         var size = _.size(_this.sessionByMedia[med_id]);
